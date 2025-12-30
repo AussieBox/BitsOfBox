@@ -1,0 +1,10 @@
+{
+  "itemGroup.bitsofbox.bitsofbox": "Bits of Box",
+
+  "item.bitsofbox.dragonflame_cactus": "Dragonflame Cactus",
+      "item.bitsofbox.dragonflame_cactus.tooltip.fuse.1": "Fuse Time: ",
+      "item.bitsofbox.dragonflame_cactus.tooltip.fuse.2": " ticks (",
+      "item.bitsofbox.dragonflame_cactus.tooltip.fuse.3": " seconds)",
+
+  "block.bitsofbox.dragonflame_cactus_block": "Dragonflame Cactus Stem"
+}

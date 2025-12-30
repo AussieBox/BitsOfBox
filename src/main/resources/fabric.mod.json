@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "bitsofbox",
+  "version": "${version}",
+  "name": "Bits of Box",
+  "description": "AussieBox's (first) addon for the Harpy SMP!",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/bitsofbox/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.aussiebox.bitsofbox.client.BOBClient"
+    ],
+    "main": [
+      "org.aussiebox.bitsofbox.BOB"
+    ]
+  },
+  "mixins": [
+    "bitsofbox.mixins.json",
+    {
+      "config": "bitsofbox.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

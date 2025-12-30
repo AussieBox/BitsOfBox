@@ -1,0 +1,26 @@
+package org.aussiebox.bitsofbox.component;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.component.ComponentType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
+import org.aussiebox.bitsofbox.BOB;
+
+import java.util.function.UnaryOperator;
+
+public class ModDataComponentTypes {
+
+    public static final ComponentType<Integer> DRAGONFLAME_CACTUS_FUSE =
+            register("dragonflame_cactus_fuse", builder -> builder.codec(Codec.INT));
+
+
+    private static <T>ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
+        return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(BOB.MOD_ID, name),
+                builderOperator.apply(ComponentType.builder()).build());
+    }
+
+    public static void init() {
+        BOB.LOGGER.info("Registering ComponentTypes for mod " + BOB.MOD_ID);
+    }
+}

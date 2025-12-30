@@ -1,0 +1,71 @@
+package org.aussiebox.bitsofbox.block;
+
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.util.Identifier;
+import org.aussiebox.bitsofbox.BOB;
+import org.aussiebox.bitsofbox.block.custom.DragonflameCactusBlock;
+import org.aussiebox.bitsofbox.block.custom.DragonflameCactusPlantBlock;
+
+import java.util.function.Function;
+
+public class ModBlocks {
+
+    public static final Block DRAGONFLAME_CACTUS_PLANT = register(
+            "dragonflame_cactus_plant",
+            DragonflameCactusPlantBlock::new,
+            AbstractBlock.Settings.create()
+                    .sounds(BlockSoundGroup.WOOD)
+                    .ticksRandomly()
+                    .nonOpaque(),
+            false
+    );
+
+    public static final Block DRAGONFLAME_CACTUS_BLOCK = register(
+            "dragonflame_cactus_block",
+            DragonflameCactusBlock::new,
+            AbstractBlock.Settings.create()
+                    .mapColor(MapColor.DARK_RED)
+                    .ticksRandomly()
+                    .strength(0.4F)
+                    .sounds(BlockSoundGroup.WOOL)
+                    .pistonBehavior(PistonBehavior.DESTROY)
+                    .nonOpaque(),
+            true
+    );
+
+    private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
+        RegistryKey<Block> blockKey = keyOfBlock(name);
+        Block block = blockFactory.apply(settings);
+
+        if (shouldRegisterItem) {
+            RegistryKey<Item> itemKey = keyOfItem(name);
+
+            BlockItem blockItem = new BlockItem(block, new Item.Settings());
+            Registry.register(Registries.ITEM, itemKey, blockItem);
+        }
+
+        return Registry.register(Registries.BLOCK, blockKey, block);
+    }
+
+    private static RegistryKey<Block> keyOfBlock(String name) {
+        return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(BOB.MOD_ID, name));
+    }
+
+    private static RegistryKey<Item> keyOfItem(String name) {
+        return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(BOB.MOD_ID, name));
+    }
+
+    public static void init() {
+        BOB.LOGGER.info("Registering mod blocks for " + BOB.MOD_ID);
+    }
+}
