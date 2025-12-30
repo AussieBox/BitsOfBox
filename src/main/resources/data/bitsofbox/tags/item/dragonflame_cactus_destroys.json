@@ -5,6 +5,9 @@
     "#minecraft:sand",
     "#minecraft:logs",
     "#minecraft:saplings",
-    "#minecraft:flowers"
+    "#minecraft:flowers",
+    "#minecraft:bamboo_blocks",
+    "minecraft:bone_meal",
+    "minecraft:bamboo"
   ]
 }

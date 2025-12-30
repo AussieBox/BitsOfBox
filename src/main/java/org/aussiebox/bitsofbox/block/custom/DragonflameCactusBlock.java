@@ -114,7 +114,7 @@ public class DragonflameCactusBlock extends Block {
     protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         if (world instanceof ServerWorld serverWorld) {
             if (entity instanceof ItemEntity itemEntity) {
-                if (!itemEntity.getStack().isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of(BOB.MOD_ID, "dragonflame_cactus_destroys")))) {
+                if (itemEntity.getStack().isIn(TagKey.of(RegistryKeys.ITEM, Identifier.of(BOB.MOD_ID, "dragonflame_cactus_destroys")))) {
                     if (!itemEntity.isRemoved()) {
                         int stackSize = itemEntity.getStack().getCount();
                         itemEntity.remove(Entity.RemovalReason.KILLED);
