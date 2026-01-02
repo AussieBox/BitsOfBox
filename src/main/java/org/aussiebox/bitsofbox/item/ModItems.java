@@ -13,15 +13,27 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.aussiebox.bitsofbox.BOB;
+import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
+import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.item.custom.DragonflameCactusItem;
+import org.aussiebox.bitsofbox.item.custom.FluidityItem;
 
 import java.util.function.Function;
 
 public class ModItems {
 
-    public static final Item DRAGONFLAME_CACTUS = registerItem("dragonflame_cactus", DragonflameCactusItem::new, new Item.Settings()
+    public static final Item DRAGONFLAME_CACTUS = registerItem(
+            "dragonflame_cactus",
+            DragonflameCactusItem::new,
+            new Item.Settings()
+    );
 
+    public static final Item FLUIDITY = registerItem(
+            "fluidity",
+            FluidityItem::new,
+            new Item.Settings()
+                    .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
     );
 
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));

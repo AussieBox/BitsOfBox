@@ -6,6 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.aussiebox.bitsofbox.BOB;
+import org.aussiebox.bitsofbox.BOBConstants;
 
 import java.util.function.UnaryOperator;
 
@@ -13,6 +14,9 @@ public class ModDataComponentTypes {
 
     public static final ComponentType<Integer> DRAGONFLAME_CACTUS_FUSE =
             register("dragonflame_cactus_fuse", builder -> builder.codec(Codec.INT));
+
+    public static final ComponentType<BOBConstants.FluidityMode> FLUIDITY_MODE =
+            register("fluidity_mode", builder -> builder.codec(BOBConstants.FluidityMode.CODEC));
 
 
     private static <T>ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

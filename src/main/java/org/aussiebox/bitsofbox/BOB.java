@@ -1,6 +1,7 @@
 package org.aussiebox.bitsofbox;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
 import org.aussiebox.bitsofbox.block.ModBlocks;
@@ -17,6 +18,10 @@ public class BOB implements ModInitializer {
 
     public static final String MOD_ID = "bitsofbox";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+    public static Identifier id(String path) {
+        return Identifier.of(MOD_ID, path);
+    }
 
     public static final TreeDecoratorType<AttachedToLogsTreeDecorator> ATTACHED_TO_LOGS_TREE_DECORATOR = TreeDecoratorTypeInvoker.callRegister("bitsofbox:attached_to_logs", AttachedToLogsTreeDecorator.CODEC);
 

@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "bitsofbox:item/fluidity/trident"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "fluidity_mode": 1
+      },
+      "model": "bitsofbox:item/fluidity/stone/axe"
+    },
+    {
+      "predicate": {
+        "fluidity_mode": 2
+      },
+      "model": "bitsofbox:item/fluidity/stone/pickaxe"
+    },
+    {
+      "predicate": {
+        "fluidity_mode": 3
+      },
+      "model": "bitsofbox:item/fluidity/stone/trident"
+    }
+  ]
+}
