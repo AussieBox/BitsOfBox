@@ -5,6 +5,13 @@
       "item.bitsofbox.dragonflame_cactus.tooltip.fuse.1": "Fuse Time: ",
       "item.bitsofbox.dragonflame_cactus.tooltip.fuse.2": " ticks (",
       "item.bitsofbox.dragonflame_cactus.tooltip.fuse.3": " seconds)",
+  "item.bitsofbox.wooden_fluidity": "Fluidity of Wood",
+  "item.bitsofbox.stone_fluidity": "Fluidity of Stone",
+  "item.bitsofbox.copper_fluidity": "Fluidity of Copper",
+  "item.bitsofbox.gold_fluidity": "Fluidity of Gold",
+  "item.bitsofbox.iron_fluidity": "Fluidity of Iron",
+  "item.bitsofbox.diamond_fluidity": "Fluidity of Diamond",
+  "item.bitsofbox.netherite_fluidity": "Fluidity of Netherite",
 
   "block.bitsofbox.dragonflame_cactus_block": "Dragonflame Cactus Stem"
 }

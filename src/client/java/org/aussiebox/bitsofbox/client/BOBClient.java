@@ -7,11 +7,9 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import org.aussiebox.bitsofbox.BOB;
-import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.client.entity.DragonflameCactusEntityModel;
 import org.aussiebox.bitsofbox.client.entity.DragonflameCactusEntityRenderer;
-import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.aussiebox.bitsofbox.item.ModItems;
 
@@ -34,12 +32,78 @@ public class BOBClient implements ClientModInitializer {
     public static void registerModelPredicates() {
         ModelPredicateProviderRegistry.register(
                 ModItems.WOODEN_FLUIDITY,
-                BOB.id("fluidity_mode"),
+                BOB.id("throwing"),
                 (stack, world, entity, seed) -> {
-                    BOBConstants.FluidityMode mode = stack.get(ModDataComponentTypes.FLUIDITY_MODE);
-                    if (mode == BOBConstants.FluidityMode.AXE) return 1.0F;
-                    if (mode == BOBConstants.FluidityMode.PICKAXE) return 2.0F;
-                    if (mode == BOBConstants.FluidityMode.TRIDENT) return 3.0F;
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
+                    return 0.0F;
+                }
+        );
+        ModelPredicateProviderRegistry.register(
+                ModItems.STONE_FLUIDITY,
+                BOB.id("throwing"),
+                (stack, world, entity, seed) -> {
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
+                    return 0.0F;
+                }
+        );
+        ModelPredicateProviderRegistry.register(
+                ModItems.COPPER_FLUIDITY,
+                BOB.id("throwing"),
+                (stack, world, entity, seed) -> {
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
+                    return 0.0F;
+                }
+        );
+        ModelPredicateProviderRegistry.register(
+                ModItems.GOLD_FLUIDITY,
+                BOB.id("throwing"),
+                (stack, world, entity, seed) -> {
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
+                    return 0.0F;
+                }
+        );
+        ModelPredicateProviderRegistry.register(
+                ModItems.IRON_FLUIDITY,
+                BOB.id("throwing"),
+                (stack, world, entity, seed) -> {
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
+                    return 0.0F;
+                }
+        );
+        ModelPredicateProviderRegistry.register(
+                ModItems.DIAMOND_FLUIDITY,
+                BOB.id("throwing"),
+                (stack, world, entity, seed) -> {
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
+                    return 0.0F;
+                }
+        );
+        ModelPredicateProviderRegistry.register(
+                ModItems.NETHERITE_FLUIDITY,
+                BOB.id("throwing"),
+                (stack, world, entity, seed) -> {
+
+                    if (entity == null) return 0.0F;
+                    if (entity.getActiveItem() == stack) return 1.0F;
+
                     return 0.0F;
                 }
         );
