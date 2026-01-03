@@ -21,6 +21,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
+import org.aussiebox.bitsofbox.item.ModItems;
+import org.aussiebox.bitsofbox.item.ModToolMaterials;
 
 import java.util.Arrays;
 
@@ -72,6 +74,9 @@ public class FluidityItem extends MiningToolItem {
                             AttributeModifierSlot.MAINHAND)
                     .build()
             );
+            stack.remove(DataComponentTypes.TOOL);
+            if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.AXE) stack.set(DataComponentTypes.TOOL, getMaterial(stack).createComponent(BlockTags.AXE_MINEABLE));
+            if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.PICKAXE) stack.set(DataComponentTypes.TOOL, getMaterial(stack).createComponent(BlockTags.PICKAXE_MINEABLE));
 
             return TypedActionResult.success(stack);
         }
@@ -79,10 +84,16 @@ public class FluidityItem extends MiningToolItem {
         return TypedActionResult.pass(stack);
     }
 
-    @Override
-    public ToolMaterial getMaterial() {
-        // TODO: Add copper material type
-        return super.getMaterial();
+    public ToolMaterial getMaterial(ItemStack stack) {
+        if (stack.isOf(ModItems.WOODEN_FLUIDITY)) return ToolMaterials.WOOD;
+        if (stack.isOf(ModItems.STONE_FLUIDITY)) return ToolMaterials.STONE;
+        if (stack.isOf(ModItems.COPPER_FLUIDITY)) return ModToolMaterials.COPPER;
+        if (stack.isOf(ModItems.GOLD_FLUIDITY)) return ToolMaterials.GOLD;
+        if (stack.isOf(ModItems.IRON_FLUIDITY)) return ToolMaterials.IRON;
+        if (stack.isOf(ModItems.DIAMOND_FLUIDITY)) return ToolMaterials.DIAMOND;
+        if (stack.isOf(ModItems.NETHERITE_FLUIDITY)) return ToolMaterials.NETHERITE;
+
+        return null;
     }
 
     @Override

@@ -36,6 +36,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(59)
     );
 
     public static final Item STONE_FLUIDITY = registerItem(
@@ -44,6 +45,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(131)
     );
 
     public static final Item COPPER_FLUIDITY = registerItem(
@@ -52,6 +54,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(191)
     );
 
     public static final Item GOLD_FLUIDITY = registerItem(
@@ -60,6 +63,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(32)
     );
 
     public static final Item IRON_FLUIDITY = registerItem(
@@ -68,6 +72,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(250)
     );
 
     public static final Item DIAMOND_FLUIDITY = registerItem(
@@ -76,6 +81,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(1561)
     );
 
     public static final Item NETHERITE_FLUIDITY = registerItem(
@@ -84,6 +90,7 @@ public class ModItems {
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
                     .rarity(Rarity.EPIC)
+                    .maxDamage(2031)
     );
 
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));
