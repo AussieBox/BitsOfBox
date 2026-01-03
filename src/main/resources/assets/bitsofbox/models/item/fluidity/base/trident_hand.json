@@ -107,22 +107,25 @@
 		}
 	],
 	"gui_light": "front",
+	"overrides": [
+		{"predicate": {"throwing": 1}, "model": "bitsofbox:item/fluidity/base/trident_throwing"}
+	],
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [0, 90, -180],
-			"translation": [8, -17, 9]
+			"rotation": [0, 60, 0],
+			"translation": [11, 13, -2]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [0, 90, -180],
-			"translation": [8, -17, -7]
+			"rotation": [0, 60, 0],
+			"translation": [3, 13, 12]
 		},
 		"firstperson_righthand": {
-			"rotation": [-79, -90, 0],
-			"translation": [-3, 20.5, -3.25]
+			"rotation": [0, -90, 25],
+			"translation": [-3, 6.5, 4.75]
 		},
 		"firstperson_lefthand": {
-			"rotation": [-79, 90, 0],
-			"translation": [13, 20.5, -3.25]
+			"rotation": [0, 90, -25],
+			"translation": [13, 6.5, 4.75]
 		},
 		"ground": {
 			"translation": [4, 4, 2],

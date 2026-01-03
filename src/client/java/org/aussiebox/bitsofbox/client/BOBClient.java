@@ -33,7 +33,7 @@ public class BOBClient implements ClientModInitializer {
 
     public static void registerModelPredicates() {
         ModelPredicateProviderRegistry.register(
-                ModItems.FLUIDITY,
+                ModItems.WOODEN_FLUIDITY,
                 BOB.id("fluidity_mode"),
                 (stack, world, entity, seed) -> {
                     BOBConstants.FluidityMode mode = stack.get(ModDataComponentTypes.FLUIDITY_MODE);
