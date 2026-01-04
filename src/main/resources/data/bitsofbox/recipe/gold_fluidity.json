@@ -11,10 +11,10 @@
       "item": "minecraft:gold_block"
     },
     "A": {
-      "item": "minecraft:gold_axe"
+      "item": "minecraft:golden_axe"
     },
     "P": {
-      "item": "minecraft:gold_pickaxe"
+      "item": "minecraft:golden_pickaxe"
     },
     "T": {
       "item": "minecraft:trident"
@@ -24,7 +24,7 @@
     }
   },
   "result": {
-    "id": "bitsofbox:wooden_fluidity"
+    "id": "bitsofbox:gold_fluidity"
   },
   "show_notification": true
 }
