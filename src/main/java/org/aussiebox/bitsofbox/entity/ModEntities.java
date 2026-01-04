@@ -14,6 +14,11 @@ public class ModEntities {
             EntityType.Builder.<DragonflameCactusEntity>create(DragonflameCactusEntity::new, SpawnGroup.MISC)
                     .dimensions(0.4F, 0.4F).build("dragonflame_cactus")
     );
+    public static final EntityType<PickarangEntity> PickarangEntityType = Registry.register(Registries.ENTITY_TYPE,
+            Identifier.of(BOB.MOD_ID, "pickarang"),
+            EntityType.Builder.<PickarangEntity>create(PickarangEntity::new, SpawnGroup.MISC)
+                    .dimensions(1.25F, 0.2F).build("pickarang")
+    );
 
     public static void init() {
         BOB.LOGGER.info("Registering Mod Entities for " + BOB.MOD_ID);

@@ -2,6 +2,11 @@ package org.aussiebox.bitsofbox.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -35,6 +40,20 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 3)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    5.0,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -2.9,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(59)
     );
@@ -44,6 +63,20 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 4)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    5.5,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -2.7,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(131)
     );
@@ -53,6 +86,20 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 5)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    6.0,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -2.5,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(191)
     );
@@ -62,6 +109,20 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 7)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    5.5,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -3.2,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(32)
     );
@@ -71,6 +132,20 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 6)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    7.0,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -2.5,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(250)
     );
@@ -80,6 +155,20 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 7)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    8.0,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -2.3,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(1561)
     );
@@ -89,13 +178,36 @@ public class ModItems {
             FluidityItem::new,
             new Item.Settings()
                     .component(ModDataComponentTypes.FLUIDITY_MODE, BOBConstants.FluidityMode.TRIDENT)
+                    .component(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 8)
+                    .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, AttributeModifiersComponent.builder()
+                            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                    9.0,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                            .add(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(
+                                    Item.BASE_ATTACK_SPEED_MODIFIER_ID,
+                                    -2.1,
+                                    EntityAttributeModifier.Operation.ADD_VALUE
+                            ), AttributeModifierSlot.MAINHAND)
+                                    .build()
+                    )
                     .rarity(Rarity.EPIC)
                     .maxDamage(2031)
+                    .fireproof()
+    );
+
+    public static final Item SHIMMER_POWDER = registerItem(
+            "shimmer_powder",
+            Item::new,
+            new Item.Settings()
+                    .rarity(Rarity.RARE)
+                    .fireproof()
     );
 
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));
     public static final ItemGroup BOB_ITEMGROUP = FabricItemGroup.builder()
-            .icon(() -> new ItemStack(ModItems.DRAGONFLAME_CACTUS))
+            .icon(() -> new ItemStack(ModItems.SHIMMER_POWDER))
             .displayName(Text.translatable("itemGroup.bitsofbox.bitsofbox"))
             .build();
 
@@ -120,6 +232,7 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(BOB_ITEMGROUP_KEY).register(itemGroup -> {
             itemGroup.add(DRAGONFLAME_CACTUS.getDefaultStack());
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
+            itemGroup.add(SHIMMER_POWDER);
             itemGroup.add(WOODEN_FLUIDITY);
             itemGroup.add(STONE_FLUIDITY);
             itemGroup.add(COPPER_FLUIDITY);

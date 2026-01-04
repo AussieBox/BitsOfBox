@@ -12,6 +12,12 @@
   "item.bitsofbox.iron_fluidity": "Fluidity of Iron",
   "item.bitsofbox.diamond_fluidity": "Fluidity of Diamond",
   "item.bitsofbox.netherite_fluidity": "Fluidity of Netherite",
+  "item.bitsofbox.shimmer_powder": "Shimmer Powder",
 
-  "block.bitsofbox.dragonflame_cactus_block": "Dragonflame Cactus Stem"
+  "block.bitsofbox.dragonflame_cactus_block": "Dragonflame Cactus Stem",
+
+  "tip.bitsofbox.fluidity_refill": "Recharge with Shimmer Powder!",
+
+  "tag.block.bitsofbox.pickarang_cannot_break": "Unbreakable to Pickarangs",
+  "tag.item.bitsofbox.dragonflame_cactus_destroys": "Destroyed by Dragonflame Cactus Stems"
 }
