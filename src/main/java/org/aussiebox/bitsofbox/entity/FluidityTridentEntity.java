@@ -100,7 +100,10 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         }
 
         super.tick();
-        if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) > 0) this.setOnGround(false);
+        if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) > 0) {
+            this.setOnGround(false);
+            this.inGroundTime = 0;
+        }
     }
 
     private boolean isOwnerAlive() {
@@ -242,7 +245,6 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         if (this.getWorld().getBlockState(blockPos).isOf(ModBlocks.SHIMMERGLASS)) return;
 
         if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) == 0) {
-            super.onBlockHit(blockHitResult);
             this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
             return;
         }
