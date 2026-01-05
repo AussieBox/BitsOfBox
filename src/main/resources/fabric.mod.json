@@ -15,6 +15,14 @@
     ],
     "main": [
       "org.aussiebox.bitsofbox.BOB"
+    ],
+    "cardinal-components": [
+      "org.aussiebox.bitsofbox.BOBComponents"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "bitsofbox:shimmer_powder_data"
     ]
   },
   "mixins": [

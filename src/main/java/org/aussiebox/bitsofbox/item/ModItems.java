@@ -22,6 +22,7 @@ import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
+import org.aussiebox.bitsofbox.item.custom.AmethystDisruptorItem;
 import org.aussiebox.bitsofbox.item.custom.DragonflameCactusItem;
 import org.aussiebox.bitsofbox.item.custom.FluidityItem;
 
@@ -205,6 +206,13 @@ public class ModItems {
                     .fireproof()
     );
 
+    public static final Item AMETHYST_DISRUPTOR = registerItem(
+            "amethyst_disruptor",
+            AmethystDisruptorItem::new,
+            new Item.Settings()
+                    .rarity(Rarity.UNCOMMON)
+    );
+
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));
     public static final ItemGroup BOB_ITEMGROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(ModItems.SHIMMER_POWDER))
@@ -232,6 +240,7 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(BOB_ITEMGROUP_KEY).register(itemGroup -> {
             itemGroup.add(DRAGONFLAME_CACTUS.getDefaultStack());
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
+            itemGroup.add(AMETHYST_DISRUPTOR);
             itemGroup.add(SHIMMER_POWDER);
             itemGroup.add(WOODEN_FLUIDITY);
             itemGroup.add(STONE_FLUIDITY);
