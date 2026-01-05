@@ -19,6 +19,6 @@ public class ModAttachmentTypes {
     );
 
     public static void init() {
-
+        BOB.LOGGER.info("Registering Attachment Types for " + BOB.MOD_ID);
     }
 }

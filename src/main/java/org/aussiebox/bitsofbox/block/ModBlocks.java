@@ -2,7 +2,9 @@ package org.aussiebox.bitsofbox.block;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -15,6 +17,7 @@ import net.minecraft.util.Identifier;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.block.custom.DragonflameCactusBlock;
 import org.aussiebox.bitsofbox.block.custom.DragonflameCactusPlantBlock;
+import org.aussiebox.bitsofbox.block.custom.ShimmerglassBlock;
 
 import java.util.function.Function;
 
@@ -43,6 +46,23 @@ public class ModBlocks {
             true
     );
 
+    public static final Block SHIMMERGLASS = register(
+            "shimmerglass",
+            ShimmerglassBlock::new,
+            AbstractBlock.Settings.create()
+                    .mapColor(MapColor.PINK)
+                    .strength(0.3F)
+                    .sounds(BlockSoundGroup.GLASS)
+                    .instrument(NoteBlockInstrument.HAT)
+                    .allowsSpawning(Blocks::never)
+                    .solidBlock(Blocks::never)
+                    .suffocates(Blocks::never)
+                    .blockVision(Blocks::never)
+                    .noCollision() // Fun fact! .noCollision() actually FORCES .nonOpaque()!
+                    .nonOpaque(),
+            true
+    );
+
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         RegistryKey<Block> blockKey = keyOfBlock(name);
         Block block = blockFactory.apply(settings);
@@ -66,6 +86,6 @@ public class ModBlocks {
     }
 
     public static void init() {
-        BOB.LOGGER.info("Registering mod blocks for " + BOB.MOD_ID);
+        BOB.LOGGER.info("Registering Blocks for " + BOB.MOD_ID);
     }
 }

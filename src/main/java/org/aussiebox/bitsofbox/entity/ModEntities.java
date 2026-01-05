@@ -28,6 +28,6 @@ public class ModEntities {
     );
 
     public static void init() {
-        BOB.LOGGER.info("Registering Mod Entities for " + BOB.MOD_ID);
+        BOB.LOGGER.info("Registering Entities for " + BOB.MOD_ID);
     }
 }

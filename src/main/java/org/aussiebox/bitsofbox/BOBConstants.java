@@ -28,16 +28,16 @@ public interface BOBConstants {
         }
     }
 
-    Map<Item, Float> fluidityRiptideStrengths = new HashMap<>();
-    static Map<Item, Float> fluidityRiptideStrengths() {
-        fluidityRiptideStrengths.put(ModItems.WOODEN_FLUIDITY, 1.5F);
-        fluidityRiptideStrengths.put(ModItems.STONE_FLUIDITY, 1.75F);
-        fluidityRiptideStrengths.put(ModItems.COPPER_FLUIDITY, 2.0F);
-        fluidityRiptideStrengths.put(ModItems.GOLD_FLUIDITY, 1.75F);
-        fluidityRiptideStrengths.put(ModItems.IRON_FLUIDITY, 2.5F);
-        fluidityRiptideStrengths.put(ModItems.DIAMOND_FLUIDITY, 3.0F);
-        fluidityRiptideStrengths.put(ModItems.NETHERITE_FLUIDITY, 3.5F);
-        return fluidityRiptideStrengths;
+    Map<Item, Integer> fluidityBlockChangeMaximums = new HashMap<>();
+    static Map<Item, Integer> fluidityBlockChangeMaximums() {
+        fluidityBlockChangeMaximums.put(ModItems.WOODEN_FLUIDITY, 10);
+        fluidityBlockChangeMaximums.put(ModItems.STONE_FLUIDITY, 12);
+        fluidityBlockChangeMaximums.put(ModItems.COPPER_FLUIDITY, 14);
+        fluidityBlockChangeMaximums.put(ModItems.GOLD_FLUIDITY, 15);
+        fluidityBlockChangeMaximums.put(ModItems.IRON_FLUIDITY, 16);
+        fluidityBlockChangeMaximums.put(ModItems.DIAMOND_FLUIDITY, 18);
+        fluidityBlockChangeMaximums.put(ModItems.NETHERITE_FLUIDITY, 20);
+        return fluidityBlockChangeMaximums;
     }
 
     Map<Item, Integer> fluidityPickarangReturnTimes = new HashMap<>();

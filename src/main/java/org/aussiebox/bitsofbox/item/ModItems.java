@@ -211,6 +211,7 @@ public class ModItems {
             AmethystDisruptorItem::new,
             new Item.Settings()
                     .rarity(Rarity.UNCOMMON)
+                    .maxCount(1)
     );
 
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));
@@ -234,7 +235,7 @@ public class ModItems {
     }
 
     public static void init() {
-        BOB.LOGGER.info("Registering mod items for " + BOB.MOD_ID);
+        BOB.LOGGER.info("Registering Items for " + BOB.MOD_ID);
 
         Registry.register(Registries.ITEM_GROUP, BOB_ITEMGROUP_KEY, BOB_ITEMGROUP);
         ItemGroupEvents.modifyEntriesEvent(BOB_ITEMGROUP_KEY).register(itemGroup -> {
@@ -242,6 +243,7 @@ public class ModItems {
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
             itemGroup.add(AMETHYST_DISRUPTOR);
             itemGroup.add(SHIMMER_POWDER);
+            itemGroup.add(ModBlocks.SHIMMERGLASS.asItem());
             itemGroup.add(WOODEN_FLUIDITY);
             itemGroup.add(STONE_FLUIDITY);
             itemGroup.add(COPPER_FLUIDITY);

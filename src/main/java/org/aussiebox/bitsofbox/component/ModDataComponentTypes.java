@@ -31,6 +31,6 @@ public class ModDataComponentTypes {
     }
 
     public static void init() {
-        BOB.LOGGER.info("Registering ComponentTypes for mod " + BOB.MOD_ID);
+        BOB.LOGGER.info("Registering Component Types for " + BOB.MOD_ID);
     }
 }

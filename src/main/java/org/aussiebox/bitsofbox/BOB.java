@@ -5,6 +5,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
 import org.aussiebox.bitsofbox.block.ModBlocks;
+import org.aussiebox.bitsofbox.blockentity.ModBlockEntities;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.aussiebox.bitsofbox.item.ModItems;
@@ -28,11 +29,17 @@ public class BOB implements ModInitializer {
     @Override
     public void onInitialize() {
 
+        BOB.LOGGER.info("OH GOD LOOK OUT THERE'S LOGGER SPAM COMING UP AAA");
+        BOB.LOGGER.info("-------------------------------------------------");
         ModBlocks.init();
         ModItems.init();
         ModEntities.init();
         ModAttachmentTypes.init();
         ModDataComponentTypes.init();
+        ModBlockEntities.registerModBlockEntities();
+        BOB.LOGGER.info("-------------------------------------------------");
+        BOB.LOGGER.info("phew hopefully that wasn't too bad lol");
+        BOB.LOGGER.info("i mean at least you know the mod should actually work now");
 
         DragonflameCactusGeneration.generateCacti();
 
