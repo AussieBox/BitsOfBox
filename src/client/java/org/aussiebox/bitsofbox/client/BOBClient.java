@@ -11,6 +11,7 @@ import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.client.entity.DragonflameCactusEntityModel;
 import org.aussiebox.bitsofbox.client.entity.DragonflameCactusEntityRenderer;
+import org.aussiebox.bitsofbox.client.entity.FluidityTridentEntityRenderer;
 import org.aussiebox.bitsofbox.client.entity.PickarangEntityRenderer;
 import org.aussiebox.bitsofbox.client.hud.FluidityChargeRenderer;
 import org.aussiebox.bitsofbox.entity.ModEntities;
@@ -30,6 +31,7 @@ public class BOBClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.DragonflameCactusEntityType, DragonflameCactusEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.PickarangEntityType, (context) -> new PickarangEntityRenderer<>(context, 2.0F, true));
+        EntityRendererRegistry.register(ModEntities.FluidityTridentEntityType, FluidityTridentEntityRenderer::new);
 
         registerModelPredicates();
 

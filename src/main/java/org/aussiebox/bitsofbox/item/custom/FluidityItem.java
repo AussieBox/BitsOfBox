@@ -5,10 +5,10 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
@@ -24,12 +24,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
+import org.aussiebox.bitsofbox.entity.FluidityTridentEntity;
 import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.aussiebox.bitsofbox.entity.PickarangEntity;
 import org.aussiebox.bitsofbox.item.ModItems;
@@ -65,6 +64,7 @@ public class FluidityItem extends MiningToolItem {
         if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.PICKAXE) {
             if (!user.isSneaking()) {
                 if (stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 0) <= 0) return TypedActionResult.fail(stack);
+                user.incrementStat(Stats.USED.getOrCreateStat(this));
                 stack.set(ModDataComponentTypes.FLUIDITY_CHARGES, stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 1) - 1);
 
                 PickarangEntity entity = new PickarangEntity(ModEntities.PickarangEntityType, user, world);
@@ -168,34 +168,19 @@ public class FluidityItem extends MiningToolItem {
         if (i < 10) return;
 
         playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
-        float strength = BOBConstants.fluidityRiptideStrengths().get(stack.getItem()); // Riptide Strength
-
         stack.set(ModDataComponentTypes.FLUIDITY_CHARGES, stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 1) - 1);
 
-        float yaw = playerEntity.getYaw();
-        float pitch = playerEntity.getPitch();
-        float j = -MathHelper.sin(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
-        float k = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
-        float l = MathHelper.cos(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
-        float m = MathHelper.sqrt(j * j + k * k + l * l);
-        j *= strength / m;
-        k *= strength / m;
-        l *= strength / m;
-        playerEntity.addVelocity(j, k, l);
-
-        int index = 0;
-        if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.TRIDENT) index = 0;
-        if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.AXE) index = 1;
-        if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.PICKAXE) index = 2;
-        double attackDamage = Arrays.stream(BOBConstants.fluidityAttackDamages().get(stack.getItem())).toList().get(index);
-
-        playerEntity.useRiptide(20, (float) attackDamage, stack);
-        if (playerEntity.isOnGround()) {
-            float n = 1.1999999F;
-            playerEntity.move(MovementType.SELF, new Vec3d(0.0F, 1.1999999F, 0.0F));
+        FluidityTridentEntity entity = new FluidityTridentEntity(world, playerEntity, stack);
+        entity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.5F, 1.0F);
+        if (playerEntity.isInCreativeMode()) {
+            entity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
         }
 
-        world.playSoundFromEntity(null, playerEntity, SoundEvents.ITEM_TRIDENT_RIPTIDE_3.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+        world.spawnEntity(entity);
+        world.playSoundFromEntity(null, entity, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+        if (!playerEntity.isInCreativeMode()) {
+            playerEntity.getInventory().removeOne(stack);
+        }
     }
 
     @Override
