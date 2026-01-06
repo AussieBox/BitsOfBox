@@ -344,14 +344,12 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
 
     @Override
     protected void onCollision(HitResult hitResult) {
+        super.onCollision(hitResult);
         if (hitResult instanceof BlockHitResult blockHitResult) {
             BlockPos blockPos = blockHitResult.getBlockPos();
             this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
 
             this.returning = true;
-        }
-        if (hitResult instanceof EntityHitResult entityHitResult) {
-            this.onEntityHit(entityHitResult);
         }
     }
 
