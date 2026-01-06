@@ -54,13 +54,15 @@ public class ModBlocks {
                     .strength(0.3F)
                     .sounds(BlockSoundGroup.GLASS)
                     .instrument(NoteBlockInstrument.HAT)
+                    .luminance(ShimmerglassBlock::getLuminance)
+                    .emissiveLighting(ShimmerglassBlock::getEmissive)
                     .allowsSpawning(Blocks::never)
                     .solidBlock(Blocks::never)
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .noCollision() // Fun fact! .noCollision() actually FORCES .nonOpaque()!
                     .nonOpaque(),
-            true
+            false
     );
 
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {

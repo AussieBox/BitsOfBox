@@ -1,7 +1,10 @@
 package org.aussiebox.bitsofbox;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.StringIdentifiable;
 import org.aussiebox.bitsofbox.item.ModItems;
 
@@ -9,6 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface BOBConstants {
+
+    RegistryKey<DamageType> PICKARANG_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, BOB.id("pickarang"));
+    RegistryKey<DamageType> FLUIDITY_TRIDENT_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, BOB.id("fluidity_trident"));
 
     enum FluidityMode implements StringIdentifiable {
         AXE("axe"),
@@ -30,14 +36,28 @@ public interface BOBConstants {
 
     Map<Item, Integer> fluidityBlockChangeMaximums = new HashMap<>();
     static Map<Item, Integer> fluidityBlockChangeMaximums() {
-        fluidityBlockChangeMaximums.put(ModItems.WOODEN_FLUIDITY, 10);
-        fluidityBlockChangeMaximums.put(ModItems.STONE_FLUIDITY, 12);
-        fluidityBlockChangeMaximums.put(ModItems.COPPER_FLUIDITY, 14);
-        fluidityBlockChangeMaximums.put(ModItems.GOLD_FLUIDITY, 15);
-        fluidityBlockChangeMaximums.put(ModItems.IRON_FLUIDITY, 16);
-        fluidityBlockChangeMaximums.put(ModItems.DIAMOND_FLUIDITY, 18);
-        fluidityBlockChangeMaximums.put(ModItems.NETHERITE_FLUIDITY, 20);
+        fluidityBlockChangeMaximums.put(ModItems.WOODEN_FLUIDITY, 6);
+        fluidityBlockChangeMaximums.put(ModItems.STONE_FLUIDITY, 7);
+        fluidityBlockChangeMaximums.put(ModItems.COPPER_FLUIDITY, 9);
+        fluidityBlockChangeMaximums.put(ModItems.GOLD_FLUIDITY, 8);
+        fluidityBlockChangeMaximums.put(ModItems.IRON_FLUIDITY, 10);
+        fluidityBlockChangeMaximums.put(ModItems.DIAMOND_FLUIDITY, 11);
+        fluidityBlockChangeMaximums.put(ModItems.NETHERITE_FLUIDITY, 12);
         return fluidityBlockChangeMaximums;
+    }
+
+    // Array Order: {Effect Range, Blocks Affected}
+
+    Map<Item, Double[]> fluidityLandEffectData = new HashMap<>();
+    static Map<Item, Double[]> fluidityLandEffectData() {
+        fluidityLandEffectData.put(ModItems.WOODEN_FLUIDITY, new Double[]{1.0, 2.0});
+        fluidityLandEffectData.put(ModItems.STONE_FLUIDITY, new Double[]{1.5, 5.0});
+        fluidityLandEffectData.put(ModItems.COPPER_FLUIDITY, new Double[]{2.0, 8.0});
+        fluidityLandEffectData.put(ModItems.GOLD_FLUIDITY, new Double[]{1.5, 6.0});
+        fluidityLandEffectData.put(ModItems.IRON_FLUIDITY, new Double[]{3.0, 20.0});
+        fluidityLandEffectData.put(ModItems.DIAMOND_FLUIDITY, new Double[]{4.0, 35.0});
+        fluidityLandEffectData.put(ModItems.NETHERITE_FLUIDITY, new Double[]{5.0, 50.0});
+        return fluidityLandEffectData;
     }
 
     Map<Item, Integer> fluidityPickarangReturnTimes = new HashMap<>();
@@ -57,13 +77,13 @@ public interface BOBConstants {
 
     Map<Item, Double[]> fluidityAttackDamages = new HashMap<>();
     static Map<Item, Double[]> fluidityAttackDamages() {
-        fluidityAttackDamages.put(ModItems.WOODEN_FLUIDITY, new Double[]{5.0, 5.0, 0.0});
-        fluidityAttackDamages.put(ModItems.STONE_FLUIDITY, new Double[]{5.5, 6.0, 1.0});
-        fluidityAttackDamages.put(ModItems.COPPER_FLUIDITY, new Double[]{6.0, 6.5, 1.5});
-        fluidityAttackDamages.put(ModItems.GOLD_FLUIDITY, new Double[]{5.5, 3.0, 0.0});
-        fluidityAttackDamages.put(ModItems.IRON_FLUIDITY, new Double[]{7.0, 7.0, 2.0});
-        fluidityAttackDamages.put(ModItems.DIAMOND_FLUIDITY, new Double[]{8.0, 7.0, 3.0});
-        fluidityAttackDamages.put(ModItems.NETHERITE_FLUIDITY, new Double[]{9.0, 8.0, 4.0});
+        fluidityAttackDamages.put(ModItems.WOODEN_FLUIDITY, new Double[]{3.0, 5.0, 0.0});
+        fluidityAttackDamages.put(ModItems.STONE_FLUIDITY, new Double[]{3.5, 6.0, 1.0});
+        fluidityAttackDamages.put(ModItems.COPPER_FLUIDITY, new Double[]{4.0, 6.5, 1.5});
+        fluidityAttackDamages.put(ModItems.GOLD_FLUIDITY, new Double[]{3.0, 3.0, 0.0});
+        fluidityAttackDamages.put(ModItems.IRON_FLUIDITY, new Double[]{5.0, 7.0, 2.0});
+        fluidityAttackDamages.put(ModItems.DIAMOND_FLUIDITY, new Double[]{6.0, 7.0, 3.0});
+        fluidityAttackDamages.put(ModItems.NETHERITE_FLUIDITY, new Double[]{7.0, 8.0, 4.0});
         return fluidityAttackDamages;
     }
 

@@ -46,7 +46,7 @@ public class PickarangEntityRenderer<T extends PickarangEntity> extends EntityRe
             matrices.translate(0, 0.05, 0);
             matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
             matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(rotation));
-            rotation = rotation + 4;
+            rotation = rotation + 10;
             this.itemRenderer.renderItem(entity.getStack(), ModelTransformationMode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), entity.getId());
             matrices.pop();
             super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);

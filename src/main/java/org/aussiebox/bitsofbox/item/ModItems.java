@@ -214,6 +214,13 @@ public class ModItems {
                     .maxCount(1)
     );
 
+    public static final BlockItem SHIMMERGLASS = registerBlockItem(
+            "shimmerglass",
+            (settings -> new BlockItem(ModBlocks.SHIMMERGLASS, settings)),
+            new Item.Settings()
+                    .rarity(Rarity.EPIC)
+    );
+
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));
     public static final ItemGroup BOB_ITEMGROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(ModItems.SHIMMER_POWDER))
@@ -243,7 +250,7 @@ public class ModItems {
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
             itemGroup.add(AMETHYST_DISRUPTOR);
             itemGroup.add(SHIMMER_POWDER);
-            itemGroup.add(ModBlocks.SHIMMERGLASS.asItem());
+            itemGroup.add(SHIMMERGLASS);
             itemGroup.add(WOODEN_FLUIDITY);
             itemGroup.add(STONE_FLUIDITY);
             itemGroup.add(COPPER_FLUIDITY);

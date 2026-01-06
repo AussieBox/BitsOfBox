@@ -16,7 +16,10 @@ public class ModEntities {
     public static final EntityType<PickarangEntity> PickarangEntityType = Registry.register(Registries.ENTITY_TYPE,
             BOB.id("pickarang"),
             EntityType.Builder.<PickarangEntity>create(PickarangEntity::new, SpawnGroup.MISC)
-                    .dimensions(1.25F, 0.2F).build("pickarang")
+                    .dimensions(1.25F, 0.2F)
+                    .eyeHeight(0.13F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(20).build("pickarang")
     );
     public static final EntityType<FluidityTridentEntity> FluidityTridentEntityType = Registry.register(Registries.ENTITY_TYPE,
             BOB.id("fluidity_trident"),

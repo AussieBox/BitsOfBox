@@ -16,9 +16,15 @@
   "item.bitsofbox.amethyst_disruptor": "Amethyst Disruptor",
 
   "block.bitsofbox.dragonflame_cactus_block": "Dragonflame Cactus Stem",
+  "block.bitsofbox.shimmerglass": "Shimmerglass",
 
   "tip.bitsofbox.fluidity_refill": "Recharge with Shimmer Powder!",
   "tip.bitsofbox.wait_to_collect_shimmer_powder": "I need to wait for a new dawn to collect more Shimmer Powder.",
+
+  "death.attack.pickarang": "%s was cracked in the head by %s's pickaxe",
+  "death.attack.pickarang.item": "%s was cracked in the head by %s with %s",
+  "death.attack.fluidity_trident": "%s was impaled into another reality by %s",
+  "death.attack.fluidity_trident.item": "%s was impaled into another reality by %s with %s",
 
   "tag.block.bitsofbox.pickarang_cannot_break": "Unbreakable to Pickarangs",
   "tag.block.bitsofbox.glass": "Glass Blocks",

@@ -1,10 +1,12 @@
 package org.aussiebox.bitsofbox.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ProjectileDeflection;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -13,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -21,24 +24,31 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.blockentity.ShimmerglassBlockEntity;
 import org.aussiebox.bitsofbox.item.ModItems;
+import org.aussiebox.bitsofbox.util.BOBUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class FluidityTridentEntity extends PersistentProjectileEntity {
     private static final TrackedData<Byte> LOYALTY;
     private static final TrackedData<Boolean> ENCHANTED;
     private static final TrackedData<Integer> BLOCK_CHANGES_REMAINING;
+    private static final TrackedData<Integer> LIFETIME_REMAINING;
     private boolean dealtDamage;
+    private boolean returning;
     public int returnTimer;
 
     public FluidityTridentEntity(EntityType<? extends FluidityTridentEntity> entityType, World world) {
@@ -51,6 +61,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         this.dataTracker.set(LOYALTY, (byte)5);
         this.dataTracker.set(ENCHANTED, true);
         this.dataTracker.set(BLOCK_CHANGES_REMAINING, BOBConstants.fluidityBlockChangeMaximums().get(this.getItemStack().getItem()));
+        this.dataTracker.set(LIFETIME_REMAINING, 200);
     }
 
     public FluidityTridentEntity(World world, double x, double y, double z, ItemStack stack) {
@@ -59,6 +70,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         this.dataTracker.set(LOYALTY, (byte)5);
         this.dataTracker.set(ENCHANTED, true);
         this.dataTracker.set(BLOCK_CHANGES_REMAINING, BOBConstants.fluidityBlockChangeMaximums().get(this.getItemStack().getItem()));
+        this.dataTracker.set(LIFETIME_REMAINING, 200);
     }
 
     @Override
@@ -67,14 +79,25 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         builder.add(LOYALTY, (byte)5);
         builder.add(ENCHANTED, true);
         builder.add(BLOCK_CHANGES_REMAINING, 10);
+        builder.add(LIFETIME_REMAINING, 200);
     }
 
     @Override
     public void tick() {
 
+        if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) == 0)
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, this.getBlockPos(), GameEvent.Emitter.of(this, this.getWorld().getBlockState(this.getBlockPos())));
+
+        this.dataTracker.set(LIFETIME_REMAINING, this.dataTracker.get(LIFETIME_REMAINING)-1);
+        if (this.dataTracker.get(LIFETIME_REMAINING) == 0)
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, this.getBlockPos(), GameEvent.Emitter.of(this, this.getWorld().getBlockState(this.getBlockPos())));
+
+        if (this.getWorld().isOutOfHeightLimit(this.getBlockPos()))
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, this.getBlockPos(), GameEvent.Emitter.of(this, this.getWorld().getBlockState(this.getBlockPos())));
+
         Entity entity = this.getOwner();
         int i = this.dataTracker.get(LOYALTY);
-        if (i > 0 && (this.dealtDamage || this.isNoClip()) && entity != null) {
+        if (i > 0 && (this.dealtDamage || this.returning) && entity != null) {
             if (!this.isOwnerAlive()) {
                 if (!this.getWorld().isClient && this.pickupType == PickupPermission.ALLOWED) {
                     this.dropStack(this.asItemStack(), 0.1F);
@@ -82,7 +105,6 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
 
                 this.discard();
             } else {
-                this.setNoClip(true);
                 Vec3d vec3d = entity.getEyePos().subtract(this.getPos());
                 this.setPos(this.getX(), this.getY() + vec3d.y * 0.015 * (double)i, this.getZ());
                 if (this.getWorld().isClient) {
@@ -93,6 +115,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
                 this.setVelocity(this.getVelocity().multiply(0.95).add(vec3d.normalize().multiply(d)));
                 if (this.returnTimer == 0) {
                     this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
+                    onLand();
                 }
 
                 ++this.returnTimer;
@@ -100,10 +123,6 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         }
 
         super.tick();
-        if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) > 0) {
-            this.setOnGround(false);
-            this.inGroundTime = 0;
-        }
     }
 
     private boolean isOwnerAlive() {
@@ -119,46 +138,44 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
         return this.dataTracker.get(ENCHANTED);
     }
 
-    @Nullable
-    protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
-        return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
+    public void onLand() {
+
+        World world = this.getWorld();
+        double range = Arrays.stream(BOBConstants.fluidityLandEffectData().get(this.getItemStack().getItem())).toList().getFirst();
+        double blocksAffected = Arrays.stream(BOBConstants.fluidityLandEffectData().get(this.getItemStack().getItem())).toList().getLast();
+
+        if (world instanceof ServerWorld serverWorld) {
+            serverWorld.spawnParticles(ParticleTypes.SONIC_BOOM, this.getX(), this.getY(), this.getZ(), 1, 0.0, 0.0, 0.0, 0);
+            serverWorld.spawnParticles(ParticleTypes.END_ROD, this.getX(), this.getY(), this.getZ(), (int) blocksAffected*3, range, range, range, 0);
+        }
+
+        List<BlockPos> blockPosList = BOBUtil.getAllBlockPosInBox(new Box(this.getX()-range, this.getY()-range, this.getZ()-range, this.getX()+range, this.getY()+range, this.getZ()+range));
+        Collections.shuffle(blockPosList);
+
+        for (int i = 0; i < Math.min(blocksAffected, blockPosList.size()); i++) {
+            BlockPos blockPos = blockPosList.get(i);
+
+            if (this.getEntityWorld().getBlockEntity(blockPos) != null) continue;
+
+            BlockState previousBlockState = this.getEntityWorld().getBlockState(blockPos);
+            this.getEntityWorld().setBlockState(blockPos, ModBlocks.SHIMMERGLASS.getDefaultState());
+
+            if (this.getEntityWorld().getBlockEntity(blockPos) instanceof ShimmerglassBlockEntity blockEntity) {
+                blockEntity.setPreviousBlockState(previousBlockState);
+                if (this.getOwner() != null) blockEntity.setOwner(this.getOwner());
+                blockEntity.resetTicksAliveLeft();
+            }
+        }
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
-        float f = 8.0F;
-        Entity entity2 = this.getOwner();
-        DamageSource damageSource = this.getDamageSources().trident(this, entity2 == null ? this : entity2);
-        World var7 = this.getWorld();
-        if (var7 instanceof ServerWorld serverWorld) {
-            f = EnchantmentHelper.getDamage(serverWorld, Objects.requireNonNull(this.getWeaponStack()), entity, damageSource, f);
-        }
-
-        this.dealtDamage = true;
-        if (entity.damage(damageSource, f)) {
-            if (entity.getType() == EntityType.ENDERMAN) {
-                return;
-            }
-
-            var7 = this.getWorld();
-            if (var7 instanceof ServerWorld serverWorld) {
-                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
-            }
-
-            if (entity instanceof LivingEntity livingEntity) {
-                this.knockback(livingEntity, damageSource);
-                this.onHit(livingEntity);
-            }
-        }
-
-        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
+    @Nullable
+    protected EntityHitResult getEntityCollision(Vec3d currentPosition, Vec3d nextPosition) {
+        return (this.dealtDamage || this.returning) ? null : super.getEntityCollision(currentPosition, nextPosition);
     }
 
     @Override
     protected void onBlockHitEnchantmentEffects(ServerWorld world, BlockHitResult blockHitResult, ItemStack weaponStack) {
-
         Vec3d vec3d = blockHitResult.getBlockPos().clampToWithin(blockHitResult.getPos());
         Entity var6 = this.getOwner();
         LivingEntity var10002;
@@ -178,7 +195,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
 
     @Override
     protected boolean tryPickup(PlayerEntity player) {
-        return super.tryPickup(player) || this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack());
+        return (this.dealtDamage || this.returning) && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack());
     }
 
     @Override
@@ -201,14 +218,16 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
-        this.dealtDamage = tag.getBoolean("DealtDamage");
+        this.dealtDamage = tag.getBoolean("dealtDamage");
+        this.returning = tag.getBoolean("returning");
         this.dataTracker.set(LOYALTY, this.getLoyalty(this.getItemStack()));
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound tag) {
         super.writeCustomDataToNbt(tag);
-        tag.putBoolean("DealtDamage", this.dealtDamage);
+        tag.putBoolean("dealtDamage", this.dealtDamage);
+        tag.putBoolean("returning", this.returning);
     }
 
     private byte getLoyalty(ItemStack stack) {
@@ -239,37 +258,107 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
     }
 
     @Override
-    protected void onBlockHit(BlockHitResult blockHitResult) {
-        BlockPos blockPos = blockHitResult.getBlockPos();
-        if (this.getWorld().getBlockState(blockPos).getCollisionShape(getWorld(), blockPos) == VoxelShapes.empty()) return;
-        if (this.getWorld().getBlockState(blockPos).isOf(ModBlocks.SHIMMERGLASS)) return;
+    protected void onBlockCollision(BlockState state) {
+        super.onBlockCollision(state);
+        int chargeCost = 0;
 
-        if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) == 0) {
+        List<BlockPos> blockPosList = BOBUtil.getAllBlockPosInBox(this.getBoundingBox().expand(
+                0.9,
+                (this.getVelocity().getY() > 0.7 || this.getVelocity().getY() < -0.7) ? 0.9 : 0.5,
+                0.9
+        ));
+        for (BlockPos blockPos : blockPosList) {
+            if (!(this.getWorld().getBlockState(blockPos).isOf(Blocks.AIR)) && !(this.getWorld().getBlockState(blockPos).isOf(ModBlocks.SHIMMERGLASS))) {
+                if (this.getWorld().getBlockState(blockPos).getCollisionShape(getWorld(), blockPos) != VoxelShapes.empty()) {
+                    if (this.dataTracker.get(BLOCK_CHANGES_REMAINING) > 0) {
+                        BlockState previousBlockState = this.getEntityWorld().getBlockState(blockPos);
+
+                        if (this.getEntityWorld().getBlockEntity(blockPos) != null) continue;
+
+                        this.getEntityWorld().setBlockState(blockPos, ModBlocks.SHIMMERGLASS.getDefaultState());
+
+                        if (this.getEntityWorld().getBlockEntity(blockPos) instanceof ShimmerglassBlockEntity blockEntity) {
+                            blockEntity.setPreviousBlockState(previousBlockState);
+                            if (this.getOwner() != null) blockEntity.setOwner(this.getOwner());
+                            blockEntity.resetTicksAliveLeft();
+                        }
+
+                        chargeCost = 1;
+                    } else {
+                        this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
+                    }
+                }
+            }
+        }
+        this.dataTracker.set(BLOCK_CHANGES_REMAINING, this.dataTracker.get(BLOCK_CHANGES_REMAINING)-chargeCost);
+    }
+
+    @Override
+    protected ProjectileDeflection hitOrDeflect(HitResult hitResult) {
+        if (hitResult.getType() == HitResult.Type.ENTITY) {
+            return ProjectileDeflection.NONE;
+        }
+        return super.hitOrDeflect(hitResult);
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+
+        BOB.LOGGER.info("hit entity");
+
+        Entity entity = entityHitResult.getEntity();
+        DamageSource damageSource = this.getDamageSources().create(BOBConstants.FLUIDITY_TRIDENT_DAMAGE, this.getOwner());
+        float damage = Arrays.stream(BOBConstants.fluidityAttackDamages().get(this.getItemStack().getItem())).toList().get(2).floatValue();
+
+        this.dealtDamage = true;
+        if (entity.damage(damageSource, damage)) {
+            if (entity.getType() == EntityType.ENDERMAN) {
+                return;
+            }
+
+            World world = this.getWorld();
+            if (world instanceof ServerWorld serverWorld) {
+                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
+            }
+
+            if (entity instanceof LivingEntity livingEntity) {
+                this.knockback(livingEntity, damageSource);
+                this.onHit(livingEntity);
+            }
+        }
+
+        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
+        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
+    }
+
+    @Override
+    public boolean isNoClip() {
+        BlockPos blockPos = this.getBlockPos();
+        if (this.getWorld().getBlockState(blockPos).isOf(ModBlocks.SHIMMERGLASS) && this.dataTracker.get(BLOCK_CHANGES_REMAINING) == 0) {
             this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
-            return;
+            this.returning = true;
         }
 
-        BlockState previousBlockState = this.getEntityWorld().getBlockState(blockPos);
-        this.getEntityWorld().setBlockState(blockPos, ModBlocks.SHIMMERGLASS.getDefaultState());
-
-        if (this.getEntityWorld().getBlockEntity(blockPos) instanceof ShimmerglassBlockEntity blockEntity) {
-            blockEntity.setPreviousBlockState(previousBlockState);
-            if (this.getOwner() != null) blockEntity.setOwner(this.getOwner());
-            blockEntity.resetTicksAliveLeft();
-        }
-
-        this.dataTracker.set(BLOCK_CHANGES_REMAINING, this.dataTracker.get(BLOCK_CHANGES_REMAINING)-1);
+        return (this.dealtDamage || this.returning) || this.dataTracker.get(BLOCK_CHANGES_REMAINING) > 0;
     }
 
     @Override
     protected void onCollision(HitResult hitResult) {
-        if (hitResult.getType() == HitResult.Type.BLOCK) onBlockHit((BlockHitResult) hitResult);
-        else super.onCollision(hitResult);
+        if (hitResult instanceof BlockHitResult blockHitResult) {
+            BlockPos blockPos = blockHitResult.getBlockPos();
+            this.getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Emitter.of(this, this.getWorld().getBlockState(blockPos)));
+
+            this.returning = true;
+        }
+        if (hitResult instanceof EntityHitResult entityHitResult) {
+            this.onEntityHit(entityHitResult);
+        }
     }
 
     static {
         LOYALTY = DataTracker.registerData(FluidityTridentEntity.class, TrackedDataHandlerRegistry.BYTE);
         ENCHANTED = DataTracker.registerData(FluidityTridentEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
         BLOCK_CHANGES_REMAINING = DataTracker.registerData(FluidityTridentEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        LIFETIME_REMAINING = DataTracker.registerData(FluidityTridentEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 }

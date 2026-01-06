@@ -4,9 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
 import net.minecraft.item.Item;
@@ -18,6 +20,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -26,6 +29,7 @@ import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.item.ModItems;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class PickarangEntity extends ThrownEntity {
@@ -34,10 +38,6 @@ public class PickarangEntity extends ThrownEntity {
 
     public PickarangEntity(EntityType<? extends PickarangEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    public PickarangEntity(EntityType<? extends PickarangEntity> entityType, double d, double e, double f, World world) {
-        super(entityType, d, e, f, world);
     }
 
     public PickarangEntity(EntityType<? extends PickarangEntity> entityType, LivingEntity livingEntity, World world) {
@@ -109,16 +109,21 @@ public class PickarangEntity extends ThrownEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!(hitResult instanceof BlockHitResult blockHit)) return;
+        if (hitResult instanceof BlockHitResult blockHit) {
+            BlockPos pos = blockHit.getBlockPos();
+            World world = this.getEntityWorld();
 
-        BlockPos pos = blockHit.getBlockPos();
-        World world = this.getEntityWorld();
-
-        if (world.getBlockState(pos).isIn(getInverseBreakableTag()) || world.getBlockState(pos).isIn(TagKey.of(RegistryKeys.BLOCK, BOB.id("pickarang_cannot_break")))) {
-            drop();
-            return;
+            if (world.getBlockState(pos).isIn(getInverseBreakableTag()) || world.getBlockState(pos).isIn(TagKey.of(RegistryKeys.BLOCK, BOB.id("pickarang_cannot_break")))) {
+                drop();
+                return;
+            }
+            world.breakBlock(pos, true, this.getOwner(), 100);
         }
-        world.breakBlock(pos, true, this.getOwner(), 100);
+        if (hitResult instanceof EntityHitResult entityHit) {
+            DamageSource damageSource = this.getDamageSources().create(BOBConstants.PICKARANG_DAMAGE, this.getOwner());
+            float damage = Arrays.stream(BOBConstants.fluidityAttackDamages().get(this.getStack().getItem())).toList().get(2).floatValue();
+            entityHit.getEntity().damage(damageSource, damage);
+        }
     }
 
     @Override
@@ -176,6 +181,13 @@ public class PickarangEntity extends ThrownEntity {
 
         ItemEntity itemEntity = new ItemEntity(world, getX(), getY(), getZ(), getStack());
         world.spawnEntity(itemEntity);
+
+        if (this.getOwner() instanceof PlayerEntity player)
+            if (player.distanceTo(itemEntity) <= 8) {
+                player.sendPickup(itemEntity, 1);
+                player.getInventory().insertStack(itemEntity.getStack());
+                itemEntity.discard();
+            }
 
         this.discard();
     }
