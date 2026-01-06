@@ -6,7 +6,6 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ProjectileDeflection;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -30,7 +29,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.blockentity.ShimmerglassBlockEntity;
@@ -294,17 +292,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
     }
 
     @Override
-    protected ProjectileDeflection hitOrDeflect(HitResult hitResult) {
-        if (hitResult.getType() == HitResult.Type.ENTITY) {
-            return ProjectileDeflection.NONE;
-        }
-        return super.hitOrDeflect(hitResult);
-    }
-
-    @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-
-        BOB.LOGGER.info("hit entity");
 
         Entity entity = entityHitResult.getEntity();
         DamageSource damageSource = this.getDamageSources().create(BOBConstants.FLUIDITY_TRIDENT_DAMAGE, this.getOwner());
