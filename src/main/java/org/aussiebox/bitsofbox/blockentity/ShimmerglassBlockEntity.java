@@ -28,6 +28,7 @@ public class ShimmerglassBlockEntity extends BlockEntity {
     }
 
     public BlockState getPreviousBlockState() {
+        if (previousBlockState == null) return Blocks.AIR.getDefaultState();
         return previousBlockState;
     }
 
@@ -56,6 +57,7 @@ public class ShimmerglassBlockEntity extends BlockEntity {
     }
 
     public UUID getOwner() {
+        if (owner == null) return UUID.fromString("00000000-0000-0000-0000-000000000000");
         return owner;
     }
 

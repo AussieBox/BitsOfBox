@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class FluidityTridentEntity extends PersistentProjectileEntity {
     private static final TrackedData<Byte> LOYALTY;
@@ -119,6 +120,45 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
                 ++this.returnTimer;
             }
         }
+
+        if (!this.dealtDamage) {
+            List<Entity> entityList = this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.5, 0.5, 0.5));
+            if (entityList != null && !entityList.isEmpty()) {
+                entity = entityList.getFirst();
+                if (entity != null && entity != this.getOwner()) {
+                    DamageSource damageSource = this.getDamageSources().create(BOBConstants.FLUIDITY_TRIDENT_DAMAGE, this.getOwner());
+                    float damage = Arrays.stream(BOBConstants.fluidityAttackDamages().get(this.getItemStack().getItem())).toList().get(2).floatValue();
+
+                    this.dealtDamage = true;
+                    if (entity.damage(damageSource, damage)) {
+                        if (entity.getType() == EntityType.ENDERMAN) {
+                            return;
+                        }
+
+                        World world = this.getWorld();
+                        if (world instanceof ServerWorld serverWorld) {
+                            EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
+                        }
+
+                        if (entity instanceof LivingEntity livingEntity) {
+                            this.knockback(livingEntity, damageSource);
+                            this.onHit(livingEntity);
+                        }
+                    }
+
+                    this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
+                    this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
+                }
+            }
+        }
+
+        Map<BlockPos, BlockState> blocksInCollision = BOBUtil.getAllBlocksInBox(this.getWorld(), this.getBoundingBox().expand(
+                0.9,
+                (this.getVelocity().getY() > 0.7 || this.getVelocity().getY() < -0.7) ? 0.9 : 0.5,
+                0.9
+        ), false);
+        if (blocksInCollision.isEmpty())
+            super.applyGravity();
 
         super.tick();
     }
@@ -216,8 +256,8 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound tag) {
         super.readCustomDataFromNbt(tag);
-        this.dealtDamage = tag.getBoolean("dealtDamage");
-        this.returning = tag.getBoolean("returning");
+        this.dealtDamage = tag.contains("dealtDamage") && tag.getBoolean("dealtDamage");
+        this.returning = tag.contains("returning") && tag.getBoolean("returning");
         this.dataTracker.set(LOYALTY, this.getLoyalty(this.getItemStack()));
     }
 
@@ -258,6 +298,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
     @Override
     protected void onBlockCollision(BlockState state) {
         super.onBlockCollision(state);
+        if (this.dealtDamage || this.returning) return;
         int chargeCost = 0;
 
         List<BlockPos> blockPosList = BOBUtil.getAllBlockPosInBox(this.getBoundingBox().expand(
@@ -289,34 +330,6 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
             }
         }
         this.dataTracker.set(BLOCK_CHANGES_REMAINING, this.dataTracker.get(BLOCK_CHANGES_REMAINING)-chargeCost);
-    }
-
-    @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-
-        Entity entity = entityHitResult.getEntity();
-        DamageSource damageSource = this.getDamageSources().create(BOBConstants.FLUIDITY_TRIDENT_DAMAGE, this.getOwner());
-        float damage = Arrays.stream(BOBConstants.fluidityAttackDamages().get(this.getItemStack().getItem())).toList().get(2).floatValue();
-
-        this.dealtDamage = true;
-        if (entity.damage(damageSource, damage)) {
-            if (entity.getType() == EntityType.ENDERMAN) {
-                return;
-            }
-
-            World world = this.getWorld();
-            if (world instanceof ServerWorld serverWorld) {
-                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack());
-            }
-
-            if (entity instanceof LivingEntity livingEntity) {
-                this.knockback(livingEntity, damageSource);
-                this.onHit(livingEntity);
-            }
-        }
-
-        this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
     }
 
     @Override

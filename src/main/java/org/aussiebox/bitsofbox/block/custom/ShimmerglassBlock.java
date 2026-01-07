@@ -20,11 +20,10 @@ import net.minecraft.world.World;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.blockentity.ModBlockEntities;
 import org.aussiebox.bitsofbox.blockentity.ShimmerglassBlockEntity;
-import org.aussiebox.bitsofbox.entity.FluidityTridentEntity;
-import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class ShimmerglassBlock extends BlockWithEntity {
     public static final MapCodec<ShimmerglassBlock> CODEC = createCodec(ShimmerglassBlock::new);
@@ -101,14 +100,13 @@ public class ShimmerglassBlock extends BlockWithEntity {
         if (entityContext.getEntity() == null) return VoxelShapes.fullCube();
         if (!(world.getBlockEntity(pos) instanceof ShimmerglassBlockEntity shimmerglass)) return VoxelShapes.fullCube();
 
-        if (entityContext.getEntity().getType() == ModEntities.FluidityTridentEntityType)
-            if (Objects.equals(Objects.requireNonNull(((FluidityTridentEntity) entityContext.getEntity()).getOwner()).toString(), shimmerglass.getOwner().toString()))
-                return VoxelShapes.empty();
+        if (shimmerglass.getOwner() == null || shimmerglass.getOwner() == UUID.fromString("00000000-0000-0000-0000-000000000000")) return VoxelShapes.fullCube();
 
-        if (Objects.equals(entityContext.getEntity().getUuid().toString(), shimmerglass.getOwner().toString())) {
-            if (entityContext.getEntity().getY() >= pos.getY()+1 && pos.isWithinDistance(entityContext.getEntity().getPos(), 1) && !entityContext.getEntity().isSneaking()) return VoxelShapes.fullCube();
-            return VoxelShapes.empty();
-        }
+        if (entityContext.getEntity() != null && shimmerglass.getOwner() != null)
+            if (Objects.equals(entityContext.getEntity().getUuid().toString(), shimmerglass.getOwner().toString())) {
+                if (entityContext.getEntity().getY() >= pos.getY()+1 && pos.isWithinDistance(entityContext.getEntity().getPos(), 1) && !entityContext.getEntity().isSneaking()) return VoxelShapes.fullCube();
+                return VoxelShapes.empty();
+            }
 
         return VoxelShapes.fullCube();
     }
