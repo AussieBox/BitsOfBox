@@ -313,7 +313,7 @@ public class FluidityItem extends MiningToolItem {
         bar = bar.copy().setStyle(Style.EMPTY.withFont(BOB.id("fluidity_bar")));
 
         list.add(1, bar);
-        list.add(2, Text.empty());
+        list.add(2, Text.literal(" "));
 
         if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.TRIDENT) {
             list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.ability").withColor(0xFF55FF));
@@ -322,6 +322,7 @@ public class FluidityItem extends MiningToolItem {
             list.add(6, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.3").withColor(0xAAAAAA));
             list.add(7, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.4").withColor(0xAAAAAA));
             list.add(8, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.5").withColor(0xAAAAAA));
+            list.add(9, Text.literal(" "));
         }
         if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.AXE) {
             if (stack.getHolder() != null) {
@@ -339,6 +340,7 @@ public class FluidityItem extends MiningToolItem {
                 list.add(4, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.2").withColor(0xAAAAAA));
                 list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.3").withColor(0xAAAAAA));
             }
+            list.add(6, Text.literal(" "));
         }
         if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.PICKAXE) {
             list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.ability").withColor(0xFF55FF));
@@ -346,6 +348,7 @@ public class FluidityItem extends MiningToolItem {
             list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.2").withColor(0xAAAAAA));
             list.add(6, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.3").withColor(0xAAAAAA));
             list.add(7, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.4").withColor(0xAAAAAA));
+            list.add(8, Text.literal(" "));
         }
 
         if (charges == 0) list.add(1, Text.translatable("tip.bitsofbox.fluidity_refill").withColor(0xA024FF));
