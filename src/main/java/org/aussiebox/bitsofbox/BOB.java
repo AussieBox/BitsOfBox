@@ -1,6 +1,8 @@
 package org.aussiebox.bitsofbox;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
@@ -43,5 +45,7 @@ public class BOB implements ModInitializer {
 
         DragonflameCactusGeneration.generateCacti();
 
+        Registry.register(Registries.SOUND_EVENT, BOBConstants.FLUIDITY_CHARGE_SOUND.getId(), BOBConstants.FLUIDITY_CHARGE_SOUND);
+        Registry.register(Registries.SOUND_EVENT, BOBConstants.SHIMMERSEEP_CHARGE_SOUND.getId(), BOBConstants.SHIMMERSEEP_CHARGE_SOUND);
     }
 }

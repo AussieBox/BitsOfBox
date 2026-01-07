@@ -6,6 +6,7 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.StringIdentifiable;
 import org.aussiebox.bitsofbox.item.ModItems;
 
@@ -19,6 +20,9 @@ public interface BOBConstants {
 
     RegistryKey<Enchantment> BORDERLINKED_ENCHANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, BOB.id("borderlinked"));
     RegistryKey<Enchantment> SHIMMERSEEP_ENCHANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, BOB.id("shimmerseep"));
+
+    SoundEvent FLUIDITY_CHARGE_SOUND = SoundEvent.of(BOB.id("item.fluidity.charge"));
+    SoundEvent SHIMMERSEEP_CHARGE_SOUND = SoundEvent.of(BOB.id("item.fluidity.shimmerseep_charge"));
 
     enum FluidityMode implements StringIdentifiable {
         AXE("axe"),

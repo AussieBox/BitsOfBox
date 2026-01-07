@@ -41,6 +41,11 @@ public class ShimmerglassBlockEntity extends BlockEntity {
         return ticksAliveLeft;
     }
 
+    public void setTicksAliveLeft(int ticks) {
+        ticksAliveLeft = ticks;
+        markDirty();
+    }
+
     public void resetTicksAliveLeft() {
         ticksAliveLeft = 200;
         markDirty();

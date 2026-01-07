@@ -5,9 +5,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.sound.SoundCategory;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
+import org.aussiebox.bitsofbox.item.custom.FluidityItem;
 import org.aussiebox.bitsofbox.util.BOBUtil;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
@@ -44,10 +46,13 @@ public class ShimmerPowderData implements AutoSyncedComponent, ServerTickingComp
                 if (!BOBUtil.stackHasEnchantment(player.getWorld(), stack, BOBConstants.SHIMMERSEEP_ENCHANT)) continue;
 
                 int charges = stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 0);
-                if (charges < stack.getOrDefault(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 3))
+                if (charges < stack.getOrDefault(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 5))
                     stack.set(ModDataComponentTypes.FLUIDITY_CHARGES, charges+1);
             }
             inventory.markDirty();
+            player.playSoundToPlayer(BOBConstants.SHIMMERSEEP_CHARGE_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            if (player.getMainHandStack().getItem() instanceof FluidityItem)
+                player.playSoundToPlayer(BOBConstants.FLUIDITY_CHARGE_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
         }
         this.sync();
     }

@@ -201,7 +201,7 @@ public class FluidityTridentEntity extends PersistentProjectileEntity {
             if (this.getEntityWorld().getBlockEntity(blockPos) instanceof ShimmerglassBlockEntity blockEntity) {
                 blockEntity.setPreviousBlockState(previousBlockState);
                 if (this.getOwner() != null) blockEntity.setOwner(this.getOwner());
-                blockEntity.resetTicksAliveLeft();
+                blockEntity.setTicksAliveLeft(this.getRandom().nextBetween(190, 210));
             }
         }
     }

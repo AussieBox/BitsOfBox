@@ -272,6 +272,7 @@ public class FluidityItem extends MiningToolItem {
         if (stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 0) < stack.getOrDefault(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 5) && otherStack.isOf(ModItems.SHIMMER_POWDER) && clickType == ClickType.RIGHT) {
 
             stack.set(ModDataComponentTypes.FLUIDITY_CHARGES, stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 0) + 1);
+            player.playSoundToPlayer(BOBConstants.FLUIDITY_CHARGE_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
             otherStack.decrement(1);
 
             slot.markDirty();
@@ -312,6 +313,40 @@ public class FluidityItem extends MiningToolItem {
         bar = bar.copy().setStyle(Style.EMPTY.withFont(BOB.id("fluidity_bar")));
 
         list.add(1, bar);
+        list.add(2, Text.empty());
+
+        if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.TRIDENT) {
+            list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.ability").withColor(0xFF55FF));
+            list.add(4, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.1").withColor(0xAAAAAA));
+            list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.2").withColor(0xAAAAAA));
+            list.add(6, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.3").withColor(0xAAAAAA));
+            list.add(7, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.4").withColor(0xAAAAAA));
+            list.add(8, Text.translatable("item.bitsofbox.fluidity.tooltip.trident.5").withColor(0xAAAAAA));
+        }
+        if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.AXE) {
+            if (stack.getHolder() != null) {
+                if (BOBUtil.stackHasEnchantment(stack.getHolder().getWorld(), stack, BOBConstants.BORDERLINKED_ENCHANT)) {
+                    list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.borderlinked.1").withColor(0xAAAAAA));
+                    list.add(4, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.borderlinked.2").withColor(0xAAAAAA));
+                    list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.borderlinked.3").withColor(0xAAAAAA));
+                } else {
+                    list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.1").withColor(0xAAAAAA));
+                    list.add(4, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.2").withColor(0xAAAAAA));
+                    list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.3").withColor(0xAAAAAA));
+                }
+            } else {
+                list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.1").withColor(0xAAAAAA));
+                list.add(4, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.2").withColor(0xAAAAAA));
+                list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.axe.3").withColor(0xAAAAAA));
+            }
+        }
+        if (stack.get(ModDataComponentTypes.FLUIDITY_MODE) == BOBConstants.FluidityMode.PICKAXE) {
+            list.add(3, Text.translatable("item.bitsofbox.fluidity.tooltip.ability").withColor(0xFF55FF));
+            list.add(4, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.1").withColor(0xAAAAAA));
+            list.add(5, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.2").withColor(0xAAAAAA));
+            list.add(6, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.3").withColor(0xAAAAAA));
+            list.add(7, Text.translatable("item.bitsofbox.fluidity.tooltip.pickaxe.4").withColor(0xAAAAAA));
+        }
 
         if (charges == 0) list.add(1, Text.translatable("tip.bitsofbox.fluidity_refill").withColor(0xA024FF));
     }
