@@ -24,7 +24,7 @@ public class BOB implements ModInitializer {
         return Identifier.of(MOD_ID, path);
     }
 
-    public static final TreeDecoratorType<AttachedToLogsTreeDecorator> ATTACHED_TO_LOGS_TREE_DECORATOR = TreeDecoratorTypeInvoker.callRegister("bitsofbox:attached_to_logs", AttachedToLogsTreeDecorator.CODEC);
+    public static final TreeDecoratorType<AttachedToLogsTreeDecorator> ATTACHED_TO_LOGS_TREE_DECORATOR = TreeDecoratorTypeInvoker.bitsofbox$callRegister("bitsofbox:attached_to_logs", AttachedToLogsTreeDecorator.CODEC);
 
     @Override
     public void onInitialize() {

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface TreeDecoratorTypeInvoker {
 
     @Invoker("register")
-    static <P extends TreeDecorator> TreeDecoratorType<P> callRegister(String id, MapCodec<P> codec) {
+    static <P extends TreeDecorator> TreeDecoratorType<P> bitsofbox$callRegister(String id, MapCodec<P> codec) {
         throw new IllegalStateException();
     }
 

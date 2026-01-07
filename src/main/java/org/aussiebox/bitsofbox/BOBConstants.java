@@ -1,6 +1,7 @@
 package org.aussiebox.bitsofbox;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
@@ -15,6 +16,9 @@ public interface BOBConstants {
 
     RegistryKey<DamageType> PICKARANG_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, BOB.id("pickarang"));
     RegistryKey<DamageType> FLUIDITY_TRIDENT_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, BOB.id("fluidity_trident"));
+
+    RegistryKey<Enchantment> BORDERLINKED_ENCHANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, BOB.id("borderlinked"));
+    RegistryKey<Enchantment> SHIMMERSEEP_ENCHANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, BOB.id("shimmerseep"));
 
     enum FluidityMode implements StringIdentifiable {
         AXE("axe"),

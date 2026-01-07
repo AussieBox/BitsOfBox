@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.blockentity.ModBlockEntities;
 import org.aussiebox.bitsofbox.blockentity.ShimmerglassBlockEntity;
+import org.aussiebox.bitsofbox.entity.PickarangEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -102,9 +103,11 @@ public class ShimmerglassBlock extends BlockWithEntity {
 
         if (shimmerglass.getOwner() == null || shimmerglass.getOwner() == UUID.fromString("00000000-0000-0000-0000-000000000000")) return VoxelShapes.fullCube();
 
+        if (entityContext.getEntity() instanceof PickarangEntity) return VoxelShapes.empty();
+
         if (entityContext.getEntity() != null && shimmerglass.getOwner() != null)
             if (Objects.equals(entityContext.getEntity().getUuid().toString(), shimmerglass.getOwner().toString())) {
-                if (entityContext.getEntity().getY() >= pos.getY()+1 && pos.isWithinDistance(entityContext.getEntity().getPos(), 1) && !entityContext.getEntity().isSneaking()) return VoxelShapes.fullCube();
+                if (entityContext.getEntity().getY() >= pos.getY()+1 && !entityContext.getEntity().isSneaking()) return VoxelShapes.fullCube();
                 return VoxelShapes.empty();
             }
 

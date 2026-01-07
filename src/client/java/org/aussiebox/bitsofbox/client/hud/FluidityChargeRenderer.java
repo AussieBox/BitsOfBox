@@ -9,8 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.aussiebox.bitsofbox.BOB;
+import org.aussiebox.bitsofbox.BOBConstants;
+import org.aussiebox.bitsofbox.cca.ShimmerPowderData;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.item.custom.FluidityItem;
+import org.aussiebox.bitsofbox.util.BOBUtil;
 
 public class FluidityChargeRenderer {
 
@@ -61,6 +64,23 @@ public class FluidityChargeRenderer {
                 0xFFFFFF,
                 false
         );
+
+        if (BOBUtil.stackHasEnchantment(player.getWorld(), stack, BOBConstants.SHIMMERSEEP_ENCHANT)) {
+            int totalSeconds = ShimmerPowderData.KEY.get(player).shimmerseepTicks/20;
+
+            int minutes = totalSeconds / 60;
+            int seconds = totalSeconds % 60;
+
+            Text text = Text.literal(minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+            context.drawText(
+                    textRenderer,
+                    text,
+                    width/2 - (textRenderer.getWidth(text)/2),
+                    height/2 + 15 + textRenderer.fontHeight,
+                    0xA024FF,
+                    true
+            );
+        }
     }
 
 }

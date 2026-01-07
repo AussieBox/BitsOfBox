@@ -25,8 +25,14 @@
   "death.attack.pickarang.item": "%s was cracked in the head by %s with %s",
   "death.attack.fluidity_trident": "%s was impaled into another reality by %s",
   "death.attack.fluidity_trident.item": "%s was impaled into another reality by %s with %s",
+  
+  "enchantment.bitsofbox.borderlinked": "Borderlinked",
+  "enchantment.bitsofbox.borderlinked.desc": "The chance of Shimmer Powder dropping from logs stripped with Fluidity is decreased. In return, obtaining Shimmer Powder in this way no longer counts towards your daily limit.",
+  "enchantment.bitsofbox.shimmerseep": "Shimmerseep",
+  "enchantment.bitsofbox.shimmerseep.desc": "Fluidity passively regains one charge every two minutes. All items with this enchantment regain charges at the same time.",
 
   "tag.block.bitsofbox.pickarang_cannot_break": "Unbreakable to Pickarangs",
   "tag.block.bitsofbox.glass": "Glass Blocks",
-  "tag.item.bitsofbox.dragonflame_cactus_destroys": "Destroyed by Dragonflame Cactus Stems"
+  "tag.item.bitsofbox.dragonflame_cactus_destroys": "Destroyed by Dragonflame Cactus Stems",
+  "tag.item.bitsofbox.fluidities": "Fluidities"
 }

@@ -4,6 +4,7 @@
   "package": "org.aussiebox.bitsofbox.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "EnchancementRepairMaterialMixin",
     "TreeDecoratorTypeInvoker"
   ],
   "injectors": {

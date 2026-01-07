@@ -4,10 +4,15 @@ import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.aussiebox.bitsofbox.BOB;
 
@@ -56,6 +61,23 @@ public class BOBUtil {
         }
 
         return blocks;
+    }
+
+    public static boolean stackHasEnchantment(World world, ItemStack stack, RegistryKey<Enchantment> enchantment) {
+        var stackEnchants = stack.getEnchantments().getEnchantmentEntries();
+
+        for (var entry : stackEnchants) {
+            RegistryKey<Enchantment> key = world.getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(entry.getKey().getKey().get()).registryKey();
+            if (key.equals(enchantment)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static Vec3d shiftVecTowardsVec(Vec3d point, Vec3d shiftTowards, double amount) {
+        return point.add(shiftTowards.subtract(point).normalize().multiply(amount));
     }
 
 }
