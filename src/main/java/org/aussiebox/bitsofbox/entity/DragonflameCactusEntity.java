@@ -23,6 +23,7 @@ import org.aussiebox.bitsofbox.item.ModItems;
 import org.aussiebox.bitsofbox.util.BOBUtil;
 
 public class DragonflameCactusEntity extends PersistentProjectileEntity {
+    public static final float explosionPower = 1.0F;
 
     public DragonflameCactusEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -32,16 +33,15 @@ public class DragonflameCactusEntity extends PersistentProjectileEntity {
         super(ModEntities.DragonflameCactusEntityType, player, world, ModItems.DRAGONFLAME_CACTUS.getDefaultStack(), null);
     }
 
-
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
         Entity entity = entityHitResult.getEntity();
         World world = entity.getEntityWorld();
         if (!world.isClient()) {
-            if (entity instanceof LivingEntity livingEntity) {
+            if (entity instanceof LivingEntity) {
                 Vec3d pos = entityHitResult.getPos();
-                world.createExplosion(this, pos.x, pos.y, pos.z, 2, true, World.ExplosionSourceType.NONE);
+                world.createExplosion(this, pos.x, pos.y, pos.z, explosionPower, true, World.ExplosionSourceType.NONE);
                 if (this.getOwner() instanceof ServerPlayerEntity player) {
                     if (player.distanceTo(entity) >= 25) {
                         BOBUtil.grantAdvancement(player, "hit_dragonflame_cactus");
@@ -90,7 +90,7 @@ public class DragonflameCactusEntity extends PersistentProjectileEntity {
                 }
             }
             if (this.isOnFire()) {
-                world.createExplosion(this, this.prevX, this.prevY, this.prevZ, 2, true, World.ExplosionSourceType.NONE);
+                world.createExplosion(this, this.prevX, this.prevY, this.prevZ, explosionPower, true, World.ExplosionSourceType.NONE);
                 this.kill();
             }
         }

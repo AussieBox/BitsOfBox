@@ -40,17 +40,20 @@ public class ShimmerPowderData implements AutoSyncedComponent, ServerTickingComp
         if (shimmerseepTicks <= 0) {
             shimmerseepTicks = 2400;
             PlayerInventory inventory = player.getInventory();
+            boolean playSound = false;
             for (int i = 0; i < inventory.size(); i++) {
                 ItemStack stack = inventory.getStack(i);
 
                 if (!BOBUtil.stackHasEnchantment(player.getWorld(), stack, BOBConstants.SHIMMERSEEP_ENCHANT)) continue;
 
                 int charges = stack.getOrDefault(ModDataComponentTypes.FLUIDITY_CHARGES, 0);
-                if (charges < stack.getOrDefault(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 5))
+                if (charges < stack.getOrDefault(ModDataComponentTypes.FLUIDITY_MAX_CHARGES, 5)) {
                     stack.set(ModDataComponentTypes.FLUIDITY_CHARGES, charges+1);
+                    playSound = true;
+                }
             }
             inventory.markDirty();
-            player.playSoundToPlayer(BOBConstants.SHIMMERSEEP_CHARGE_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            if (playSound) player.playSoundToPlayer(BOBConstants.SHIMMERSEEP_CHARGE_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
             if (player.getMainHandStack().getItem() instanceof FluidityItem)
                 player.playSoundToPlayer(BOBConstants.FLUIDITY_CHARGE_SOUND, SoundCategory.PLAYERS, 1.0F, 1.0F);
         }
