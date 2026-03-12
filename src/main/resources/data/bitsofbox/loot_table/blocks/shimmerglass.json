@@ -35,7 +35,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "minecraft:tinted_glass"
+              "name": "bitsofbox:shimmerglass"
             }
           ]
         }

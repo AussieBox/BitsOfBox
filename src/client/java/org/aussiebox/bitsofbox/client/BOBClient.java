@@ -36,8 +36,6 @@ public class BOBClient implements ClientModInitializer {
 
     public static int flightToggleCooldown = 0;
 
-    private static int notGroundedTicks;
-
     @Override
     public void onInitializeClient() {
 
@@ -107,19 +105,14 @@ public class BOBClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null) return;
 
-            if (!client.player.isOnGround() && !client.player.isSwimming()) {
-                notGroundedTicks++;
-            } else notGroundedTicks = 0;
+//            if (!client.player.isOnGround() && !client.player.isSwimming()) {
+//                notGroundedTicks++;
+//            } else notGroundedTicks = 0;
 
-            // TODO: FIX THIS???
-            if ((toggleFlightKeybind.wasPressed() && flightToggleCooldown == 0) || (client.player.input.jumping && !client.player.getAbilities().flying && notGroundedTicks >= 5)) {
-                if (BOBUtil.playerHasTrinket(client.player, ModItems.PYRRHIAN_BELT) && TrinketComponent.KEY.get(client.player).getPyrrhianBeltFlightTime() > 0) {
-                    if (!client.player.getAbilities().flying) {
-                        ClientPlayNetworking.send(new PyrrhianBeltFlightC2SPacket(true));
-                        flightToggleCooldown = 10;
-                    } else {
-                        ClientPlayNetworking.send(new PyrrhianBeltFlightC2SPacket(false));
-                    }
+            if ((toggleFlightKeybind.wasPressed() && flightToggleCooldown == 0)) {
+                if (BOBUtil.playerHasTrinket(client.player, ModItems.PYRRHIAN_BELT) && TrinketComponent.KEY.get(client.player).isCanFly()) {
+                    ClientPlayNetworking.send(new PyrrhianBeltFlightC2SPacket(!TrinketComponent.KEY.get(client.player).isFlying()));
+                    flightToggleCooldown = 20;
                 }
             }
 

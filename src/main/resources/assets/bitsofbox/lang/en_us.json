@@ -56,6 +56,8 @@
   "enchantment.bitsofbox.borderlinked.desc": "The chance of Shimmer Powder dropping from logs stripped with the Shimmeraxe is decreased. In return, obtaining Shimmer Powder in this way no longer counts towards your daily limit.",
   "enchantment.bitsofbox.shimmerseep": "Shimmerseep",
   "enchantment.bitsofbox.shimmerseep.desc": "Shimmer Tools passively regain one charge every two minutes. All tools with this enchantment regain charges at the same time.",
+  "enchantment.bitsofbox.shimmershift": "Shimmershift",
+  "enchantment.bitsofbox.shimmershift.desc": "The Shimmerfork will occasionally teleport toward the nearest entity in an attempt to hit them.",
 
   "subtitles.bitsofbox.item.shimmer_tool_charge": "Shimmer Tool Charges",
   "subtitles.bitsofbox.item.shimmer_tool_shimmerseep_charge": "Shimmerseep Triggers",

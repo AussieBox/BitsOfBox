@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 
+import java.util.UUID;
+
 public class PyrrhianBeltItem extends TrinketItem {
     public PyrrhianBeltItem(Settings settings) {
         super(settings);
@@ -19,7 +21,9 @@ public class PyrrhianBeltItem extends TrinketItem {
     @Override
     public Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, Identifier slotIdentifier) {
         var modifiers = super.getModifiers(stack, slot, entity, slotIdentifier);
-        SlotAttributes.addSlotModifier(modifiers, "legs/belt", slotIdentifier, 1, EntityAttributeModifier.Operation.ADD_VALUE);
+        if (entity.getUuid() == UUID.fromString("fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) { // hehe
+            SlotAttributes.addSlotModifier(modifiers, "legs/belt", slotIdentifier, 1, EntityAttributeModifier.Operation.ADD_VALUE);
+        }
         return modifiers;
     }
 }

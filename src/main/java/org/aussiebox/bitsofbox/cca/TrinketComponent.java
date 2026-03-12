@@ -1,17 +1,12 @@
 package org.aussiebox.bitsofbox.cca;
 
 import lombok.Getter;
-import net.minecraft.entity.player.PlayerAbilities;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
-import org.aussiebox.bitsofbox.item.ModItems;
-import org.aussiebox.bitsofbox.util.BOBUtil;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -23,14 +18,17 @@ public class TrinketComponent implements AutoSyncedComponent, ClientTickingCompo
     private final PlayerEntity player;
 
     @Getter
-    private boolean wasFlyingLastTick = false;
-    @Getter
     private boolean gliding = false;
-
     @Getter
-    public double pyrrhianBeltFlightTime;
-
-    private boolean shouldBeFlying = false;
+    private boolean flying = false;
+    @Getter
+    private boolean canFly = false;
+    @Getter
+    private double pyrrhianBeltFlightTime;
+    @Getter
+    private boolean wasLastFlying = false;
+    @Getter
+    private int nonGroundedTime;
 
     public TrinketComponent(PlayerEntity player) {
         this.player = player;
@@ -41,69 +39,98 @@ public class TrinketComponent implements AutoSyncedComponent, ClientTickingCompo
         this.sync();
     }
 
-    public void setWasFlyingLastTick(boolean state) {
-        this.wasFlyingLastTick = state;
+    public void setFlying(boolean state) {
+        this.wasLastFlying = this.flying;
+        this.flying = state;
         this.sync();
     }
 
-    public void setPyrrhianBeltFlightTime(double time) {
-        this.pyrrhianBeltFlightTime = Math.clamp(time, 0, BOBConstants.pyrrhianBeltFlightTimeMaximum);
+    public void setCanFly(boolean state) {
+        this.canFly = state;
         this.sync();
     }
 
-    public void changePyrrhianBeltFlightTime(double time) {
+    public void changeFlightTime(double time) {
         this.pyrrhianBeltFlightTime = Math.clamp(this.pyrrhianBeltFlightTime + time, 0, BOBConstants.pyrrhianBeltFlightTimeMaximum);
         this.sync();
     }
 
     @Override
     public void serverTick() {
-        if (this.player instanceof ServerPlayerEntity serverPlayer) {
-            PlayerAbilities abilities = serverPlayer.getAbilities();
-            PlayerAbilities newAbilities = serverPlayer.getAbilities();
+        if (pyrrhianBeltFlightTime <= 0) setCanFly(false);
+        else setCanFly(true);
 
-            if (BOBUtil.playerHasTrinket(this.player, ModItems.PYRRHIAN_BELT)) {
-                if (this.pyrrhianBeltFlightTime > 0 && !abilities.allowFlying) {
-                    newAbilities.allowFlying = true;
-                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-                } else if ((!player.isInCreativeMode() && !player.isSpectator()) && abilities.allowFlying) {
-                    newAbilities.allowFlying = false;
-                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-                }
-
-                if (shouldBeFlying) {
-                    newAbilities.flying = true;
-                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-
-                    shouldBeFlying = false;
-                }
-
-                if (this.pyrrhianBeltFlightTime <= 0 && (!player.isInCreativeMode() && !player.isSpectator())) {
-                    newAbilities.flying = false;
-                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-                }
-
-                if (abilities.flying) {
-                    Vec3d movement = serverPlayer.getMovement();
-                    this.changePyrrhianBeltFlightTime(-Math.abs(movement.length()));
-
-                    setGliding(false);
-                    setWasFlyingLastTick(true);
-                } else {
-                    this.changePyrrhianBeltFlightTime(BOBConstants.pyrrhianBeltFlightTimeMaximum/100);
-
-                    if (wasFlyingLastTick) setGliding(true);
-                    setWasFlyingLastTick(false);
-                }
-
-            } else if ((!player.isInCreativeMode() && !player.isSpectator()) && abilities.allowFlying) {
-                newAbilities.allowFlying = false;
-                newAbilities.flying = false;
-                serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-            }
-
-            if (serverPlayer.isOnGround()) setGliding(false);
+        // Switch to gliding when cooldown runs out
+        if (!canFly && flying) {
+            setFlying(false);
+            if (wasLastFlying) setGliding(true);
         }
+
+        if (player.isOnGround() || player.isSwimming() || player.hasVehicle() || player.isInCreativeMode() || player.isSpectator()) {
+            setFlying(false);
+            setGliding(false);
+        }
+
+        // Keep track of time off ground
+        if (!player.isOnGround()) nonGroundedTime++;
+        else nonGroundedTime = 0;
+
+        // Manage flight time
+        if (flying) {
+            Vec3d movement = player.getMovement();
+            changeFlightTime(-Math.abs(movement.length()));
+
+            setGliding(false);
+        } else {
+            changeFlightTime(BOBConstants.pyrrhianBeltFlightTimeMaximum/100);
+        }
+
+//        if (this.player instanceof ServerPlayerEntity serverPlayer) {
+//            PlayerAbilities abilities = serverPlayer.getAbilities();
+//            PlayerAbilities newAbilities = serverPlayer.getAbilities();
+//
+//            if (BOBUtil.playerHasTrinket(this.player, ModItems.PYRRHIAN_BELT)) {
+//                if (this.pyrrhianBeltFlightTime > 0 && !abilities.allowFlying) {
+//                    newAbilities.allowFlying = true;
+//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
+//                } else if ((!player.isInCreativeMode() && !player.isSpectator()) && abilities.allowFlying) {
+//                    newAbilities.allowFlying = false;
+//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
+//                }
+//
+//                if (shouldBeFlying) {
+//                    newAbilities.flying = true;
+//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
+//
+//                    shouldBeFlying = false;
+//                }
+//
+//                if (this.pyrrhianBeltFlightTime <= 0 && (!player.isInCreativeMode() && !player.isSpectator())) {
+//                    newAbilities.flying = false;
+//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
+//                }
+//
+//                if (abilities.flying) {
+//                    Vec3d movement = serverPlayer.getMovement();
+//                    this.changeFlightTime(-Math.abs(movement.length()));
+//
+//                    setGliding(false);
+//                    setWasFlyingLastTick(true);
+//                } else {
+//                    this.changeFlightTime(BOBConstants.pyrrhianBeltFlightTimeMaximum/100);
+//
+//                    if (wasFlyingLastTick) setGliding(true);
+//                    setWasFlyingLastTick(false);
+//                }
+//
+//            } else if ((!player.isInCreativeMode() && !player.isSpectator()) && abilities.allowFlying) {
+//                newAbilities.allowFlying = false;
+//                newAbilities.flying = false;
+//                serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
+//            }
+//
+//            if (serverPlayer.isOnGround()) setGliding(false);
+//        }
     }
 
     @Override
@@ -122,14 +149,20 @@ public class TrinketComponent implements AutoSyncedComponent, ClientTickingCompo
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.pyrrhianBeltFlightTime = tag.contains("pyrrhianBeltFlightTime") ? tag.getDouble("pyrrhianBeltFlightTime") : 0;
-        this.wasFlyingLastTick = tag.contains("wasFlyingLastTick") && tag.getBoolean("wasFlyingLastTick");
+        this.canFly = tag.contains("canFly") && tag.getBoolean("canFly");
+        this.flying = tag.contains("flying") && tag.getBoolean("flying");
         this.gliding = tag.contains("gliding") && tag.getBoolean("gliding");
+        this.wasLastFlying = tag.contains("wasLastFlying") && tag.getBoolean("wasLastFlying");
+        this.nonGroundedTime = tag.contains("nonGroundedTime") ? tag.getInt("nonGroundedTime") : 0;
     }
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         tag.putDouble("pyrrhianBeltFlightTime", this.pyrrhianBeltFlightTime);
-        tag.putBoolean("wasFlyingLastTick", this.wasFlyingLastTick);
+        tag.putBoolean("canFly", this.canFly);
+        tag.putBoolean("flying", this.flying);
         tag.putBoolean("gliding", this.gliding);
+        tag.putBoolean("wasLastFlying", this.wasLastFlying);
+        tag.putInt("nonGroundedTime", this.nonGroundedTime);
     }
 }

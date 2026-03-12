@@ -4,8 +4,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerAbilities;
-import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -15,6 +13,7 @@ import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.blockentity.ModBlockEntities;
 import org.aussiebox.bitsofbox.cca.ShimmerComponent;
+import org.aussiebox.bitsofbox.cca.TrinketComponent;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.aussiebox.bitsofbox.item.ModItems;
@@ -60,15 +59,10 @@ public class BOB implements ModInitializer {
         PayloadTypeRegistry.playC2S().register(PyrrhianBeltFlightC2SPacket.ID, PyrrhianBeltFlightC2SPacket.CODEC);
         ServerPlayNetworking.registerGlobalReceiver(PyrrhianBeltFlightC2SPacket.ID, (payload, context) -> {
             ServerPlayerEntity player = context.player();
-            PlayerAbilities abilities = player.getAbilities();
+            TrinketComponent trinkets = TrinketComponent.KEY.get(player);
 
-            if (payload.flightMode()) {
-                abilities.flying = true;
-                player.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(abilities));
-            } else {
-                abilities.flying = false;
-                player.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(abilities));
-            }
+            trinkets.setFlying(payload.flightMode());
+            trinkets.setGliding(!payload.flightMode());
         });
 
         Registry.register(Registries.SOUND_EVENT, BOBConstants.SHIMMER_TOOL_CHARGE_SOUND.getId(), BOBConstants.SHIMMER_TOOL_CHARGE_SOUND);
