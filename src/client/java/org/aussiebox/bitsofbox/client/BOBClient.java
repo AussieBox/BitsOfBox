@@ -105,10 +105,6 @@ public class BOBClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null) return;
 
-//            if (!client.player.isOnGround() && !client.player.isSwimming()) {
-//                notGroundedTicks++;
-//            } else notGroundedTicks = 0;
-
             if ((toggleFlightKeybind.wasPressed() && flightToggleCooldown == 0)) {
                 if (BOBUtil.playerHasTrinket(client.player, ModItems.PYRRHIAN_BELT) && TrinketComponent.KEY.get(client.player).isCanFly()) {
                     ClientPlayNetworking.send(new PyrrhianBeltFlightC2SPacket(!TrinketComponent.KEY.get(client.player).isFlying()));

@@ -17,8 +17,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.aussiebox.bitsofbox.attach.DragonflameCactusFuseAttachedData;
-import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
+import org.aussiebox.bitsofbox.cca.DragonflameCactusComponent;
 import org.aussiebox.bitsofbox.item.ModItems;
 import org.aussiebox.bitsofbox.util.BOBUtil;
 
@@ -62,29 +61,26 @@ public class DragonflameCactusEntity extends PersistentProjectileEntity {
     @Override
     public void tick() {
         super.tick();
-        DragonflameCactusFuseAttachedData data = this.getAttached(ModAttachmentTypes.DRAGONFLAME_CACTUS_FUSE_ATTACH);
+        DragonflameCactusComponent component = DragonflameCactusComponent.KEY.get(this);
         World world = this.getEntityWorld();
         if (!world.isClient()) {
-            if (data != null) {
-                this.setAttached(ModAttachmentTypes.DRAGONFLAME_CACTUS_FUSE_ATTACH, new DragonflameCactusFuseAttachedData(data.fuse()-1));
-                if (data.fuse() <= 0) {
-                    world.createExplosion(this, this.prevX, this.prevY, this.prevZ, 2, true, World.ExplosionSourceType.NONE);
-                    this.kill();
+            if (component.getTimer() <= 0) {
+                world.createExplosion(this, this.prevX, this.prevY, this.prevZ, 2, true, World.ExplosionSourceType.NONE);
+                this.kill();
+            }
+            if (component.getTimer() == 20) {
+                world.playSound(this, this.getBlockPos(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.HOSTILE, 1.0F, 1.5F);
+            }
+            if (component.getTimer() <= 20) {
+                if (world instanceof ServerWorld serverWorld) {
+                    serverWorld.spawnParticles(ParticleTypes.SMOKE, this.prevX, this.prevY+0.45, this.prevZ, 1, 0, 0.1, 0, 0);
                 }
-                if (data.fuse() == 20) {
-                    world.playSound(this, this.getBlockPos(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.HOSTILE, 1.0F, 1.5F);
-                }
-                if (data.fuse() <= 20) {
-                    if (world instanceof ServerWorld serverWorld) {
-                        serverWorld.spawnParticles(ParticleTypes.SMOKE, this.prevX, this.prevY+0.45, this.prevZ, 1, 0, 0.1, 0, 0);
-                    }
-                }
-                if (data.fuse() == 10) {
-                    if (this.getEntityWorld().getServer() != null) {
-                        for (ServerPlayerEntity player : PlayerLookup.all(this.getEntityWorld().getServer())) {
-                            if (player.distanceTo(this) <= 5) {
-                                BOBUtil.grantAdvancement(player, "witness_dragonflame_cactus");
-                            }
+            }
+            if (component.getTimer() == 10) {
+                if (this.getEntityWorld().getServer() != null) {
+                    for (ServerPlayerEntity player : PlayerLookup.all(this.getEntityWorld().getServer())) {
+                        if (player.distanceTo(this) <= 5) {
+                            BOBUtil.grantAdvancement(player, "witness_dragonflame_cactus");
                         }
                     }
                 }

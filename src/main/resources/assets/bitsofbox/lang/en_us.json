@@ -5,6 +5,7 @@
       "item.bitsofbox.dragonflame_cactus.tooltip.fuse.1": "Fuse Time: ",
       "item.bitsofbox.dragonflame_cactus.tooltip.fuse.2": " ticks (",
       "item.bitsofbox.dragonflame_cactus.tooltip.fuse.3": " seconds)",
+      "item.bitsofbox.dragonflame_cactus.jei.description": "The Dragonflame Cactus has a highly configurable fuse time. Crafting one alongside a Lead will increase its fuse by 10 ticks, while crafting one with Gunpowder will decrease its fuse by 2 ticks.",
   "item.bitsofbox.shimmer_tool.tooltip.ability": "On Ability Use:",
       "item.bitsofbox.shimmerfork": "Shimmerfork",
           "item.bitsofbox.shimmerfork.tooltip.1": "Throws a Trident that turns any blocks it collides with",

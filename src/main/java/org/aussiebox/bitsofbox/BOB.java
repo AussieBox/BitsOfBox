@@ -9,7 +9,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
-import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.blockentity.ModBlockEntities;
 import org.aussiebox.bitsofbox.cca.ShimmerComponent;
@@ -43,7 +42,6 @@ public class BOB implements ModInitializer {
         ModBlocks.init();
         ModItems.init();
         ModEntities.init();
-        ModAttachmentTypes.init();
         ModDataComponentTypes.init();
         ModBlockEntities.registerModBlockEntities();
         BOB.LOGGER.info("-------------------------------------------------");

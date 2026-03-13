@@ -3,14 +3,12 @@ package org.aussiebox.bitsofbox.item.custom;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import org.aussiebox.bitsofbox.attach.DragonflameCactusFuseAttachedData;
-import org.aussiebox.bitsofbox.attach.ModAttachmentTypes;
+import org.aussiebox.bitsofbox.cca.DragonflameCactusComponent;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.entity.DragonflameCactusEntity;
 import org.aussiebox.bitsofbox.item.ModItems;
@@ -39,7 +37,7 @@ public class DragonflameCactusItem extends Item {
             DragonflameCactusEntity dragonflameCactusEntity = new DragonflameCactusEntity(world, user);
             int fuse = itemStack.getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20);
             dragonflameCactusEntity.setOwner(user);
-            dragonflameCactusEntity.setAttached(ModAttachmentTypes.DRAGONFLAME_CACTUS_FUSE_ATTACH, new DragonflameCactusFuseAttachedData(fuse));
+            DragonflameCactusComponent.KEY.get(dragonflameCactusEntity).setTimer(fuse);
             dragonflameCactusEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0F);
             world.spawnEntity(dragonflameCactusEntity);
 
@@ -50,31 +48,27 @@ public class DragonflameCactusItem extends Item {
         return TypedActionResult.success(itemStack);
     }
 
-    @Override
-    public void onCraftByPlayer(ItemStack stack, World world, PlayerEntity player) {
-        super.onCraftByPlayer(stack, world, player);
-        String craftType = "add";
-        ItemStack cactus = this.getDefaultStack();
-        for (int i = 1; i <= 9; i++) {
-            if (player.currentScreenHandler.getSlot(i).getStack().isOf(ModItems.DRAGONFLAME_CACTUS)) {
-                cactus = player.currentScreenHandler.getSlot(i).getStack();
-            }
-            if (player.currentScreenHandler.getSlot(i).getStack().isOf(Items.GUNPOWDER)) {
-                craftType = "subtract";
-            }
-        }
-        if (craftType.equals("add")) {
-            stack.set(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, cactus.getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20) + 10);
-        }
-        if (craftType.equals("subtract")) {
-            if (cactus.getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20) - 2 < 1) {
-                stack.set(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 1);
-            } else {
-                stack.set(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, cactus.getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20) - 2);
-            }
-        }
-        player.getInventory().markDirty();
-    }
+//    @Override
+//    public void onCraftByPlayer(ItemStack stack, World world, PlayerEntity player) {
+//        super.onCraftByPlayer(stack, world, player);
+//        String craftType = "add";
+//        ItemStack cactus = this.getDefaultStack();
+//        for (int i = 1; i <= 9; i++) {
+//            if (player.currentScreenHandler.getSlot(i).getStack().isOf(ModItems.DRAGONFLAME_CACTUS)) {
+//                cactus = player.currentScreenHandler.getSlot(i).getStack();
+//            }
+//            if (player.currentScreenHandler.getSlot(i).getStack().isOf(Items.GUNPOWDER)) {
+//                craftType = "subtract";
+//            }
+//        }
+//        if (craftType.equals("add")) {
+//            stack.set(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, cactus.getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20) + 10);
+//        }
+//        if (craftType.equals("subtract")) {
+//            stack.set(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, Math.max(cactus.getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20) - 2, 1));
+//        }
+//        player.getInventory().markDirty();
+//    }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> list, TooltipType type) {

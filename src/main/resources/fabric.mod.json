@@ -18,12 +18,16 @@
     ],
     "cardinal-components": [
       "org.aussiebox.bitsofbox.BOBComponents"
+    ],
+    "jei_mod_plugin": [
+      "org.aussiebox.bitsofbox.jei.JEIPlugin"
     ]
   },
   "custom": {
     "cardinal-components": [
       "bitsofbox:shimmer_component",
-      "bitsofbox:trinket_component"
+      "bitsofbox:trinket_component",
+      "bitsofbox:dragonflame_cactus_component"
     ]
   },
   "mixins": [
