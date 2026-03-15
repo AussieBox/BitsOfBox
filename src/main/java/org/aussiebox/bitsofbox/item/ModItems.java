@@ -22,10 +22,7 @@ import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
-import org.aussiebox.bitsofbox.item.custom.AmethystDisruptorItem;
-import org.aussiebox.bitsofbox.item.custom.DragonflameCactusItem;
-import org.aussiebox.bitsofbox.item.custom.PyrrhianBeltItem;
-import org.aussiebox.bitsofbox.item.custom.ShimmerToolItem;
+import org.aussiebox.bitsofbox.item.custom.*;
 
 import java.util.function.Function;
 
@@ -142,6 +139,14 @@ public class ModItems {
                     .maxCount(1)
                     .rarity(Rarity.EPIC)
                     .fireproof()
+    );
+
+    public static final Item SHIMMER_JAR = registerItem(
+            "shimmer_jar",
+            ShimmerJarItem::new,
+            new Item.Settings()
+                    .maxCount(1)
+                    .rarity(Rarity.EPIC)
     );
 
     public static final RegistryKey<ItemGroup> BOB_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(BOB.MOD_ID, "bitsofbox"));

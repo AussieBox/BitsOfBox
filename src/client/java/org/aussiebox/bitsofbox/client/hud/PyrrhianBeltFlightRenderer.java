@@ -4,12 +4,15 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.aussiebox.bitsofbox.BOB;
-import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.cca.TrinketComponent;
 import org.aussiebox.bitsofbox.item.ModItems;
+import org.aussiebox.bitsofbox.item.custom.PyrrhianBeltItem;
 import org.aussiebox.bitsofbox.util.BOBUtil;
+
+import java.util.Objects;
 
 public class PyrrhianBeltFlightRenderer {
 
@@ -26,15 +29,18 @@ public class PyrrhianBeltFlightRenderer {
 
         TrinketComponent trinketComponent = TrinketComponent.KEY.get(player);
         double flightTime = trinketComponent.getPyrrhianBeltFlightTime();
+        double flightTimeMaximum = PyrrhianBeltItem.getBeltFlyTime(player);
 
-        if (!player.getAbilities().flying || !BOBUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT))
-            if (flightTime >= BOBConstants.pyrrhianBeltFlightTimeMaximum) return;
+        if (!player.getAbilities().flying)
+            if (flightTime >= flightTimeMaximum) return;
+        if (!BOBUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT))
+            return;
 
-        int progress = (int) (flightTime*79/BOBConstants.pyrrhianBeltFlightTimeMaximum); // ({int}*{textureWidth}/{maxInt})
+        int progress = (int) (flightTime*79/flightTimeMaximum); // ({int}*{textureWidth}/{maxInt})
         context.drawTexture(
                 BACKGROUND,
                 width/2-41,
-                height/2+8,
+                height/2+14,
                 0,
                 0,
                 81,
@@ -45,7 +51,7 @@ public class PyrrhianBeltFlightRenderer {
         context.drawTexture(
                 PROGRESS,
                 width/2-41+1,
-                height/2+8,
+                height/2+14,
                 progress,
                 8,
                 0,
@@ -55,6 +61,17 @@ public class PyrrhianBeltFlightRenderer {
                 79,
                 8
         );
+
+        if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) {
+            context.drawText(
+                    MinecraftClient.getInstance().textRenderer,
+                    Text.translatable("tip.bitsofbox.pyrrhian_belt_buffed"),
+                    width/2-(MinecraftClient.getInstance().textRenderer.getWidth(Text.translatable("tip.bitsofbox.pyrrhian_belt_buffed"))/2),
+                    height/2+14+MinecraftClient.getInstance().textRenderer.fontHeight+2,
+                    0xFFFF55FF,
+                    true
+            );
+        }
     }
 
 }

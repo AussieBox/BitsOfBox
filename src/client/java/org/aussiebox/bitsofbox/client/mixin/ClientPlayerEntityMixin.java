@@ -7,7 +7,10 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import org.aussiebox.bitsofbox.cca.TrinketComponent;
+import org.aussiebox.bitsofbox.item.ModItems;
+import org.aussiebox.bitsofbox.item.custom.PyrrhianBeltItem;
 import org.aussiebox.bitsofbox.packet.PyrrhianBeltFlightC2SPacket;
+import org.aussiebox.bitsofbox.util.BOBUtil;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,14 +28,14 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         super(world, profile);
     }
 
-    @Inject(method = "tickMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerAbilities;allowFlying:Z", by = -1, opcode = Opcodes.GETFIELD))
+    @Inject(method = "tickMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/PlayerAbilities;allowFlying:Z", shift = At.Shift.BEFORE, opcode = Opcodes.GETFIELD))
     private void bitsofbox$tickMovement(CallbackInfo ci, @Local(name = "bl") boolean bl) {
         ClientPlayerEntity player = (ClientPlayerEntity)(Object) this;
         if (player == null) return;
 
-        TrinketComponent trinkets = TrinketComponent.KEY.get(player);
+        if (player.isSwimming() || player.getAbilities().flying || player.isInCreativeMode() || player.isSpectator() || !BOBUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT)) return;
 
-        if (player.isSwimming() || player.getAbilities().flying) return;
+        TrinketComponent trinkets = TrinketComponent.KEY.get(player);
 
         if (trinkets.isFlying() && isCamera()) {
             int i = 0;
@@ -41,7 +44,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
             if (player.input.jumping) ++i;
 
             if (i != 0) {
-                player.setVelocity(player.getVelocity().add(0.0F, ((float)i * player.getAbilities().getFlySpeed() * 3.0F), 0.0F));
+                player.setVelocity(player.getVelocity().add(0.0F, ((float)i * PyrrhianBeltItem.getBeltFlySpeed(player) * 3.0F), 0.0F));
             }
         }
 

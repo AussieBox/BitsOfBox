@@ -65,6 +65,17 @@ public class ModBlocks {
             false
     );
 
+    public static final Block SHIMMER_POWDER_BLOCK = register(
+            "shimmer_powder_block",
+            Block::new,
+            AbstractBlock.Settings.create()
+                    .mapColor(MapColor.PURPLE)
+                    .strength(0.5F)
+                    .instrument(NoteBlockInstrument.SNARE)
+                    .sounds(BlockSoundGroup.SAND),
+            true
+    );
+
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         RegistryKey<Block> blockKey = keyOfBlock(name);
         Block block = blockFactory.apply(settings);

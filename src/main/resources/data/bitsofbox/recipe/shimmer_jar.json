@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SDS",
+    "SPS",
+    "SSS"
+  ],
+  "key": {
+    "P": {
+      "item": "bitsofbox:shimmer_powder"
+    },
+    "S": {
+      "item": "bitsofbox:shimmerglass"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    }
+  },
+  "result": {
+    "id": "bitsofbox:shimmer_jar"
+  },
+  "show_notification": true
+}

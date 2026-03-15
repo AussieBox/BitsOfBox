@@ -2,18 +2,24 @@ package org.aussiebox.bitsofbox.cca;
 
 import lombok.Getter;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.Vec3d;
 import org.aussiebox.bitsofbox.BOB;
-import org.aussiebox.bitsofbox.BOBConstants;
+import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
+import org.aussiebox.bitsofbox.item.ModItems;
+import org.aussiebox.bitsofbox.item.custom.PyrrhianBeltItem;
+import org.aussiebox.bitsofbox.item.custom.ShimmerToolItem;
+import org.aussiebox.bitsofbox.util.BOBUtil;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
-import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
 
-public class TrinketComponent implements AutoSyncedComponent, ClientTickingComponent, ServerTickingComponent {
+import java.util.Set;
+
+public class TrinketComponent implements AutoSyncedComponent, ServerTickingComponent {
     public static final ComponentKey<TrinketComponent> KEY = ComponentRegistry.getOrCreate(BOB.id("trinket_component"), TrinketComponent.class);
     private final PlayerEntity player;
 
@@ -51,12 +57,14 @@ public class TrinketComponent implements AutoSyncedComponent, ClientTickingCompo
     }
 
     public void changeFlightTime(double time) {
-        this.pyrrhianBeltFlightTime = Math.clamp(this.pyrrhianBeltFlightTime + time, 0, BOBConstants.pyrrhianBeltFlightTimeMaximum);
+        this.pyrrhianBeltFlightTime = Math.clamp(this.pyrrhianBeltFlightTime + time, 0, PyrrhianBeltItem.getBeltFlyTime(player));
         this.sync();
     }
 
     @Override
     public void serverTick() {
+        ///  -[PYRRHIAN BELT]- ///
+
         if (pyrrhianBeltFlightTime <= 0) setCanFly(false);
         else setCanFly(true);
 
@@ -71,6 +79,12 @@ public class TrinketComponent implements AutoSyncedComponent, ClientTickingCompo
             setGliding(false);
         }
 
+        if (!BOBUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT)) {
+            setFlying(false);
+            setCanFly(false);
+            setGliding(false);
+        }
+
         // Keep track of time off ground
         if (!player.isOnGround()) nonGroundedTime++;
         else nonGroundedTime = 0;
@@ -82,64 +96,35 @@ public class TrinketComponent implements AutoSyncedComponent, ClientTickingCompo
 
             setGliding(false);
         } else {
-            changeFlightTime(BOBConstants.pyrrhianBeltFlightTimeMaximum/100);
+            changeFlightTime(PyrrhianBeltItem.getBeltFlyTime(player)/100);
         }
 
-//        if (this.player instanceof ServerPlayerEntity serverPlayer) {
-//            PlayerAbilities abilities = serverPlayer.getAbilities();
-//            PlayerAbilities newAbilities = serverPlayer.getAbilities();
-//
-//            if (BOBUtil.playerHasTrinket(this.player, ModItems.PYRRHIAN_BELT)) {
-//                if (this.pyrrhianBeltFlightTime > 0 && !abilities.allowFlying) {
-//                    newAbilities.allowFlying = true;
-//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-//                } else if ((!player.isInCreativeMode() && !player.isSpectator()) && abilities.allowFlying) {
-//                    newAbilities.allowFlying = false;
-//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-//                }
-//
-//                if (shouldBeFlying) {
-//                    newAbilities.flying = true;
-//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-//
-//                    shouldBeFlying = false;
-//                }
-//
-//                if (this.pyrrhianBeltFlightTime <= 0 && (!player.isInCreativeMode() && !player.isSpectator())) {
-//                    newAbilities.flying = false;
-//                    serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-//                }
-//
-//                if (abilities.flying) {
-//                    Vec3d movement = serverPlayer.getMovement();
-//                    this.changeFlightTime(-Math.abs(movement.length()));
-//
-//                    setGliding(false);
-//                    setWasFlyingLastTick(true);
-//                } else {
-//                    this.changeFlightTime(BOBConstants.pyrrhianBeltFlightTimeMaximum/100);
-//
-//                    if (wasFlyingLastTick) setGliding(true);
-//                    setWasFlyingLastTick(false);
-//                }
-//
-//            } else if ((!player.isInCreativeMode() && !player.isSpectator()) && abilities.allowFlying) {
-//                newAbilities.allowFlying = false;
-//                newAbilities.flying = false;
-//                serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(newAbilities));
-//            }
-//
-//            if (serverPlayer.isOnGround()) setGliding(false);
-//        }
-    }
+        ///  -[SHIMMER JAR]- ///
 
-    @Override
-    public void clientTick() {
-//        if (BOBUtil.playerHasTrinket(this.player, ModItems.PYRRHIAN_BELT)) {
-//            if (player.jumping && this.pyrrhianBeltFlightTime > 0 && player.getAbilities().allowFlying && !player.getAbilities().flying) {
-//                shouldBeFlying = true;
-//            }
-//        }
+        if (BOBUtil.playerHasTrinket(player, ModItems.SHIMMER_JAR) && player.getInventory().containsAny(Set.of(ModItems.SHIMMER_POWDER))) {
+            ItemStack stack = null;
+            ItemStack powderStack = null;
+            if (player.getInventory().getMainHandStack().getItem() instanceof ShimmerToolItem)
+                stack = player.getInventory().getMainHandStack();
+            if (player.getInventory().getStack(41).getItem() instanceof ShimmerToolItem)
+                stack = player.getInventory().getStack(41);
+            if (stack == null) return;
+
+            if (stack.getOrDefault(ModDataComponentTypes.SHIMMER_TOOL_CHARGES, 0) >= stack.getOrDefault(ModDataComponentTypes.SHIMMER_TOOL_MAX_CHARGES, 8)) return;
+
+            for (ItemStack powder : player.getInventory().main) {
+                if (!powder.isOf(ModItems.SHIMMER_POWDER)) continue;
+
+                powderStack = powder;
+                break;
+            }
+            if (powderStack == null) return;
+
+            powderStack.setCount(powderStack.getCount()-1);
+            stack.set(ModDataComponentTypes.SHIMMER_TOOL_CHARGES, stack.getOrDefault(ModDataComponentTypes.SHIMMER_TOOL_CHARGES, 0)+1);
+
+            player.getInventory().markDirty();
+        }
     }
 
     public void sync() {

@@ -28,9 +28,12 @@
           "item.bitsofbox.shimmerpick.tooltip.4": "blocks of the pickaxe when it returns, you pick it up immediately.",
   "item.bitsofbox.shimmer_powder": "Shimmer Powder",
   "item.bitsofbox.amethyst_disruptor": "Amethyst Disruptor",
+  "item.bitsofbox.pyrrhian_belt": "Pyrrhian Belt",
+      "tip.bitsofbox.pyrrhian_belt_buffed": "[BUFFED]",
 
   "block.bitsofbox.dragonflame_cactus_block": "Dragonflame Cactus Stem",
   "block.bitsofbox.shimmerglass": "Shimmerglass",
+  "block.bitsofbox.shimmer_powder_block": "Block of Shimmer Powder",
 
   "item_skin.bitsofbox.prefix": "Skin: ",
   "item_skin.bitsofbox.shimmer_tool.base": "Normal",
@@ -59,6 +62,8 @@
   "enchantment.bitsofbox.shimmerseep.desc": "Shimmer Tools passively regain one charge every two minutes. All tools with this enchantment regain charges at the same time.",
   "enchantment.bitsofbox.shimmershift": "Shimmershift",
   "enchantment.bitsofbox.shimmershift.desc": "The Shimmerfork will occasionally teleport toward the nearest entity in an attempt to hit them.",
+  "enchantment.bitsofbox.borderlaunch": "Borderlaunch",
+  "enchantment.bitsofbox.borderlaunch.desc": "The Shimmerfork's ability is replaced with an unconditional, albeit more expensive, riptide that trails Shimmerglass behind you.",
 
   "subtitles.bitsofbox.item.shimmer_tool_charge": "Shimmer Tool Charges",
   "subtitles.bitsofbox.item.shimmer_tool_shimmerseep_charge": "Shimmerseep Triggers",

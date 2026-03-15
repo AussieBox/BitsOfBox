@@ -11,9 +11,14 @@ import net.minecraft.text.Text;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.cca.ShimmerComponent;
+import org.aussiebox.bitsofbox.cca.TrinketComponent;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
+import org.aussiebox.bitsofbox.item.ModItems;
+import org.aussiebox.bitsofbox.item.custom.PyrrhianBeltItem;
 import org.aussiebox.bitsofbox.item.custom.ShimmerToolItem;
 import org.aussiebox.bitsofbox.util.BOBUtil;
+
+import java.util.Objects;
 
 public class ShimmerToolChargeRenderer {
 
@@ -55,12 +60,22 @@ public class ShimmerToolChargeRenderer {
 
         int width = MinecraftClient.getInstance().getWindow().getScaledWidth();
         int height = MinecraftClient.getInstance().getWindow().getScaledHeight();
+        int y = height/2+5+textRenderer.fontHeight;
+
+        TrinketComponent trinketComponent = TrinketComponent.KEY.get(player);
+        double flightTime = trinketComponent.getPyrrhianBeltFlightTime();
+        double flightTimeMaximum = PyrrhianBeltItem.getBeltFlyTime(player);
+        if (BOBUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT) && flightTime < flightTimeMaximum) {
+            y += 10;
+            if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5"))
+                y += 2 + textRenderer.fontHeight;
+        }
 
         context.drawText(
                 textRenderer,
                 bar,
                 width/2 - (textRenderer.getWidth(bar)/2),
-                height/2 + 5 + textRenderer.fontHeight,
+                y,
                 0xFFFFFF,
                 false
         );
@@ -76,7 +91,7 @@ public class ShimmerToolChargeRenderer {
                     textRenderer,
                     text,
                     width/2 - (textRenderer.getWidth(text)/2),
-                    height/2 + 15 + textRenderer.fontHeight,
+                    y+10,
                     0xA024FF,
                     true
             );

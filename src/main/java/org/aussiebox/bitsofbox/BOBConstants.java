@@ -67,5 +67,6 @@ public interface BOBConstants {
 
     int shimmerpickReturnTime = 30;
 
-    double pyrrhianBeltFlightTimeMaximum = 150;
+    double pyrrhianBeltFlightTimeMaximum = 75;
+    double buffedPyrrhianBeltFlightTimeMaximum = 150;
 }

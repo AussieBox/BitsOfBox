@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.*;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -59,6 +60,11 @@ public class ShimmerToolItem extends MiningToolItem {
         if (BOBUtil.stackHasEnchantment(world, stack, BOBConstants.BORDERLINKED_ENCHANT))
             stack.set(ModDataComponentTypes.HAS_BORDERLINKED, true);
         else stack.set(ModDataComponentTypes.HAS_BORDERLINKED, false);
+
+        if (stack.isOf(ModItems.SHIMMERPICK) && stack.get(DataComponentTypes.TOOL) != ToolMaterials.NETHERITE.createComponent(BlockTags.PICKAXE_MINEABLE))
+            stack.set(DataComponentTypes.TOOL, ToolMaterials.NETHERITE.createComponent(BlockTags.PICKAXE_MINEABLE));
+        if (stack.isOf(ModItems.SHIMMERAXE) && stack.get(DataComponentTypes.TOOL) != ToolMaterials.NETHERITE.createComponent(BlockTags.AXE_MINEABLE))
+            stack.set(DataComponentTypes.TOOL, ToolMaterials.NETHERITE.createComponent(BlockTags.AXE_MINEABLE));
     }
 
     @Override
