@@ -1,4 +1,4 @@
-package org.aussiebox.bitsofbox.client.entity;
+package org.aussiebox.bitsofbox.client.model.entity;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;

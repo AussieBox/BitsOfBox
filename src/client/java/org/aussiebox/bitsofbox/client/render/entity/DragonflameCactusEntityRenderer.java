@@ -1,4 +1,4 @@
-package org.aussiebox.bitsofbox.client.entity;
+package org.aussiebox.bitsofbox.client.render.entity;
 
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -10,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import org.aussiebox.bitsofbox.BOB;
+import org.aussiebox.bitsofbox.client.model.entity.DragonflameCactusEntityModel;
 import org.aussiebox.bitsofbox.entity.DragonflameCactusEntity;
 
 public class DragonflameCactusEntityRenderer extends EntityRenderer<DragonflameCactusEntity> {

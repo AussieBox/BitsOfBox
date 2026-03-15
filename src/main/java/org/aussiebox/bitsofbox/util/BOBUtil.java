@@ -20,6 +20,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.aussiebox.bitsofbox.BOB;
+import org.joml.Vector2f;
 
 import java.util.*;
 
@@ -97,6 +98,21 @@ public class BOBUtil {
             }
         }
         return false;
+    }
+
+    public static List<Vector2f> calculateCirclePoints(double centerX, double centerY, double radius, double rotationAngle, int numPoints) {
+        List<Vector2f> points = new ArrayList<>();
+        for (int i = 0; i < numPoints; i++) {
+            double baseAngle = 2 * Math.PI * i / numPoints;
+
+            double totalAngle = baseAngle + rotationAngle;
+
+            double x = centerX + (radius * Math.cos(totalAngle));
+            double y = centerY + (radius * Math.sin(totalAngle));
+
+            points.add(new Vector2f((float) x, (float) y));
+        }
+        return points;
     }
 
 }

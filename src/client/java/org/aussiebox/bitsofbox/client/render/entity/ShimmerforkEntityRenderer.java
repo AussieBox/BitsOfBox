@@ -1,4 +1,4 @@
-package org.aussiebox.bitsofbox.client.entity;
+package org.aussiebox.bitsofbox.client.render.entity;
 
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -12,6 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import org.aussiebox.bitsofbox.BOB;
+import org.aussiebox.bitsofbox.client.model.entity.ShimmerforkEntityModel;
 import org.aussiebox.bitsofbox.entity.ShimmerforkEntity;
 
 public class ShimmerforkEntityRenderer extends EntityRenderer<ShimmerforkEntity> {

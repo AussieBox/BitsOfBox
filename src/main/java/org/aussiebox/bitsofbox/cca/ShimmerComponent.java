@@ -38,9 +38,7 @@ public class ShimmerComponent implements AutoSyncedComponent, ServerTickingCompo
 
     @Override
     public void serverTick() {
-        // TODO: FIX OBTAINMENT COUNT NOT RESETTING?
-        BOB.LOGGER.info(String.valueOf(player.getEntityWorld().getTimeOfDay()));
-        if (player.getEntityWorld().getTimeOfDay() == 0) {
+        if ((player.getEntityWorld().getTimeOfDay() % 24000) == 0) {
             obtainmentsToday = 0;
         }
         shimmerseepTicks--;

@@ -11,15 +11,18 @@ import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.block.ModBlocks;
 
 public class ModBlockEntities {
-    public static void registerModBlockEntities() {
-        BOB.LOGGER.info("Registering Block Entities for " + BOB.MOD_ID);
-    }
-
     public static final BlockEntityType<ShimmerglassBlockEntity> SHIMMERGLASS_BLOCK_ENTITY =
             register("shimmerglass", ShimmerglassBlockEntity::new, ModBlocks.SHIMMERGLASS);
+    public static final BlockEntityType<ShimmeringTableBlockEntity> SHIMMERING_TABLE_BLOCK_ENTITY =
+            register("shimmering_table", ShimmeringTableBlockEntity::new, ModBlocks.SHIMMERING_TABLE);
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String name, FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory, Block... blocks) {
         Identifier id = BOB.id(name);
         return Registry.register(Registries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
     }
+
+    public static void init() {
+        BOB.LOGGER.info("Registering Block Entities for " + BOB.MOD_ID);
+    }
+
 }

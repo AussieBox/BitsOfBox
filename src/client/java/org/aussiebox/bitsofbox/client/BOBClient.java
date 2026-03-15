@@ -11,18 +11,21 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.Item;
 import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.BOBConstants;
 import org.aussiebox.bitsofbox.block.ModBlocks;
+import org.aussiebox.bitsofbox.blockentity.ModBlockEntities;
 import org.aussiebox.bitsofbox.cca.TrinketComponent;
-import org.aussiebox.bitsofbox.client.entity.DragonflameCactusEntityModel;
-import org.aussiebox.bitsofbox.client.entity.DragonflameCactusEntityRenderer;
-import org.aussiebox.bitsofbox.client.entity.PickarangEntityRenderer;
-import org.aussiebox.bitsofbox.client.entity.ShimmerforkEntityRenderer;
 import org.aussiebox.bitsofbox.client.hud.PyrrhianBeltFlightRenderer;
 import org.aussiebox.bitsofbox.client.hud.ShimmerToolChargeRenderer;
+import org.aussiebox.bitsofbox.client.model.entity.DragonflameCactusEntityModel;
+import org.aussiebox.bitsofbox.client.render.blockentity.ShimmeringTableBlockEntityRenderer;
+import org.aussiebox.bitsofbox.client.render.entity.DragonflameCactusEntityRenderer;
+import org.aussiebox.bitsofbox.client.render.entity.PickarangEntityRenderer;
+import org.aussiebox.bitsofbox.client.render.entity.ShimmerforkEntityRenderer;
 import org.aussiebox.bitsofbox.component.ModDataComponentTypes;
 import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.aussiebox.bitsofbox.item.ModItems;
@@ -47,10 +50,13 @@ public class BOBClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.DRAGONFLAME_CACTUS_PLANT, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.DRAGONFLAME_CACTUS_BLOCK, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SHIMMERGLASS, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SHIMMERING_TABLE, RenderLayer.getCutout());
 
         EntityRendererRegistry.register(ModEntities.DragonflameCactusEntityType, DragonflameCactusEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.PickarangEntityType, (context) -> new PickarangEntityRenderer<>(context, 2.0F, true));
         EntityRendererRegistry.register(ModEntities.FluidityTridentEntityType, ShimmerforkEntityRenderer::new);
+
+        BlockEntityRendererFactories.register(ModBlockEntities.SHIMMERING_TABLE_BLOCK_ENTITY, ShimmeringTableBlockEntityRenderer::new);
 
         registerModelPredicates();
         registerKeybinds();

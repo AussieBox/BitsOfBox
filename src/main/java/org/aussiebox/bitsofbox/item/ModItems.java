@@ -132,6 +132,20 @@ public class ModItems {
                     .rarity(Rarity.EPIC)
     );
 
+    public static final BlockItem SHIMMER_POWDER_BLOCK = registerBlockItem(
+            "shimmer_powder_block",
+            (settings -> new BlockItem(ModBlocks.SHIMMER_POWDER_BLOCK, settings)),
+            new Item.Settings()
+                    .rarity(Rarity.RARE)
+    );
+
+    public static final BlockItem SHIMMERING_TABLE = registerBlockItem(
+            "shimmering_table",
+            (settings -> new BlockItem(ModBlocks.SHIMMERING_TABLE, settings)),
+            new Item.Settings()
+                    .rarity(Rarity.EPIC)
+    );
+
     public static final Item PYRRHIAN_BELT = registerItem(
             "pyrrhian_belt",
             PyrrhianBeltItem::new,
@@ -178,7 +192,9 @@ public class ModItems {
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
             itemGroup.add(AMETHYST_DISRUPTOR);
             itemGroup.add(SHIMMER_POWDER);
+            itemGroup.add(SHIMMER_POWDER_BLOCK);
             itemGroup.add(SHIMMERGLASS);
+            itemGroup.add(SHIMMERING_TABLE);
             itemGroup.add(SHIMMERFORK);
             itemGroup.add(SHIMMERAXE);
             itemGroup.add(SHIMMERPICK);

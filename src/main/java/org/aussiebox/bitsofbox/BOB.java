@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,6 +19,9 @@ import org.aussiebox.bitsofbox.entity.ModEntities;
 import org.aussiebox.bitsofbox.item.ModItems;
 import org.aussiebox.bitsofbox.mixin.TreeDecoratorTypeInvoker;
 import org.aussiebox.bitsofbox.packet.PyrrhianBeltFlightC2SPacket;
+import org.aussiebox.bitsofbox.recipe.ModRecipes;
+import org.aussiebox.bitsofbox.recipe.ShimmeringRecipe;
+import org.aussiebox.bitsofbox.recipe.serializer.ShimmeringRecipeSerializer;
 import org.aussiebox.bitsofbox.world.DragonflameCactusGeneration;
 import org.aussiebox.bitsofbox.world.gen.AttachedToLogsTreeDecorator;
 import org.slf4j.Logger;
@@ -43,7 +47,8 @@ public class BOB implements ModInitializer {
         ModItems.init();
         ModEntities.init();
         ModDataComponentTypes.init();
-        ModBlockEntities.registerModBlockEntities();
+        ModBlockEntities.init();
+        ModRecipes.init();
         BOB.LOGGER.info("-------------------------------------------------");
         BOB.LOGGER.info("phew hopefully that wasn't too bad lol");
         BOB.LOGGER.info("i mean at least you know the mod should actually work now");
@@ -65,5 +70,7 @@ public class BOB implements ModInitializer {
 
         Registry.register(Registries.SOUND_EVENT, BOBConstants.SHIMMER_TOOL_CHARGE_SOUND.getId(), BOBConstants.SHIMMER_TOOL_CHARGE_SOUND);
         Registry.register(Registries.SOUND_EVENT, BOBConstants.SHIMMERSEEP_CHARGE_SOUND.getId(), BOBConstants.SHIMMERSEEP_CHARGE_SOUND);
+        Registry.register(Registries.RECIPE_TYPE, id("shimmering"), new RecipeType<ShimmeringRecipe>() {});
+        Registry.register(Registries.RECIPE_SERIALIZER, id("shimmering"), new ShimmeringRecipeSerializer());
     }
 }

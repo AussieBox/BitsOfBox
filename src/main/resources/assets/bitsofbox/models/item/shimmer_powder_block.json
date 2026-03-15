@@ -1,0 +1,6 @@
+{
+  "parent": "bitsofbox:block/shimmer_powder_block",
+  "textures": {
+    "all": "bitsofbox:block/shimmer_powder_block"
+  }
+}

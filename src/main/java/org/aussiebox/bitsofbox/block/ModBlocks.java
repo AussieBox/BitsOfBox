@@ -18,6 +18,7 @@ import org.aussiebox.bitsofbox.BOB;
 import org.aussiebox.bitsofbox.block.custom.DragonflameCactusBlock;
 import org.aussiebox.bitsofbox.block.custom.DragonflameCactusPlantBlock;
 import org.aussiebox.bitsofbox.block.custom.ShimmerglassBlock;
+import org.aussiebox.bitsofbox.block.custom.ShimmeringTableBlock;
 
 import java.util.function.Function;
 
@@ -61,7 +62,7 @@ public class ModBlocks {
                     .suffocates(Blocks::never)
                     .blockVision(Blocks::never)
                     .noCollision() // Fun fact! .noCollision() actually FORCES .nonOpaque()!
-                    .nonOpaque(),
+                    .nonOpaque(), // ...I still did it, just in case.
             false
     );
 
@@ -69,11 +70,27 @@ public class ModBlocks {
             "shimmer_powder_block",
             Block::new,
             AbstractBlock.Settings.create()
-                    .mapColor(MapColor.PURPLE)
+                    .mapColor(MapColor.PINK)
                     .strength(0.5F)
                     .instrument(NoteBlockInstrument.SNARE)
                     .sounds(BlockSoundGroup.SAND),
-            true
+            false
+    );
+
+    public static final Block SHIMMERING_TABLE = register(
+            "shimmering_table",
+            ShimmeringTableBlock::new,
+            AbstractBlock.Settings.create()
+                    .mapColor(MapColor.PINK)
+                    .strength(0.3F)
+                    .sounds(BlockSoundGroup.STONE)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .allowsSpawning(Blocks::never)
+                    .luminance((state) -> 7)
+                    .strength(5.0F, 1200.0F)
+                    .requiresTool()
+                    .nonOpaque(),
+            false
     );
 
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
