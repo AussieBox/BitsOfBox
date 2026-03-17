@@ -53,6 +53,7 @@
       "key.ccosmo.toggle_flight": "Toggle Flight",
 
   "jei.category.ccosmo.shimmering": "Shimmering",
+      "jei.tip.ccosmo.border_proximity": "Must be within %s blocks of World Border",
 
   "death.attack.pickarang": "%s was cracked in the head by %s's pickaxe",
   "death.attack.pickarang.item": "%s was cracked in the head by %s with %s",

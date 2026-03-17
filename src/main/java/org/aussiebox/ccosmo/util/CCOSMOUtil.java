@@ -10,15 +10,18 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.aussiebox.ccosmo.CCOSMO;
 import org.joml.Vector2f;
 
@@ -113,6 +116,48 @@ public class CCOSMOUtil {
             points.add(new Vector2f((float) x, (float) y));
         }
         return points;
+    }
+
+    public static List<Pair<Ingredient, MutableInt>> condenseIngredients(DefaultedList<Ingredient> recipeIngredients) {
+        List<Pair<Ingredient, MutableInt>> actualIngredients = new ArrayList<>();
+        Ingredients:
+        for (Ingredient igd : recipeIngredients) {
+            for (Pair<Ingredient, MutableInt> pair : actualIngredients) {
+                ItemStack[] stacks1 = pair.getLeft()
+                        .getMatchingStacks();
+                ItemStack[] stacks2 = igd.getMatchingStacks();
+                if (stacks1.length != stacks2.length)
+                    continue;
+                for (int i = 0; i <= stacks1.length; i++) {
+                    if (i == stacks1.length) {
+                        pair.getRight()
+                                .increment();
+                        continue Ingredients;
+                    }
+                    if (!ItemStack.areEqual(stacks1[i], stacks2[i]))
+                        break;
+                }
+            }
+            actualIngredients.add(new Pair<>(igd, new MutableInt(1)));
+        }
+        return actualIngredients;
+    }
+
+    public static List<Pair<ItemStack, MutableInt>> condenseStacks(DefaultedList<ItemStack> stacks) {
+        List<Pair<ItemStack, MutableInt>> actualStacks = new ArrayList<>();
+        for (ItemStack stack : stacks) {
+            boolean existed = false;
+            for (Pair<ItemStack, MutableInt> pair : actualStacks) {
+                ItemStack actualStack = pair.getLeft();
+                if (ItemStack.areEqual(stack, actualStack)) {
+                    pair.getRight().increment();
+                    existed = true;
+                    break;
+                }
+            }
+            if (!existed) actualStacks.add(new Pair<>(stack, new MutableInt(1)));
+        }
+        return actualStacks;
     }
 
 }

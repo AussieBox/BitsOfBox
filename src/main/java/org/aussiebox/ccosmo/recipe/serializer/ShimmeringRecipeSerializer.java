@@ -1,5 +1,6 @@
 package org.aussiebox.ccosmo.recipe.serializer;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
@@ -22,10 +23,14 @@ public class ShimmeringRecipeSerializer implements RecipeSerializer<ShimmeringRe
                     }, list -> list)
                     .forGetter(ShimmeringRecipe::getIngredients),
             Ingredient.DISALLOW_EMPTY_CODEC.fieldOf("affected").forGetter(ShimmeringRecipe::getAffectedIngredient),
+            Codec.INT.optionalFieldOf("border_proximity", -1).forGetter(ShimmeringRecipe::getBorderProximity),
             ItemStack.OPTIONAL_CODEC.fieldOf("result").forGetter(r -> r.getResult(null))
     ).apply(instance, ShimmeringRecipe::new));
 
     public static final PacketCodec<RegistryByteBuf, ShimmeringRecipe> PACKET_CODEC = PacketCodec.tuple(
+            PacketCodecs.INTEGER,
+            ShimmeringRecipe::getBorderProximity,
+
             Ingredient.PACKET_CODEC.collect(PacketCodecs.toList()),
             recipe -> recipe.getIngredients().stream().toList(),
 
@@ -35,12 +40,12 @@ public class ShimmeringRecipeSerializer implements RecipeSerializer<ShimmeringRe
             ItemStack.PACKET_CODEC,
             ShimmeringRecipe::getOutput,
 
-            (ingredientsList, affected, result) -> {
+            (borderProximity, ingredientsList, affected, result) -> {
                 DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(ingredientsList.size(), Ingredient.EMPTY);
                 for (int i = 0; i < ingredientsList.size(); i++) {
                     ingredients.set(i, ingredientsList.get(i));
                 }
-                return new ShimmeringRecipe(ingredients, affected, result);
+                return new ShimmeringRecipe(ingredients, affected, borderProximity, result);
             }
     );
 

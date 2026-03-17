@@ -7,41 +7,53 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.aussiebox.ccosmo.recipe.inventory.ShimmeringAltarInventory;
+import org.aussiebox.ccosmo.util.CCOSMOUtil;
 
-import java.util.Collections;
+import java.util.List;
 
 public class ShimmeringRecipe implements Recipe<ShimmeringAltarInventory> {
-    @Getter
-    private final Ingredient affectedIngredient;
+    @Getter private final Ingredient affectedIngredient;
     private final DefaultedList<Ingredient> ingredients;
+    @Getter private final int borderProximity;
     @Getter private final ItemStack output;
 
-    public ShimmeringRecipe(DefaultedList<Ingredient> ingredients,Ingredient affectedStack, ItemStack output) {
+    public ShimmeringRecipe(DefaultedList<Ingredient> ingredients, Ingredient affectedStack, int borderProximity, ItemStack output) {
         this.affectedIngredient = affectedStack;
         this.ingredients = ingredients;
+        this.borderProximity = borderProximity;
         this.output = output;
     }
 
     @Override
     public boolean matches(ShimmeringAltarInventory input, World world) {
+        double proximity = world.getWorldBorder().getDistanceInsideBorder(input.getBlockPos().getX(), input.getBlockPos().getZ());
+        if (borderProximity != -1 && proximity > borderProximity) return false;
         if (!affectedIngredient.test(input.getAffectedStack())) return false;
-        for (Ingredient ingredient : ingredients) {
-            int count = Collections.frequency(ingredients, ingredient);
+
+        List<Pair<Ingredient, MutableInt>> condensedIngredients = CCOSMOUtil.condenseIngredients(ingredients);
+        for (Pair<Ingredient, MutableInt> ingredientPair : condensedIngredients) {
+            Ingredient ingredient = ingredientPair.getLeft();
+            int targetCount = ingredientPair.getRight().toInteger();
             boolean testPass = false;
             boolean amountPass = false;
-            for (ItemStack stack : input.getIngredients()) {
+            for (Pair<ItemStack, MutableInt> stackPair : CCOSMOUtil.condenseStacks(input.getIngredients())) {
+                ItemStack stack = stackPair.getLeft();
+                int stackCount = stackPair.getRight().toInteger();
+
                 testPass = ingredient.test(stack);
                 if (testPass)
-                    amountPass = Collections.frequency(input.getIngredients(), stack) >= count;
+                    amountPass = stackCount == targetCount;
+                else continue;
 
-                if (!testPass) continue;
                 if (amountPass) break;
             }
             if (!testPass) return false;
-            if (!amountPass) return false;
+            else if (!amountPass) return false;
         }
         return true;
     }

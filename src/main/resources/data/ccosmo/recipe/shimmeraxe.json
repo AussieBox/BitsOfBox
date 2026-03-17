@@ -3,18 +3,31 @@
   "affected": {
     "item": "minecraft:netherite_axe"
   },
+  "border_proximity": 500,
   "ingredients": [
     {
-      "item": "minecraft:creaking_heart"
+      "tag": "minecraft:logs"
     },
     {
-      "item": "minecraft:creaking_heart"
+      "tag": "minecraft:logs"
     },
     {
-      "item": "minecraft:creaking_heart"
+      "tag": "minecraft:logs"
     },
     {
-      "item": "minecraft:creaking_heart"
+      "tag": "minecraft:logs"
+    },
+    {
+      "tag": "minecraft:logs"
+    },
+    {
+      "tag": "minecraft:logs"
+    },
+    {
+      "tag": "minecraft:logs"
+    },
+    {
+      "tag": "minecraft:logs"
     },
     {
       "item": "minecraft:recovery_compass"

@@ -69,7 +69,6 @@ public class ShimmeringAltarBlock extends BlockWithEntity {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (!(blockEntity instanceof ShimmeringAltarBlockEntity shimmeringBlockEntity)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-        // TODO: Make multiple stacks combine as one, OR allow for item count requirements to be spread across stacks
         if (stack.isOf(ModItems.SHIMMER_POWDER)) {
             ShimmeringAltarInventory inventory = shimmeringBlockEntity.toRecipeInventory();
 
@@ -79,8 +78,10 @@ public class ShimmeringAltarBlock extends BlockWithEntity {
                 if (!recipe.value().matches(inventory, world)) continue;
 
                 stack.decrement(1);
-                shimmeringBlockEntity.setAffectedStack(recipe.value().getOutput());
                 shimmeringBlockEntity.clear();
+                shimmeringBlockEntity.setAffectedStack(recipe.value().getOutput());
+
+                player.getInventory().markDirty();
                 return ItemActionResult.SUCCESS;
             }
 
@@ -91,17 +92,25 @@ public class ShimmeringAltarBlock extends BlockWithEntity {
             if (!shimmeringBlockEntity.getInventoryWithoutEmpty().isEmpty()) {
                 player.getInventory().setStack(player.getInventory().selectedSlot, shimmeringBlockEntity.getInventoryWithoutEmpty().getLast());
                 shimmeringBlockEntity.fullyRemoveStack(shimmeringBlockEntity.getInventoryWithoutEmpty().getLast());
+
+                shimmeringBlockEntity.markDirty();
+                player.getInventory().markDirty();
                 return ItemActionResult.SUCCESS;
             } else if (!shimmeringBlockEntity.getAffectedStack().isEmpty()) {
                 player.getInventory().setStack(player.getInventory().selectedSlot, shimmeringBlockEntity.getAffectedStack());
                 shimmeringBlockEntity.setAffectedStack(ItemStack.EMPTY);
+
+                shimmeringBlockEntity.markDirty();
+                player.getInventory().markDirty();
                 return ItemActionResult.SUCCESS;
             }
         } else {
             if (shimmeringBlockEntity.getAffectedStack() == ItemStack.EMPTY) shimmeringBlockEntity.setAffectedStack(stack.copyWithCount(1));
             else shimmeringBlockEntity.addStack(stack.copyWithCount(1));
-
             stack.decrement(1);
+
+            shimmeringBlockEntity.markDirty();
+            player.getInventory().markDirty();
             return ItemActionResult.SUCCESS;
         }
 

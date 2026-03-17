@@ -3,6 +3,7 @@
   "affected": {
     "item": "minecraft:trident"
   },
+  "border_proximity": 1000,
   "ingredients": [
     {
       "item": "ccosmo:shimmerglass"

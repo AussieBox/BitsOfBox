@@ -41,7 +41,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return getInventoryWithoutEmpty().isEmpty();
     }
 
     @Override
@@ -62,18 +62,22 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
     @Override
     public void setStack(int slot, ItemStack stack) {
         inventory.set(slot, stack);
+        markDirty();
     }
 
     public void addStack(ItemStack stack) {
         inventory.add(stack);
+        markDirty();
     }
 
     public void fullyRemoveStack(int slot) {
         inventory.remove(slot);
+        markDirty();
     }
 
     public void fullyRemoveStack(ItemStack stack) {
         inventory.remove(stack);
+        markDirty();
     }
 
     public DefaultedList<ItemStack> getInventoryWithoutEmpty() {
@@ -89,11 +93,12 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
 
     @Override
     public void clear() {
-        this.inventory.clear();
+        inventory.clear();
+        markDirty();
     }
 
     public ShimmeringAltarInventory toRecipeInventory() {
-        return new ShimmeringAltarInventory(affectedStack, inventory);
+        return new ShimmeringAltarInventory(affectedStack, inventory, this.pos);
     }
 
     @Override

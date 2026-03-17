@@ -3,6 +3,7 @@
   "affected": {
     "item": "minecraft:netherite_pickaxe"
   },
+  "border_proximity": 1000,
   "ingredients": [
     {
       "item": "minecraft:budding_amethyst"
