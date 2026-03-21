@@ -1,5 +1,6 @@
 package org.aussiebox.ccosmo.client;
 
+import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -24,12 +25,13 @@ import org.aussiebox.ccosmo.client.render.blockentity.ShimmeringAltarBlockEntity
 import org.aussiebox.ccosmo.client.render.entity.DragonflameCactusEntityRenderer;
 import org.aussiebox.ccosmo.client.render.entity.PickarangEntityRenderer;
 import org.aussiebox.ccosmo.client.render.entity.ShimmerforkEntityRenderer;
-import org.aussiebox.ccosmo.client.render.hud.PyrrhianBeltFlightRenderer;
+import org.aussiebox.ccosmo.client.render.hud.PyrrhianAnkletFlightRenderer;
 import org.aussiebox.ccosmo.client.render.hud.ShimmerToolChargeRenderer;
+import org.aussiebox.ccosmo.client.render.trinkets.PyrrhianAnkletRenderer;
 import org.aussiebox.ccosmo.component.ModDataComponentTypes;
 import org.aussiebox.ccosmo.entity.ModEntities;
 import org.aussiebox.ccosmo.item.ModItems;
-import org.aussiebox.ccosmo.packet.PyrrhianBeltFlightC2SPacket;
+import org.aussiebox.ccosmo.packet.PyrrhianAnkletFlightC2SPacket;
 import org.aussiebox.ccosmo.util.CCOSMOUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -43,7 +45,7 @@ public class CCOSMOClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         HudRenderCallback.EVENT.register((ShimmerToolChargeRenderer::render));
-        HudRenderCallback.EVENT.register((PyrrhianBeltFlightRenderer::render));
+        HudRenderCallback.EVENT.register((PyrrhianAnkletFlightRenderer::render));
 
         EntityModelLayerRegistry.registerModelLayer(DragonflameCactusEntityModel.CACTUS, DragonflameCactusEntityModel::getTexturedModelData);
 
@@ -57,6 +59,8 @@ public class CCOSMOClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.FluidityTridentEntityType, ShimmerforkEntityRenderer::new);
 
         BlockEntityRendererFactories.register(ModBlockEntities.SHIMMERING_ALTAR_BLOCK_ENTITY, ShimmeringAltarBlockEntityRenderer::new);
+
+        TrinketRendererRegistry.registerRenderer(ModItems.PYRRHIAN_ANKLET, new PyrrhianAnkletRenderer());
 
         registerModelPredicates();
         registerKeybinds();
@@ -112,8 +116,8 @@ public class CCOSMOClient implements ClientModInitializer {
             if (client.player == null) return;
 
             if ((toggleFlightKeybind.wasPressed() && flightToggleCooldown == 0)) {
-                if (CCOSMOUtil.playerHasTrinket(client.player, ModItems.PYRRHIAN_BELT) && TrinketComponent.KEY.get(client.player).isCanFly()) {
-                    ClientPlayNetworking.send(new PyrrhianBeltFlightC2SPacket(!TrinketComponent.KEY.get(client.player).isFlying()));
+                if (CCOSMOUtil.playerHasTrinket(client.player, ModItems.PYRRHIAN_ANKLET) && TrinketComponent.KEY.get(client.player).isCanFly()) {
+                    ClientPlayNetworking.send(new PyrrhianAnkletFlightC2SPacket(!TrinketComponent.KEY.get(client.player).isFlying()));
                     flightToggleCooldown = 20;
                 }
             }

@@ -69,8 +69,6 @@ public class ShimmerToolItem extends MiningToolItem {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
 
-        CCOSMO.LOGGER.info(String.valueOf(Objects.requireNonNull(stack.get(DataComponentTypes.TOOL)).getSpeed(Blocks.DEEPSLATE.getDefaultState())));
-
         if (stack.get(ModDataComponentTypes.SHIMMER_TOOL_TYPE) == CCOSMOConstants.ShimmerToolType.TRIDENT) {
             if (!user.isSneaking()) {
                 if (stack.getOrDefault(ModDataComponentTypes.SHIMMER_TOOL_CHARGES, 0) <= 0) return TypedActionResult.fail(stack);

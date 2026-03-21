@@ -22,6 +22,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import java.util.Objects;
+
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
 
@@ -37,14 +39,26 @@ public abstract class ItemRendererMixin {
             at = @At(value = "HEAD"),
             argsOnly = true
     )
-    public BakedModel renderItem(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) ModelTransformationMode renderMode) {
+    public BakedModel ccosmo$renderItem(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) ModelTransformationMode renderMode) {
 
         ClientWorld world = MinecraftClient.getInstance().world;
         LivingEntity entity = stack.getHolder() instanceof LivingEntity ? (LivingEntity) stack.getHolder() : null;
         BakedModel newModel = null;
 
-        if (stack.getItem() == ModItems.SHIMMERFORK && (renderMode == ModelTransformationMode.GUI || renderMode == ModelTransformationMode.GROUND || renderMode == ModelTransformationMode.FIXED)) {
+        if (stack.isOf(ModItems.SHIMMERFORK) && (renderMode == ModelTransformationMode.GUI || renderMode == ModelTransformationMode.GROUND || renderMode == ModelTransformationMode.FIXED)) {
             newModel = getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(CCOSMO.id("shimmerfork")));
+        }
+
+        if (stack.isOf(ModItems.PYRRHIAN_ANKLET)) {
+            if (renderMode == ModelTransformationMode.FIXED) {
+                newModel = getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(CCOSMO.id("pyrrhian_anklet_body")));
+                if (entity != null && Objects.equals(entity.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5"))
+                    newModel = getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(CCOSMO.id("circ_pyrrhian_anklet_body")));
+            } else {
+                newModel = getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(CCOSMO.id("pyrrhian_anklet")));
+                if (entity != null && Objects.equals(entity.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5"))
+                    newModel = getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(CCOSMO.id("circ_pyrrhian_anklet")));
+            }
         }
 
         if (newModel == null) return bakedModel;
@@ -60,11 +74,11 @@ public abstract class ItemRendererMixin {
             at = @At(value = "STORE"),
             ordinal = 1
     )
-    public BakedModel getHeldItemModelMixin(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) @Nullable World world, @Local(argsOnly = true) @Nullable LivingEntity entity, @Local(argsOnly = true) int seed) {
+    public BakedModel ccosmo$getModel(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) @Nullable World world, @Local(argsOnly = true) @Nullable LivingEntity entity, @Local(argsOnly = true) int seed) {
 
         BakedModel newModel = null;
 
-        if (stack.getItem() == ModItems.SHIMMERFORK) {
+        if (stack.isOf(ModItems.SHIMMERFORK)) {
             CCOSMOConstants.ShimmerToolSkin skin = stack.getOrDefault(ModDataComponentTypes.SHIMMER_TOOL_SKIN, CCOSMOConstants.ShimmerToolSkin.BASE);
 
             if (skin == CCOSMOConstants.ShimmerToolSkin.BASE)

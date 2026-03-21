@@ -58,8 +58,8 @@ public class ShimmerToolChargeRenderer {
         int height = MinecraftClient.getInstance().getWindow().getScaledHeight();
         int y = height/2+5+textRenderer.fontHeight;
 
-        if (CCOSMOUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT) && PyrrhianBeltFlightRenderer.y != height/2+6+MinecraftClient.getInstance().textRenderer.fontHeight) {
-            y = PyrrhianBeltFlightRenderer.y+textRenderer.fontHeight+5;
+        if (CCOSMOUtil.playerHasTrinket(player, ModItems.PYRRHIAN_ANKLET) && PyrrhianAnkletFlightRenderer.y != height/2+6+MinecraftClient.getInstance().textRenderer.fontHeight) {
+            y = PyrrhianAnkletFlightRenderer.y+textRenderer.fontHeight+5;
         }
 
         context.drawText(
