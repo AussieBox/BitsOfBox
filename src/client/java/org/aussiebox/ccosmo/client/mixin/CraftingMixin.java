@@ -16,9 +16,7 @@ import org.aussiebox.ccosmo.CCOSMO;
 import org.aussiebox.ccosmo.component.ModDataComponentTypes;
 import org.aussiebox.ccosmo.item.ModItems;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,10 +26,6 @@ import java.util.Optional;
 
 @Mixin(CraftingScreenHandler.class)
 public class CraftingMixin {
-
-    @Shadow
-    @Final
-    private RecipeInputInventory input;
 
     @Inject(method = "updateResult", at = @At(value = "TAIL"))
     private static void ccosmo$updateCraftingResult(ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory, @Nullable RecipeEntry<CraftingRecipe> recipe, CallbackInfo ci) {

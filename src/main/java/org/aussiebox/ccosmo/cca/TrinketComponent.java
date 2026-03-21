@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import org.aussiebox.ccosmo.CCOSMO;
 import org.aussiebox.ccosmo.component.ModDataComponentTypes;
 import org.aussiebox.ccosmo.item.ModItems;
-import org.aussiebox.ccosmo.item.custom.PyrrhianBeltItem;
+import org.aussiebox.ccosmo.item.custom.PyrrhianAnkletItem;
 import org.aussiebox.ccosmo.item.custom.ShimmerToolItem;
 import org.aussiebox.ccosmo.util.CCOSMOUtil;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -36,9 +36,9 @@ public class TrinketComponent implements AutoSyncedComponent, ServerTickingCompo
     @Getter
     private int flightDamageCooldown;
     @Getter
-    private double pyrrhianBeltFlightTime;
+    private double pyrrhianAnkletFlightTime;
     @Getter
-    private double pyrrhianBeltGlideTime;
+    private double pyrrhianAnkletGlideTime;
     @Getter
     private boolean wasLastFlying = false;
     @Getter
@@ -59,7 +59,7 @@ public class TrinketComponent implements AutoSyncedComponent, ServerTickingCompo
     }
 
     public void changeGlideTime(double time) {
-        this.pyrrhianBeltGlideTime = Math.clamp(this.pyrrhianBeltGlideTime + time, 0, PyrrhianBeltItem.getBeltGlideTime(player));
+        this.pyrrhianAnkletGlideTime = Math.clamp(this.pyrrhianAnkletGlideTime + time, 0, PyrrhianAnkletItem.getAnkletGlideTime(player));
         this.sync();
     }
 
@@ -85,7 +85,7 @@ public class TrinketComponent implements AutoSyncedComponent, ServerTickingCompo
     }
 
     public void changeFlightTime(double time) {
-        this.pyrrhianBeltFlightTime = Math.clamp(this.pyrrhianBeltFlightTime + time, 0, PyrrhianBeltItem.getBeltFlyTime(player));
+        this.pyrrhianAnkletFlightTime = Math.clamp(this.pyrrhianAnkletFlightTime + time, 0, PyrrhianAnkletItem.getAnkletFlyTime(player));
         this.sync();
     }
 
@@ -101,19 +101,19 @@ public class TrinketComponent implements AutoSyncedComponent, ServerTickingCompo
 
     @Override
     public void serverTick() {
-        ///  -[PYRRHIAN BELT]- ///
+        ///  -[PYRRHIAN ANKLET]- ///
 
-        if (!CCOSMOUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT)) {
+        if (!CCOSMOUtil.playerHasTrinket(player, ModItems.PYRRHIAN_ANKLET)) {
             setFlying(false);
             setCanFly(false);
             setGliding(false);
             setCanGlide(false);
         }
 
-        if (pyrrhianBeltFlightTime <= 0 || flightDamageCooldown > 0) setCanFly(false);
+        if (pyrrhianAnkletFlightTime <= 0 || flightDamageCooldown > 0) setCanFly(false);
         else setCanFly(true);
 
-        if (pyrrhianBeltGlideTime <= 0 || glideDamageCooldown > 0) setCanGlide(false);
+        if (pyrrhianAnkletGlideTime <= 0 || glideDamageCooldown > 0) setCanGlide(false);
         else setCanGlide(true);
 
         // Switch to gliding when cooldown runs out
@@ -183,11 +183,11 @@ public class TrinketComponent implements AutoSyncedComponent, ServerTickingCompo
 
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
-        this.pyrrhianBeltFlightTime = tag.contains("pyrrhianBeltFlightTime") ? tag.getDouble("pyrrhianBeltFlightTime") : 0;
+        this.pyrrhianAnkletFlightTime = tag.contains("pyrrhianAnkletFlightTime") ? tag.getDouble("pyrrhianAnkletFlightTime") : 0;
         this.flightDamageCooldown = tag.contains("flightDamageCooldown") ? tag.getInt("flightDamageCooldown") : 0;
         this.canFly = tag.contains("canFly") && tag.getBoolean("canFly");
         this.flying = tag.contains("flying") && tag.getBoolean("flying");
-        this.pyrrhianBeltGlideTime = tag.contains("pyrrhianBeltGlideTime") ? tag.getDouble("pyrrhianBeltGlideTime") : 0;
+        this.pyrrhianAnkletGlideTime = tag.contains("pyrrhianAnkletGlideTime") ? tag.getDouble("pyrrhianAnkletGlideTime") : 0;
         this.glideDamageCooldown = tag.contains("glideDamageCooldown") ? tag.getInt("glideDamageCooldown") : 0;
         this.canGlide = tag.contains("canGlide") && tag.getBoolean("canGlide");
         this.gliding = tag.contains("gliding") && tag.getBoolean("gliding");
@@ -197,11 +197,11 @@ public class TrinketComponent implements AutoSyncedComponent, ServerTickingCompo
 
     @Override
     public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
-        tag.putDouble("pyrrhianBeltFlightTime", this.pyrrhianBeltFlightTime);
+        tag.putDouble("pyrrhianAnkletFlightTime", this.pyrrhianAnkletFlightTime);
         tag.putInt("flightDamageCooldown", this.flightDamageCooldown);
         tag.putBoolean("canFly", this.canFly);
         tag.putBoolean("flying", this.flying);
-        tag.putDouble("pyrrhianBeltGlideTime", this.pyrrhianBeltGlideTime);
+        tag.putDouble("pyrrhianAnkletGlideTime", this.pyrrhianAnkletGlideTime);
         tag.putInt("glideDamageCooldown", this.glideDamageCooldown);
         tag.putBoolean("canGlide", this.canGlide);
         tag.putBoolean("gliding", this.gliding);

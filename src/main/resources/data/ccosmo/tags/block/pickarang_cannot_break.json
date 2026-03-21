@@ -17,6 +17,12 @@
     "minecraft:end_stone",
     "minecraft:respawn_anchor",
     "minecraft:reinforced_deepslate",
+    "bewitchery:exposed_bedrock",
+    "infernumeffugium:chiseled_bedrock",
+    "infernumeffugium:bedrock_bricks",
+    "infernumeffugium:bedrock_ladder",
+    "infernumeffugium:bedrock_dispenser",
+    "infernumeffugium:corrupted_bedrock_bricks",
     "ccosmo:shimmerglass"
   ]
 }

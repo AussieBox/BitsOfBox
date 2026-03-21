@@ -146,9 +146,9 @@ public class ModItems {
                     .rarity(Rarity.EPIC)
     );
 
-    public static final Item PYRRHIAN_BELT = registerItem(
-            "pyrrhian_belt",
-            PyrrhianBeltItem::new,
+    public static final Item PYRRHIAN_ANKLET = registerItem(
+            "pyrrhian_anklet",
+            PyrrhianAnkletItem::new,
             new Item.Settings()
                     .maxCount(1)
                     .rarity(Rarity.EPIC)
@@ -190,7 +190,7 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(CCOSMO_ITEMGROUP_KEY).register(itemGroup -> {
             itemGroup.add(DRAGONFLAME_CACTUS.getDefaultStack());
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
-            itemGroup.add(PYRRHIAN_BELT);
+            itemGroup.add(PYRRHIAN_ANKLET);
             itemGroup.add(AMETHYST_DISRUPTOR);
             itemGroup.add(SHIMMER_POWDER);
             itemGroup.add(SHIMMER_POWDER_BLOCK);

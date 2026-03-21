@@ -26,7 +26,6 @@ public abstract class ModelLoaderMixin {
         this.loadItemModel(ModelIdentifier.ofInventoryVariant(Identifier.of(CCOSMO.MOD_ID, "diamond_shimmerfork_hand")));
         this.loadItemModel(ModelIdentifier.ofInventoryVariant(Identifier.of(CCOSMO.MOD_ID, "netherite_shimmerfork_hand")));
         this.loadItemModel(ModelIdentifier.ofInventoryVariant(Identifier.of(CCOSMO.MOD_ID, "pyrrhian_anklet_body")));
-        this.loadItemModel(ModelIdentifier.ofInventoryVariant(Identifier.of(CCOSMO.MOD_ID, "circ_pyrrhian_anklet")));
-        this.loadItemModel(ModelIdentifier.ofInventoryVariant(Identifier.of(CCOSMO.MOD_ID, "circ_pyrrhian_anklet_body")));
+        this.loadItemModel(ModelIdentifier.ofInventoryVariant(Identifier.of(CCOSMO.MOD_ID, "shimmer_jar_body")));
     }
 }

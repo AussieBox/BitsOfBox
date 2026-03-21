@@ -8,8 +8,8 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import org.aussiebox.ccosmo.cca.TrinketComponent;
 import org.aussiebox.ccosmo.item.ModItems;
-import org.aussiebox.ccosmo.item.custom.PyrrhianBeltItem;
-import org.aussiebox.ccosmo.packet.PyrrhianBeltFlightC2SPacket;
+import org.aussiebox.ccosmo.item.custom.PyrrhianAnkletItem;
+import org.aussiebox.ccosmo.packet.PyrrhianAnkletFlightC2SPacket;
 import org.aussiebox.ccosmo.util.CCOSMOUtil;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +33,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         ClientPlayerEntity player = (ClientPlayerEntity)(Object) this;
         if (player == null) return;
 
-        if (player.isSwimming() || player.getAbilities().flying || player.isInCreativeMode() || player.isSpectator() || !CCOSMOUtil.playerHasTrinket(player, ModItems.PYRRHIAN_BELT)) return;
+        if (player.isSwimming() || player.getAbilities().flying || player.isInCreativeMode() || player.isSpectator() || !CCOSMOUtil.playerHasTrinket(player, ModItems.PYRRHIAN_ANKLET)) return;
 
         TrinketComponent trinkets = TrinketComponent.KEY.get(player);
 
@@ -44,7 +44,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
             if (player.input.jumping) ++i;
 
             if (i != 0) {
-                player.setVelocity(player.getVelocity().add(0.0F, ((float)i * PyrrhianBeltItem.getBeltFlySpeed(player) * 3.0F), 0.0F));
+                player.setVelocity(player.getVelocity().add(0.0F, ((float)i * PyrrhianAnkletItem.getAnkletFlySpeed(player) * 3.0F), 0.0F));
             }
         }
 
@@ -52,7 +52,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
             if (this.abilityResyncCountdown == 0) {
                 this.abilityResyncCountdown = 7;
             } else {
-                ClientPlayNetworking.send(new PyrrhianBeltFlightC2SPacket(!TrinketComponent.KEY.get(player).isFlying()));
+                ClientPlayNetworking.send(new PyrrhianAnkletFlightC2SPacket(!TrinketComponent.KEY.get(player).isFlying()));
                 if (trinkets.isFlying() && player.isOnGround()) {
                     player.jump();
                 }

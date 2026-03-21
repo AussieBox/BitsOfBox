@@ -18,7 +18,7 @@ import org.aussiebox.ccosmo.component.ModDataComponentTypes;
 import org.aussiebox.ccosmo.entity.ModEntities;
 import org.aussiebox.ccosmo.item.ModItems;
 import org.aussiebox.ccosmo.mixin.TreeDecoratorTypeInvoker;
-import org.aussiebox.ccosmo.packet.PyrrhianBeltFlightC2SPacket;
+import org.aussiebox.ccosmo.packet.PyrrhianAnkletFlightC2SPacket;
 import org.aussiebox.ccosmo.recipe.ModRecipes;
 import org.aussiebox.ccosmo.recipe.ShimmeringRecipe;
 import org.aussiebox.ccosmo.recipe.serializer.ShimmeringRecipeSerializer;
@@ -59,8 +59,8 @@ public class CCOSMO implements ModInitializer {
             ShimmerComponent.KEY.get(handler.getPlayer()).setShimmerseepTicks(2400);
         });
 
-        PayloadTypeRegistry.playC2S().register(PyrrhianBeltFlightC2SPacket.ID, PyrrhianBeltFlightC2SPacket.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(PyrrhianBeltFlightC2SPacket.ID, (payload, context) -> {
+        PayloadTypeRegistry.playC2S().register(PyrrhianAnkletFlightC2SPacket.ID, PyrrhianAnkletFlightC2SPacket.CODEC);
+        ServerPlayNetworking.registerGlobalReceiver(PyrrhianAnkletFlightC2SPacket.ID, (payload, context) -> {
             ServerPlayerEntity player = context.player();
             TrinketComponent trinkets = TrinketComponent.KEY.get(player);
 

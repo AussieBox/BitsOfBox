@@ -28,6 +28,7 @@ import org.aussiebox.ccosmo.client.render.entity.ShimmerforkEntityRenderer;
 import org.aussiebox.ccosmo.client.render.hud.PyrrhianAnkletFlightRenderer;
 import org.aussiebox.ccosmo.client.render.hud.ShimmerToolChargeRenderer;
 import org.aussiebox.ccosmo.client.render.trinkets.PyrrhianAnkletRenderer;
+import org.aussiebox.ccosmo.client.render.trinkets.ShimmerJarRenderer;
 import org.aussiebox.ccosmo.component.ModDataComponentTypes;
 import org.aussiebox.ccosmo.entity.ModEntities;
 import org.aussiebox.ccosmo.item.ModItems;
@@ -61,6 +62,7 @@ public class CCOSMOClient implements ClientModInitializer {
         BlockEntityRendererFactories.register(ModBlockEntities.SHIMMERING_ALTAR_BLOCK_ENTITY, ShimmeringAltarBlockEntityRenderer::new);
 
         TrinketRendererRegistry.registerRenderer(ModItems.PYRRHIAN_ANKLET, new PyrrhianAnkletRenderer());
+        TrinketRendererRegistry.registerRenderer(ModItems.SHIMMER_JAR, new ShimmerJarRenderer());
 
         registerModelPredicates();
         registerKeybinds();
@@ -92,10 +94,8 @@ public class CCOSMOClient implements ClientModInitializer {
                 ModItems.SHIMMERFORK,
                 CCOSMO.id("throwing"),
                 (stack, world, entity, seed) -> {
-
                     if (entity == null) return 0.0F;
                     if (entity.getActiveItem() == stack) return 1.0F;
-
                     return 0.0F;
                 }
         );

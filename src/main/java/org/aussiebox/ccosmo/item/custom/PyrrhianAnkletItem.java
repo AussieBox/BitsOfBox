@@ -18,8 +18,8 @@ import org.aussiebox.ccosmo.CCOSMOConstants;
 import java.util.List;
 import java.util.Objects;
 
-public class PyrrhianBeltItem extends TrinketItem {
-    public PyrrhianBeltItem(Settings settings) {
+public class PyrrhianAnkletItem extends TrinketItem {
+    public PyrrhianAnkletItem(Settings settings) {
         super(settings);
     }
 
@@ -27,29 +27,29 @@ public class PyrrhianBeltItem extends TrinketItem {
     public Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, Identifier slotIdentifier) {
         var modifiers = super.getModifiers(stack, slot, entity, slotIdentifier);
         if (Objects.equals(entity.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) {
-            SlotAttributes.addSlotModifier(modifiers, "legs/belt", slotIdentifier, 1, EntityAttributeModifier.Operation.ADD_VALUE);
+            SlotAttributes.addSlotModifier(modifiers, "feet/aglet", slotIdentifier, 1, EntityAttributeModifier.Operation.ADD_VALUE);
         }
         return modifiers;
     }
 
-    public static float getBeltFlySpeed(PlayerEntity player) {
+    public static float getAnkletFlySpeed(PlayerEntity player) {
         if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) return 0.035F;
         return 0.02F;
     }
 
-    public static double getBeltFlyTime(PlayerEntity player) {
-        if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) return CCOSMOConstants.buffedPyrrhianBeltFlightTimeMaximum;
-        return CCOSMOConstants.pyrrhianBeltFlightTimeMaximum;
+    public static double getAnkletFlyTime(PlayerEntity player) {
+        if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) return CCOSMOConstants.buffedPyrrhianAnkletFlightTimeMaximum;
+        return CCOSMOConstants.pyrrhianAnkletFlightTimeMaximum;
     }
 
-    public static double getBeltGlideTime(PlayerEntity player) {
-        if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) return CCOSMOConstants.buffedPyrrhianBeltGlideTimeMaximum;
-        return CCOSMOConstants.pyrrhianBeltGlideTimeMaximum;
+    public static double getAnkletGlideTime(PlayerEntity player) {
+        if (Objects.equals(player.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) return CCOSMOConstants.buffedPyrrhianAnkletGlideTimeMaximum;
+        return CCOSMOConstants.pyrrhianAnkletGlideTimeMaximum;
     }
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> list, TooltipType type) {
         super.appendTooltip(stack, context, list, type);
-        // TODO: Add pyrrhian belt tooltip
+        // TODO: Add pyrrhian anklet tooltip
     }
 }

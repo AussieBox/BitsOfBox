@@ -28,8 +28,9 @@
           "item.ccosmo.shimmerpick.tooltip.4": "blocks of the pickaxe when it returns, you pick it up immediately.",
   "item.ccosmo.shimmer_powder": "Shimmer Powder",
   "item.ccosmo.amethyst_disruptor": "Amethyst Disruptor",
-  "item.ccosmo.pyrrhian_belt": "Pyrrhian Belt",
-      "tip.ccosmo.pyrrhian_belt_buffed": "[BUFFED]",
+  "item.ccosmo.pyrrhian_anklet": "Pyrrhian Anklet",
+      "tip.ccosmo.pyrrhian_anklet_buffed": "[BUFFED]",
+  "item.ccosmo.shimmer_jar": "Shimmer Jar",
 
   "block.ccosmo.dragonflame_cactus_block": "Dragonflame Cactus Stem",
   "block.ccosmo.shimmerglass": "Shimmerglass",
