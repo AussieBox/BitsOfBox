@@ -7,6 +7,8 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -15,17 +17,20 @@ import org.aussiebox.ccosmo.recipe.inventory.ShimmeringAltarInventory;
 import org.aussiebox.ccosmo.util.CCOSMOUtil;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ShimmeringRecipe implements Recipe<ShimmeringAltarInventory> {
     @Getter private final Ingredient affectedIngredient;
     private final DefaultedList<Ingredient> ingredients;
     @Getter private final int borderProximity;
+    @Getter private final int dragonProximity;
     @Getter private final ItemStack output;
 
-    public ShimmeringRecipe(DefaultedList<Ingredient> ingredients, Ingredient affectedStack, int borderProximity, ItemStack output) {
+    public ShimmeringRecipe(DefaultedList<Ingredient> ingredients, Ingredient affectedStack, int borderProximity, int dragonProximity, ItemStack output) {
         this.affectedIngredient = affectedStack;
         this.ingredients = ingredients;
         this.borderProximity = borderProximity;
+        this.dragonProximity = dragonProximity;
         this.output = output;
     }
 
@@ -33,6 +38,13 @@ public class ShimmeringRecipe implements Recipe<ShimmeringAltarInventory> {
     public boolean matches(ShimmeringAltarInventory input, World world) {
         double proximity = world.getWorldBorder().getDistanceInsideBorder(input.getBlockPos().getX(), input.getBlockPos().getZ());
         if (borderProximity != -1 && proximity > borderProximity) return false;
+        if (dragonProximity != -1) {
+            MinecraftServer server = world.getServer();
+            if (server == null) return false;
+            ServerPlayerEntity circEntity = server.getPlayerManager().getPlayer(UUID.fromString("fdf5edf6-f202-47fe-98f0-68a60d68b0d5"));
+            if (circEntity == null) return false;
+            if (!input.getBlockPos().isWithinDistance(circEntity.getPos(), dragonProximity)) return false;
+        }
         if (!affectedIngredient.test(input.getAffectedStack())) return false;
 
         List<Pair<Ingredient, MutableInt>> condensedIngredients = CCOSMOUtil.condenseIngredients(ingredients);

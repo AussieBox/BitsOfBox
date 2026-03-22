@@ -1,7 +1,6 @@
 package org.aussiebox.ccosmo.item.custom;
 
 import com.google.common.collect.Multimap;
-import dev.emi.trinkets.api.SlotAttributes;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import net.minecraft.entity.LivingEntity;
@@ -27,9 +26,6 @@ public class PyrrhianAnkletItem extends TrinketItem {
     @Override
     public Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, Identifier slotIdentifier) {
         var modifiers = super.getModifiers(stack, slot, entity, slotIdentifier);
-        if (Objects.equals(entity.getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) {
-            SlotAttributes.addSlotModifier(modifiers, "feet/aglet", slotIdentifier, 1, EntityAttributeModifier.Operation.ADD_VALUE);
-        }
         return modifiers;
     }
 

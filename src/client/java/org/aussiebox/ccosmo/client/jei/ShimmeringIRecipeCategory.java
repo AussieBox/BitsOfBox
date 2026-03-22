@@ -107,12 +107,20 @@ public class ShimmeringIRecipeCategory implements IRecipeCategory<ShimmeringReci
     public void draw(ShimmeringRecipe recipe, IRecipeSlotsView recipeSlotsView, DrawContext context, double mouseX, double mouseY) {
         background.draw(context);
         if (mouseX >= 50 && mouseX <= 83 && mouseY >= 28 && mouseY <= 53) {
-            context.drawTooltip(
-                    MinecraftClient.getInstance().textRenderer,
-                    Text.translatable("jei.tip.ccosmo.border_proximity", recipe.getBorderProximity()).withColor(0x55FFFF),
-                    (int) mouseX,
-                    (int) mouseY
-            );
+            List<Text> textList = new ArrayList<>();
+            if (recipe.getBorderProximity() != -1)
+                textList.add(Text.translatable("jei.tip.ccosmo.border_proximity", recipe.getBorderProximity()).withColor(0x55FFFF));
+            if (recipe.getDragonProximity() != -1)
+                textList.add(Text.translatable("jei.tip.ccosmo.dragon_proximity", recipe.getDragonProximity()).withColor(0xFF55FF));
+
+            if (!textList.isEmpty()) {
+                context.drawTooltip(
+                        MinecraftClient.getInstance().textRenderer,
+                        textList,
+                        (int) mouseX,
+                        (int) mouseY
+                );
+            }
         }
     }
 }

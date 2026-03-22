@@ -24,12 +24,16 @@ public class ShimmeringRecipeSerializer implements RecipeSerializer<ShimmeringRe
                     .forGetter(ShimmeringRecipe::getIngredients),
             Ingredient.DISALLOW_EMPTY_CODEC.fieldOf("affected").forGetter(ShimmeringRecipe::getAffectedIngredient),
             Codec.INT.optionalFieldOf("border_proximity", -1).forGetter(ShimmeringRecipe::getBorderProximity),
+            Codec.INT.optionalFieldOf("dragon_proximity", -1).forGetter(ShimmeringRecipe::getDragonProximity),
             ItemStack.OPTIONAL_CODEC.fieldOf("result").forGetter(r -> r.getResult(null))
     ).apply(instance, ShimmeringRecipe::new));
 
     public static final PacketCodec<RegistryByteBuf, ShimmeringRecipe> PACKET_CODEC = PacketCodec.tuple(
             PacketCodecs.INTEGER,
             ShimmeringRecipe::getBorderProximity,
+
+            PacketCodecs.INTEGER,
+            ShimmeringRecipe::getDragonProximity,
 
             Ingredient.PACKET_CODEC.collect(PacketCodecs.toList()),
             recipe -> recipe.getIngredients().stream().toList(),
@@ -40,12 +44,12 @@ public class ShimmeringRecipeSerializer implements RecipeSerializer<ShimmeringRe
             ItemStack.PACKET_CODEC,
             ShimmeringRecipe::getOutput,
 
-            (borderProximity, ingredientsList, affected, result) -> {
+            (borderProximity, dragonProximity, ingredientsList, affected, result) -> {
                 DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(ingredientsList.size(), Ingredient.EMPTY);
                 for (int i = 0; i < ingredientsList.size(); i++) {
                     ingredients.set(i, ingredientsList.get(i));
                 }
-                return new ShimmeringRecipe(ingredients, affected, borderProximity, result);
+                return new ShimmeringRecipe(ingredients, affected, borderProximity, dragonProximity, result);
             }
     );
 
