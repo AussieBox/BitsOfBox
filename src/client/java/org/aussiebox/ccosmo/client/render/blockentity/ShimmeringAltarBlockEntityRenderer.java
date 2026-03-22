@@ -31,8 +31,8 @@ public class ShimmeringAltarBlockEntityRenderer implements BlockEntityRenderer<S
         if (stack.isEmpty()) return;
         if (entity.getWorld() == null) return;
 
-        double craftTime = MathHelper.lerp(tickDelta, (double) ShimmeringAltarBlockEntity.getLastCraftAnimationTicks(), (double) ShimmeringAltarBlockEntity.getCraftAnimationTicks())/40.0;
-        double returnTime = MathHelper.lerp(tickDelta, (double) ShimmeringAltarBlockEntity.getLastReturnAnimationTicks(), (double) ShimmeringAltarBlockEntity.getReturnAnimationTicks())/40.0;
+        double craftTime = MathHelper.lerp(tickDelta, ShimmeringAltarBlockEntity.getLastCraftAnimationTicks(), (double) ShimmeringAltarBlockEntity.getCraftAnimationTicks())/40.0;
+        double returnTime = MathHelper.lerp(tickDelta, ShimmeringAltarBlockEntity.getLastReturnAnimationTicks(), (double) ShimmeringAltarBlockEntity.getReturnAnimationTicks())/40.0;
 
         double yOffset = 0;
         if (ShimmeringAltarBlockEntity.getCraftAnimationTicks() > 0) yOffset = CCOSMOUtil.smoothInterpolate(1, 0, craftTime, true);

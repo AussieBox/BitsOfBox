@@ -178,6 +178,13 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
     }
 
     @Override
+    public void markDirty() {
+        if (this.world != null) {
+            markDirty(this.world, this.pos, this.getCachedState());
+        }
+    }
+
+    @Override
     protected void writeNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         Inventories.writeNbt(tag, inventory, wrapperLookup);
         if (!affectedStack.isEmpty())
@@ -193,7 +200,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
     @Override
     protected void readNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         Inventories.readNbt(tag, inventory, wrapperLookup);
-        affectedStack = ItemStack.fromNbtOrEmpty(wrapperLookup, tag);
+        affectedStack = ItemStack.fromNbt(wrapperLookup, tag.getCompound("affectedStack")).orElse(ItemStack.EMPTY);
         if (tag.contains("craftAnimationTicks")) craftAnimationTicks = tag.getInt("craftAnimationTicks");
         if (tag.contains("lastCraftAnimationTicks")) lastCraftAnimationTicks = tag.getInt("lastCraftAnimationTicks");
         if (tag.contains("returnAnimationTicks")) returnAnimationTicks = tag.getInt("returnAnimationTicks");

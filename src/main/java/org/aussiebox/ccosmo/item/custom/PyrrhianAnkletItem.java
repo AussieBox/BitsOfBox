@@ -12,7 +12,6 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.aussiebox.ccosmo.CCOSMO;
 import org.aussiebox.ccosmo.CCOSMOConstants;
 
 import java.util.List;
@@ -54,7 +53,6 @@ public class PyrrhianAnkletItem extends TrinketItem {
         list.add(6, Text.literal(" "));
         if (!(stack.getHolder() instanceof LivingEntity)) return;
 
-        CCOSMO.LOGGER.info(String.valueOf(stack.getHolder().getName()));
         if (Objects.equals(stack.getHolder().getUuidAsString(), "fdf5edf6-f202-47fe-98f0-68a60d68b0d5")) {
             list.add(7, Text.translatable("item.ccosmo.pyrrhian_anklet.tooltip.buffed.1").withColor(0xFFAAAAAA));
             list.add(8, Text.translatable("item.ccosmo.pyrrhian_anklet.tooltip.buffed.2").withColor(0xFFAAAAAA));
