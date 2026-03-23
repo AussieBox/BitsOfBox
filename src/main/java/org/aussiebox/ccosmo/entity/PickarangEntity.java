@@ -1,6 +1,10 @@
 package org.aussiebox.ccosmo.entity;
 
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -11,6 +15,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.entity.projectile.thrown.ThrownEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -25,9 +30,12 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
+import net.minecraft.world.event.GameEvent;
 import org.aussiebox.ccosmo.CCOSMO;
 import org.aussiebox.ccosmo.CCOSMOConstants;
 import org.aussiebox.ccosmo.item.ModItems;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -135,11 +143,31 @@ public class PickarangEntity extends ThrownEntity {
                 setReturnTicks(1);
                 return;
             }
-            world.breakBlock(pos, true, this.getOwner(), 100);
+            breakBlock(world, pos, true, this.getOwner(), 100);
         }
         if (hitResult instanceof EntityHitResult entityHit) {
             DamageSource damageSource = this.getDamageSources().create(CCOSMOConstants.PICKARANG_DAMAGE, this.getOwner());
             entityHit.getEntity().damage(damageSource, 4.0F);
+        }
+    }
+
+    public void breakBlock(World world, BlockPos pos, boolean drop, @Nullable Entity breakingEntity, int maxUpdateDepth) {
+        BlockState blockState = world.getBlockState(pos);
+        if (!blockState.isAir()) {
+            FluidState fluidState = world.getFluidState(pos);
+            if (!(blockState.getBlock() instanceof AbstractFireBlock)) {
+                world.syncWorldEvent(WorldEvents.BLOCK_BROKEN, pos, Block.getRawIdFromState(blockState));
+            }
+
+            if (drop) {
+                BlockEntity blockEntity = blockState.hasBlockEntity() ? world.getBlockEntity(pos) : null;
+                Block.dropStacks(blockState, world, pos, blockEntity, breakingEntity, getStack());
+            }
+
+            boolean bl = world.setBlockState(pos, fluidState.getBlockState(), Block.NOTIFY_ALL, maxUpdateDepth);
+            if (bl) {
+                world.emitGameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Emitter.of(breakingEntity, blockState));
+            }
         }
     }
 

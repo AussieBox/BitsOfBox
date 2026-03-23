@@ -71,9 +71,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
 
     @Override
     public int size() {
-        if (world != null && !world.isClient)
-            return inventory.size();
-        return 0;
+        return inventory.size();
     }
 
     @Override

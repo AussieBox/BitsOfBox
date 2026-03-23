@@ -65,7 +65,7 @@ public interface CCOSMOConstants {
     // Array Order: {Effect Range, Blocks Affected}
     Double[] shimmerforkLandEffectData = new Double[]{5.0, 50.0};
 
-    int shimmerpickReturnTime = 30;
+    int shimmerpickReturnTime = 20;
 
     double pyrrhianAnkletFlightTimeMaximum = 75;
     double buffedPyrrhianAnkletFlightTimeMaximum = 100;
