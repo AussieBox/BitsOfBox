@@ -4,6 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -37,6 +39,9 @@ public class CCOSMO implements ModInitializer {
     }
 
     public static final TreeDecoratorType<AttachedToLogsTreeDecorator> ATTACHED_TO_LOGS_TREE_DECORATOR = TreeDecoratorTypeInvoker.ccosmo$callRegister("ccosmo:attached_to_logs", AttachedToLogsTreeDecorator.CODEC);
+
+    public static final SimpleParticleType SHIMMERING_ALTAR_SMALL = FabricParticleTypes.simple();
+    public static final SimpleParticleType SHIMMERING_ALTAR_LARGE = FabricParticleTypes.simple();
 
     @Override
     public void onInitialize() {
@@ -72,5 +77,8 @@ public class CCOSMO implements ModInitializer {
         Registry.register(Registries.SOUND_EVENT, CCOSMOConstants.SHIMMERSEEP_CHARGE_SOUND.getId(), CCOSMOConstants.SHIMMERSEEP_CHARGE_SOUND);
         Registry.register(Registries.RECIPE_TYPE, id("shimmering"), new RecipeType<ShimmeringRecipe>() {});
         Registry.register(Registries.RECIPE_SERIALIZER, id("shimmering"), new ShimmeringRecipeSerializer());
+
+        Registry.register(Registries.PARTICLE_TYPE, id("shimmering_altar_small"), SHIMMERING_ALTAR_SMALL);
+        Registry.register(Registries.PARTICLE_TYPE, id("shimmering_altar_large"), SHIMMERING_ALTAR_LARGE);
     }
 }

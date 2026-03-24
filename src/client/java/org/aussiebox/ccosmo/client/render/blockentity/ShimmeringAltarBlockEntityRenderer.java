@@ -7,18 +7,22 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import org.aussiebox.ccosmo.CCOSMO;
 import org.aussiebox.ccosmo.blockentity.ShimmeringAltarBlockEntity;
 import org.aussiebox.ccosmo.util.CCOSMOUtil;
 import org.joml.Vector2f;
 
 import java.util.List;
+import java.util.Random;
 
 public class ShimmeringAltarBlockEntityRenderer implements BlockEntityRenderer<ShimmeringAltarBlockEntity> {
     private final ItemRenderer itemRenderer;
     private double circleRotation = 0;
     private float rotation = 0;
+    private final Random random = new Random();
 
     public ShimmeringAltarBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
         this.itemRenderer = context.getItemRenderer();
@@ -27,6 +31,7 @@ public class ShimmeringAltarBlockEntityRenderer implements BlockEntityRenderer<S
     @Override
     public void render(ShimmeringAltarBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         ItemStack stack = entity.getAffectedStack();
+        BlockPos pos = entity.getPos();
         if (stack.isEmpty()) return;
         if (entity.getWorld() == null) return;
 
@@ -56,6 +61,7 @@ public class ShimmeringAltarBlockEntityRenderer implements BlockEntityRenderer<S
                 entity.getWorld(),
                 0
         );
+        if (random.nextInt(0, 40) == 0) entity.getWorld().addParticle(CCOSMO.SHIMMERING_ALTAR_LARGE, pos.getX()+0.5+random.nextDouble(-0.25, 0.25), pos.getY()+1.2+0.1+yOffset+random.nextDouble(-0.25, 0.25), pos.getZ()+0.5+random.nextDouble(-0.25, 0.25), 0, 0, 0);
 
         matrices.pop();
 
@@ -88,6 +94,8 @@ public class ShimmeringAltarBlockEntityRenderer implements BlockEntityRenderer<S
                     entity.getWorld(),
                     0
             );
+
+            if (random.nextInt(0, 60) == 0) entity.getWorld().addParticle(CCOSMO.SHIMMERING_ALTAR_SMALL, pos.getX()+0.5+translation.x+random.nextDouble(-0.12, 0.12), pos.getY()+1.2+0.1+yOffset+random.nextDouble(-0.12, 0.12), pos.getZ()+0.5+translation.y+random.nextDouble(-0.12, 0.12), 0, 0, 0);
 
             matrices.pop();
         }

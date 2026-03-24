@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -21,6 +22,7 @@ import org.aussiebox.ccosmo.block.ModBlocks;
 import org.aussiebox.ccosmo.blockentity.ModBlockEntities;
 import org.aussiebox.ccosmo.cca.TrinketComponent;
 import org.aussiebox.ccosmo.client.model.entity.DragonflameCactusEntityModel;
+import org.aussiebox.ccosmo.client.particle.ShimmeringAltarParticle;
 import org.aussiebox.ccosmo.client.render.blockentity.ShimmeringAltarBlockEntityRenderer;
 import org.aussiebox.ccosmo.client.render.entity.DragonflameCactusEntityRenderer;
 import org.aussiebox.ccosmo.client.render.entity.PickarangEntityRenderer;
@@ -63,6 +65,9 @@ public class CCOSMOClient implements ClientModInitializer {
 
         TrinketRendererRegistry.registerRenderer(ModItems.PYRRHIAN_ANKLET, new PyrrhianAnkletRenderer());
         TrinketRendererRegistry.registerRenderer(ModItems.SHIMMER_JAR, new ShimmerJarRenderer());
+
+        ParticleFactoryRegistry.getInstance().register(CCOSMO.SHIMMERING_ALTAR_SMALL, sprites -> new ShimmeringAltarParticle.Factory(sprites, 0.05F));
+        ParticleFactoryRegistry.getInstance().register(CCOSMO.SHIMMERING_ALTAR_LARGE, sprites -> new ShimmeringAltarParticle.Factory(sprites, 0.1F));
 
         registerModelPredicates();
         registerKeybinds();
