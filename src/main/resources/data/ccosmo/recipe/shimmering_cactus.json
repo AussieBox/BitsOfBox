@@ -1,0 +1,14 @@
+{
+  "type": "ccosmo:shimmering",
+  "affected": {
+    "item": "ccosmo:dragonflame_cactus"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:amethyst_shard"
+    }
+  ],
+  "result": {
+    "id": "ccosmo:shimmering_cactus"
+  }
+}

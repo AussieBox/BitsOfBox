@@ -163,6 +163,15 @@ public class ModItems {
                     .rarity(Rarity.EPIC)
     );
 
+    public static final Item SHIMMERING_CACTUS = registerItem(
+            "shimmering_cactus",
+            ShimmeringCactusItem::new,
+            new Item.Settings()
+                    .maxCount(1)
+                    .fireproof()
+                    .rarity(Rarity.EPIC)
+    );
+
     public static final RegistryKey<ItemGroup> CCOSMO_ITEMGROUP_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(CCOSMO.MOD_ID, "ccosmo"));
     public static final ItemGroup BOB_ITEMGROUP = FabricItemGroup.builder()
             .icon(() -> new ItemStack(ModItems.SHIMMER_POWDER))
@@ -190,6 +199,7 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(CCOSMO_ITEMGROUP_KEY).register(itemGroup -> {
             itemGroup.add(DRAGONFLAME_CACTUS.getDefaultStack());
             itemGroup.add(ModBlocks.DRAGONFLAME_CACTUS_BLOCK.asItem());
+            itemGroup.add(SHIMMERING_CACTUS.getDefaultStack());
             itemGroup.add(PYRRHIAN_ANKLET);
             itemGroup.add(AMETHYST_DISRUPTOR);
             itemGroup.add(SHIMMER_POWDER);

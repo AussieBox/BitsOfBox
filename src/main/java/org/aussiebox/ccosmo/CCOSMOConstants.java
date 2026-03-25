@@ -12,6 +12,7 @@ public interface CCOSMOConstants {
 
     RegistryKey<DamageType> PICKARANG_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, CCOSMO.id("pickarang"));
     RegistryKey<DamageType> SHIMMERFORK_DAMAGE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, CCOSMO.id("shimmerfork"));
+    RegistryKey<DamageType> SHIMMERING_CACTUS = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, CCOSMO.id("shimmering_cactus"));
 
     RegistryKey<Enchantment> BORDERLINKED_ENCHANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, CCOSMO.id("borderlinked"));
     RegistryKey<Enchantment> SHIMMERSEEP_ENCHANT = RegistryKey.of(RegistryKeys.ENCHANTMENT, CCOSMO.id("shimmerseep"));

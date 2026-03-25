@@ -41,6 +41,7 @@
   "item.ccosmo.shimmer_jar": "Shimmer Jar",
       "item.ccosmo.shimmer_jar.tooltip.1": "Automatically refills shimmer tools held in your",
       "item.ccosmo.shimmer_jar.tooltip.2": "main hand with shimmer powder from your inventory.",
+  "item.ccosmo.shimmering_cactus": "Shimmering Cactus",
 
   "block.ccosmo.dragonflame_cactus_block": "Dragonflame Cactus Stem",
   "block.ccosmo.shimmerglass": "Shimmerglass",
@@ -71,6 +72,7 @@
   "death.attack.pickarang.item": "%s was cracked in the head by %s with %s",
   "death.attack.shimmerfork": "%s was impaled into another reality by %s",
   "death.attack.shimmerfork.item": "%s was impaled into another reality by %s with %s",
+  "death.attack.shimmering_cactus": "%s forgot to keep an eye on the time",
   
   "enchantment.ccosmo.borderlinked": "Borderlinked",
   "enchantment.ccosmo.borderlinked.desc": "The chance of Shimmer Powder dropping from logs stripped with the Shimmeraxe is decreased. In return, obtaining Shimmer Powder in this way no longer counts towards your daily limit.",

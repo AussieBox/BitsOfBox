@@ -26,6 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.aussiebox.ccosmo.CCOSMO;
+import org.aussiebox.ccosmo.component.ModDataComponentTypes;
+import org.aussiebox.ccosmo.item.ModItems;
 import org.aussiebox.ccosmo.recipe.ShimmeringRecipe;
 import org.aussiebox.ccosmo.recipe.inventory.ShimmeringAltarInventory;
 
@@ -58,6 +60,11 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
 
                 for (RegistryEntry<Enchantment> enchantment : entity.getAffectedStack().getEnchantments().getEnchantments())
                     stack.addEnchantment(enchantment, entity.getAffectedStack().getEnchantments().getLevel(enchantment));
+
+                if (entity.getAffectedStack().isOf(ModItems.DRAGONFLAME_CACTUS) && stack.isOf(ModItems.SHIMMERING_CACTUS)) {
+                    stack.set(ModDataComponentTypes.SHIMMERING_CACTUS_FUSE, entity.getAffectedStack().getOrDefault(ModDataComponentTypes.DRAGONFLAME_CACTUS_FUSE, 20)*10);
+                    stack.set(ModDataComponentTypes.SHIMMERING_CACTUS_LIT, false);
+                }
 
                 entity.setAffectedStack(stack);
                 entity.setReturnAnimationTicks(40);

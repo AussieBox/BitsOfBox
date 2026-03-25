@@ -30,6 +30,12 @@ public class ModDataComponentTypes {
     public static final ComponentType<Boolean> HAS_BORDERLINKED =
             register("has_borderlinked", builder -> builder.codec(Codec.BOOL));
 
+    public static final ComponentType<Boolean> SHIMMERING_CACTUS_LIT =
+            register("shimmering_cactus_lit", builder -> builder.codec(Codec.BOOL));
+
+    public static final ComponentType<Integer> SHIMMERING_CACTUS_FUSE =
+            register("shimmering_cactus_fuse", builder -> builder.codec(Codec.INT));
+
 
     private static <T>ComponentType<T> register(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, Identifier.of(CCOSMO.MOD_ID, name),
