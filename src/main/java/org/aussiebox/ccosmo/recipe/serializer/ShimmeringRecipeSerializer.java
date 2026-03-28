@@ -26,7 +26,7 @@ public class ShimmeringRecipeSerializer implements RecipeSerializer<ShimmeringRe
             Ingredient.DISALLOW_EMPTY_CODEC.fieldOf("affected").forGetter(ShimmeringRecipe::getAffectedIngredient),
             Codec.INT.optionalFieldOf("border_proximity", -1).forGetter(ShimmeringRecipe::getBorderProximity),
             Codec.INT.optionalFieldOf("dragon_proximity", -1).forGetter(ShimmeringRecipe::getDragonProximity),
-            ItemStack.OPTIONAL_CODEC.fieldOf("result").forGetter(r -> r.getResult(null))
+            ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(ShimmeringRecipe::getOutput)
     ).apply(instance, ShimmeringRecipe::new));
 
     public static final PacketCodec<RegistryByteBuf, ShimmeringRecipe> PACKET_CODEC = PacketCodec.tuple(

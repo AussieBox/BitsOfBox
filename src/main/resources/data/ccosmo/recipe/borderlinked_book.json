@@ -16,14 +16,13 @@
     }
   ],
   "result": {
+    "id": "minecraft:enchanted_book",
     "components": {
       "minecraft:stored_enchantments": {
         "levels": {
           "ccosmo:borderlinked": 1
         }
       }
-    },
-    "count": 1,
-    "id": "minecraft:enchanted_book"
+    }
   }
 }

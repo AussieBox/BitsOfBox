@@ -14,13 +14,12 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Clearable;
@@ -215,18 +214,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
     protected void writeNbt(NbtCompound tag, RegistryWrapper.WrapperLookup wrapperLookup) {
         super.writeNbt(tag, wrapperLookup);
 
-        int i = 0;
-        NbtList nbtList = new NbtList();
-        for (ItemStack stack : inventory) {
-            if (!stack.isEmpty()) {
-                NbtCompound nbtCompound = new NbtCompound();
-                nbtCompound.putByte("Slot", (byte) i);
-                nbtList.add(stack.encode(wrapperLookup, nbtCompound));
-                i++;
-            }
-        }
-        if (!nbtList.isEmpty())
-            tag.put("Items", nbtList);
+        Inventories.writeNbt(tag, inventory, wrapperLookup);
 
         if (!affectedStack.isEmpty())
             tag.put("affectedStack", affectedStack.encode(wrapperLookup));
@@ -235,7 +223,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
         tag.putInt("returnAnimationTicks", returnAnimationTicks);
         tag.putInt("lastReturnAnimationTicks", lastReturnAnimationTicks);
         if (recipeBeingCrafted != null)
-            tag.put("recipeBeingCrafted", ShimmeringRecipe.CODEC.encodeStart(NbtOps.INSTANCE, recipeBeingCrafted).getOrThrow());
+            tag.put("recipeBeingCrafted", ShimmeringRecipe.CODEC.encodeStart(RegistryOps.of(NbtOps.INSTANCE, wrapperLookup), recipeBeingCrafted).getOrThrow());
     }
 
     @Override
@@ -243,14 +231,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
         super.readNbt(tag, wrapperLookup);
 
         inventory.clear();
-        NbtList nbtList = tag.getList("Items", NbtElement.COMPOUND_TYPE);
-        for (int i = 0; i < nbtList.size(); i++) {
-            NbtCompound nbtCompound = nbtList.getCompound(i);
-            int slot = nbtCompound.getByte("Slot");
-            if (slot < inventory.size()) {
-                inventory.set(slot, ItemStack.fromNbt(wrapperLookup, nbtCompound).orElse(ItemStack.EMPTY));
-            }
-        }
+        Inventories.readNbt(tag, inventory, wrapperLookup);
 
         if (tag.contains("affectedStack")) affectedStack = ItemStack.fromNbt(wrapperLookup, tag.getCompound("affectedStack")).orElse(ItemStack.EMPTY);
         else affectedStack = ItemStack.EMPTY;
@@ -259,7 +240,7 @@ public class ShimmeringAltarBlockEntity extends BlockEntity implements Inventory
         if (tag.contains("returnAnimationTicks")) returnAnimationTicks = tag.getInt("returnAnimationTicks");
         if (tag.contains("lastReturnAnimationTicks")) lastReturnAnimationTicks = tag.getInt("lastReturnAnimationTicks");
         if (tag.contains("recipeBeingCrafted")) {
-            Recipe<?> recipe = ShimmeringRecipe.CODEC.parse(NbtOps.INSTANCE, tag.get("recipeBeingCrafted"))
+            Recipe<?> recipe = ShimmeringRecipe.CODEC.parse(RegistryOps.of(NbtOps.INSTANCE, wrapperLookup), tag.get("recipeBeingCrafted"))
                     .getPartialOrThrow(error -> {
                         CCOSMO.LOGGER.error("Recipe parsing failed: {}", error);
                         return null;
