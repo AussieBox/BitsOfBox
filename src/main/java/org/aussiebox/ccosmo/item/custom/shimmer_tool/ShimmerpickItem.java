@@ -29,7 +29,7 @@ public class ShimmerpickItem extends ShimmerToolItem {
             user.incrementStat(Stats.USED.getOrCreateStat(this));
             stack.set(ModDataComponentTypes.SHIMMER_TOOL_CHARGES, stack.getOrDefault(ModDataComponentTypes.SHIMMER_TOOL_CHARGES, 1) - 1);
 
-            PickarangEntity entity = new PickarangEntity(ModEntities.PickarangEntityType, user, world);
+            PickarangEntity entity = new PickarangEntity(ModEntities.PICKARANG, user, world);
             entity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 1.5F, 0.0F);
             entity.setItem(stack);
 

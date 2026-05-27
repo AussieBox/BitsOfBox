@@ -45,11 +45,11 @@ public class PickarangEntity extends ThrownEntity {
     private static final TrackedData<Integer> returnTime;
 
     public PickarangEntity(EntityType<? extends PickarangEntity> entityType, World world) {
-        super(entityType, world);
+        super(ModEntities.PICKARANG, world);
     }
 
     public PickarangEntity(EntityType<? extends PickarangEntity> entityType, LivingEntity livingEntity, World world) {
-        super(entityType, livingEntity, world);
+        super(ModEntities.PICKARANG, livingEntity, world);
     }
 
     public void setItem(ItemStack stack) {

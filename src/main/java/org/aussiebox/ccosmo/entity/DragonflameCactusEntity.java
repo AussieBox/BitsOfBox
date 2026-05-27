@@ -25,11 +25,11 @@ public class DragonflameCactusEntity extends PersistentProjectileEntity {
     public static final float explosionPower = 1.0F;
 
     public DragonflameCactusEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
+        super(ModEntities.DRAGONFLAME_CACTUS, world);
     }
 
     public DragonflameCactusEntity(World world, PlayerEntity player) {
-        super(ModEntities.DragonflameCactusEntityType, player, world, ModItems.DRAGONFLAME_CACTUS.getDefaultStack(), null);
+        super(ModEntities.DRAGONFLAME_CACTUS, player, world, ModItems.DRAGONFLAME_CACTUS.getDefaultStack(), null);
     }
 
     @Override

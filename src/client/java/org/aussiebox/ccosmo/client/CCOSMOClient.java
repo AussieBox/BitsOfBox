@@ -25,6 +25,7 @@ import org.aussiebox.ccosmo.block.ModBlocks;
 import org.aussiebox.ccosmo.blockentity.ModBlockEntities;
 import org.aussiebox.ccosmo.cca.TrinketComponent;
 import org.aussiebox.ccosmo.client.model.entity.DragonflameCactusEntityModel;
+import org.aussiebox.ccosmo.client.model.entity.ShimmerforkEntityModel;
 import org.aussiebox.ccosmo.client.particle.ShimmeringAltarParticle;
 import org.aussiebox.ccosmo.client.render.blockentity.PlushieBlockEntityRenderer;
 import org.aussiebox.ccosmo.client.render.blockentity.ShimmeringAltarBlockEntityRenderer;
@@ -63,9 +64,11 @@ public class CCOSMOClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SHIMMERING_LENS, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CIRCUITWEAVER_PLUSHIE, RenderLayer.getCutout());
 
-        EntityRendererRegistry.register(ModEntities.DragonflameCactusEntityType, DragonflameCactusEntityRenderer::new);
-        EntityRendererRegistry.register(ModEntities.PickarangEntityType, (context) -> new PickarangEntityRenderer<>(context, 2.0F, true));
-        EntityRendererRegistry.register(ModEntities.FluidityTridentEntityType, ShimmerforkEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.DRAGONFLAME_CACTUS, DragonflameCactusEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.PICKARANG, (context) -> new PickarangEntityRenderer<>(context, 2.0F, true));
+        EntityRendererRegistry.register(ModEntities.SHIMMERFORK, ShimmerforkEntityRenderer::new);
+
+        EntityModelLayerRegistry.registerModelLayer(ShimmerforkEntityModel.LAYER, ShimmerforkEntityModel::getTexturedModelData);
 
         BlockEntityRendererFactories.register(ModBlockEntities.SHIMMERING_ALTAR_BLOCK_ENTITY, ShimmeringAltarBlockEntityRenderer::new);
         BlockEntityRendererFactories.register(ModBlockEntities.SHIMMERING_LENS_BLOCK_ENTITY, ShimmeringLensBlockEntityRenderer::new);

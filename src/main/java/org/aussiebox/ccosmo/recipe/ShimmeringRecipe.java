@@ -18,7 +18,6 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.aussiebox.ccosmo.CCOSMO;
 import org.aussiebox.ccosmo.block.ModBlocks;
 import org.aussiebox.ccosmo.recipe.inventory.ShimmeringAltarInventory;
-import org.aussiebox.ccosmo.recipe.serializer.ShimmeringRecipeSerializer;
 import org.aussiebox.ccosmo.util.CCOSMOUtil;
 
 import java.util.List;
@@ -108,7 +107,7 @@ public class ShimmeringRecipe implements Recipe<ShimmeringAltarInventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ShimmeringRecipeSerializer.INSTANCE;
+        return ModRecipes.SHIMMERING_SERIALIZER;
     }
 
     @Override

@@ -1,9 +1,5 @@
 {
 	"parent": "ccosmo:item/shimmer_tools/base/trident_hand",
-	"textures": {
-		"trident": "ccosmo:item/shimmer_tools/base/trident_hand",
-		"decoration": "ccosmo:item/shimmer_tools/base/trident_hand_decoration"
-	},
 	"overrides": [
 		{
 			"predicate": {

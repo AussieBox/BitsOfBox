@@ -52,11 +52,11 @@ public class ShimmerforkEntity extends PersistentProjectileEntity {
     float damage = 7.0F;
 
     public ShimmerforkEntity(EntityType<? extends ShimmerforkEntity> entityType, World world) {
-        super(entityType, world);
+        super(ModEntities.SHIMMERFORK, world);
     }
 
     public ShimmerforkEntity(World world, LivingEntity owner, ItemStack stack) {
-        super(ModEntities.FluidityTridentEntityType, owner, world, stack, null);
+        super(ModEntities.SHIMMERFORK, owner, world, stack, null);
         this.setStack(stack.copy());
         this.dataTracker.set(LOYALTY, (byte)5);
         this.dataTracker.set(ENCHANTED, true);
@@ -65,7 +65,7 @@ public class ShimmerforkEntity extends PersistentProjectileEntity {
     }
 
     public ShimmerforkEntity(World world, double x, double y, double z, ItemStack stack) {
-        super(ModEntities.FluidityTridentEntityType, x, y, z, world, stack, stack);
+        super(ModEntities.SHIMMERFORK, x, y, z, world, stack, stack);
         this.setStack(stack.copy());
         this.dataTracker.set(LOYALTY, (byte)5);
         this.dataTracker.set(ENCHANTED, true);
